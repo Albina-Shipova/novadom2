@@ -1,3 +1,19 @@
+/* NOVA DOM — интерактив */
+'use strict';
+
+/* ---------- Шапка: тень при скролле ---------- */
+
+const header = document.querySelector('[data-header]');
+
+const syncHeader = () => {
+    header?.classList.toggle('scrolled', window.scrollY > 8);
+};
+
+syncHeader();
+window.addEventListener('scroll', syncHeader, { passive: true });
+
+/* ---------- Мобильное меню ---------- */
+
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.navlinks');
 
@@ -26,9 +42,13 @@ window.addEventListener('resize', () => {
     }
 });
 
+/* ---------- Год в подвале ---------- */
+
 document.querySelectorAll('[data-year]').forEach(el => {
     el.textContent = new Date().getFullYear();
 });
+
+/* ---------- Появление при скролле ---------- */
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const reveals = document.querySelectorAll('.reveal');
@@ -36,7 +56,7 @@ const reveals = document.querySelectorAll('.reveal');
 if (reduced || !('IntersectionObserver' in window)) {
     reveals.forEach(el => el.classList.add('visible'));
 } else {
-    const groups = ['.service-grid', '.process-grid', '.principles', '.project-images'];
+    const groups = ['.service-grid', '.process-grid', '.principles', '.project-images', '.include-grid'];
 
     groups.forEach(selector => {
         document.querySelectorAll(selector).forEach(group => {
@@ -58,6 +78,25 @@ if (reduced || !('IntersectionObserver' in window)) {
     reveals.forEach(el => observer.observe(el));
 }
 
+/* ---------- FAQ: аккордеон с закрытием остальных ---------- */
+
+const faqItems = document.querySelectorAll('.faq-item');
+
+faqItems.forEach(item => {
+    item.addEventListener('toggle', () => {
+        if (!item.open) {
+            return;
+        }
+        faqItems.forEach(other => {
+            if (other !== item) {
+                other.open = false;
+            }
+        });
+    });
+});
+
+/* ---------- Фильтр галереи ---------- */
+
 const filters = document.querySelectorAll('.filter');
 const galleryItems = document.querySelectorAll('.gallery-item');
 
@@ -78,12 +117,11 @@ filters.forEach(button => {
     });
 });
 
+/* ---------- Лайтбокс ---------- */
+
 const lightbox = document.querySelector('.lightbox');
 const lightboxImage = lightbox?.querySelector('img');
-
-if (lightboxImage && !lightboxImage.getAttribute('src')) {
-    lightboxImage.src = 'assets/images/bathroom-04.jpg';
-}
+const lightboxCaption = lightbox?.querySelector('.lightbox-caption');
 
 let lastFocus = null;
 
@@ -94,6 +132,7 @@ const closeLightbox = () => {
 
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('lightbox-open');
     lastFocus?.focus();
 };
 
@@ -109,8 +148,22 @@ galleryItems.forEach(item => {
         const image = item.querySelector('img');
         lightboxImage.src = image.src;
         lightboxImage.alt = image.alt;
+
+        if (lightboxCaption) {
+            const label = item.querySelector('figcaption span')?.textContent ?? '';
+            const title = item.querySelector('figcaption b')?.textContent ?? '';
+            lightboxCaption.textContent = '';
+            if (label) {
+                const tag = document.createElement('b');
+                tag.textContent = label;
+                lightboxCaption.append(tag);
+            }
+            lightboxCaption.append(title);
+        }
+
         lightbox.classList.add('open');
         lightbox.setAttribute('aria-hidden', 'false');
+        document.body.classList.add('lightbox-open');
         lightbox.querySelector('.lightbox-close')?.focus();
     };
 
@@ -138,12 +191,15 @@ document.addEventListener('keydown', e => {
     }
 });
 
+/* ---------- Отзывы: карусель ---------- */
+
 const reviewsCarousel = document.querySelector('.reviews-carousel');
 
 if (reviewsCarousel) {
     const slides = Array.from(reviewsCarousel.querySelectorAll('.review-slide'));
     const counter = reviewsCarousel.querySelector('.review-counter');
     let reviewIndex = 0;
+    let autoplayTimer = null;
 
     const showReview = next => {
         reviewIndex = (next + slides.length) % slides.length;
@@ -179,4 +235,16 @@ if (reviewsCarousel) {
             showReview(reviewIndex + (delta < 0 ? 1 : -1));
         }
     });
+
+    /* Автопрокрутка отключена для тех, кто предпочитает меньше анимации */
+    if (!reduced && slides.length > 1) {
+        autoplayTimer = setInterval(() => showReview(reviewIndex + 1), 7000);
+
+        ['pointerdown', 'focusin'].forEach(eventType => {
+            reviewsCarousel.addEventListener(eventType, () => {
+                clearInterval(autoplayTimer);
+                autoplayTimer = null;
+            }, { once: true });
+        });
+    }
 }

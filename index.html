@@ -3,12 +3,18 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="description" content="Нова Дом — дизайн интерьеров квартир и домов в Туле, Москве и области. Дизайн-проекты, 3D-визуализация и сопровождение реализации.">
-    <title>Нова Дом — дизайн интерьеров в Туле и Москве</title>
+    <title>Нова Дом — студия дизайна интерьеров в Туле и Москве</title>
+    <meta name="description" content="Дизайн интерьеров квартир и домов в Туле и Москве: планировка, 3D-визуализация, подбор материалов и авторский надзор. Студия Анны Царевой «Нова Дом».">
+    <meta name="theme-color" content="#edeae2">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Нова Дом">
+    <meta property="og:title" content="Нова Дом — студия дизайна интерьеров в Туле и Москве">
+    <meta property="og:description" content="Планировка, визуализация, подбор материалов и авторский надзор. Проект, с которым ремонт проходит спокойнее.">
+    <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..600&family=Prata&display=swap">
-    <link rel="stylesheet" href="styles.css?v=20260824">
+    <link rel="stylesheet" href="styles.css?v=20260904">
 </head>
 <body>
     <a class="skip-link" href="#main">К содержанию</a>
@@ -20,7 +26,7 @@
         </div>
     </div>
 
-    <header class="header">
+    <header class="header" data-header>
         <div class="container nav">
             <a class="brand" href="index.html">
                 <span class="brand-mark">ND</span>
@@ -33,6 +39,10 @@
                 <a href="portfolio.html">Проекты</a>
                 <a href="about.html">О студии</a>
                 <a href="contacts.html">Контакты</a>
+                <div class="nav-extra">
+                    <a href="tel:+79207539997">+7 920 753-99-97</a>
+                    <a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Telegram-канал</a>
+                </div>
             </nav>
             <a class="nav-cta" href="tel:+79207539997">+7 920 753-99-97</a>
         </div>
@@ -40,29 +50,51 @@
 
     <main id="main">
         <section class="hero">
-            <div class="hero-copy">
-                <p class="eyebrow">Нова Дом · Тула / Москва / онлайн</p>
-                <h1>Дом,<br>собранный<br><em>в деталях</em></h1>
-                <p class="hero-lede">Дизайн интерьеров квартир и домов. Планировка, визуализация, подбор материалов и авторский надзор на объекте.</p>
-                <div class="hero-actions">
-                    <a class="btn primary" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Обсудить проект в Telegram</a>
-                    <a class="btn" href="portfolio.html">Смотреть проекты</a>
+            <img class="hero-backdrop" src="assets/images/bathroom-01.jpg" alt="" aria-hidden="true">
+            <div class="container hero-inner">
+                <div class="hero-copy">
+                    <p class="eyebrow">Нова Дом · Тула / Москва / онлайн</p>
+                    <h1>Дом, собранный<br><em>в деталях</em></h1>
+                    <p class="hero-lede">Дизайн интерьеров квартир и домов. Планировка, визуализация, подбор материалов и авторский надзор на объекте.</p>
+                    <div class="hero-actions">
+                        <a class="btn light" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Обсудить проект <span class="btn-arrow">→</span></a>
+                        <a class="btn ghost" href="portfolio.html">Смотреть проекты</a>
+                    </div>
+                    <div class="hero-meta">
+                        <span><span class="stars" aria-hidden="true">★★★★★</span><b>4,3</b> на Яндекс Картах</span>
+                        <span>Офис: <b>Тула</b>, Красноармейский проспект, 7</span>
+                    </div>
                 </div>
-            </div>
-            <div class="hero-visual">
-                <img src="assets/images/bathroom-04.jpg" alt="Ванная комната с душевой зоной и вертикальной плиткой" width="600" height="800" fetchpriority="high">
-                <div class="image-note">
-                    <span>Интерьер ванной комнаты</span>
-                    <span>Нова Дом</span>
-                </div>
+                <figure class="hero-figure">
+                    <img src="assets/images/bathroom-01.jpg" alt="Светлая ванная комната с зеркалом, деревянной тумбой и вертикальной плиткой" width="720" height="800" fetchpriority="high">
+                </figure>
             </div>
         </section>
 
         <div class="fact-rail">
-                <div class="fact"><strong>4,3</strong><span>рейтинг на Картах</span></div>
-                <div class="fact"><strong>Тула</strong><span>офис студии</span></div>
-                <div class="fact"><strong>Москва</strong><span>встречи и проекты</span></div>
-                <div class="fact"><strong>Онлайн</strong><span>другие регионы</span></div>
+            <div class="fact"><strong>4,3</strong><span>рейтинг на Картах</span></div>
+            <div class="fact"><strong>Тула</strong><span>офис студии</span></div>
+            <div class="fact"><strong>Москва</strong><span>встречи и проекты</span></div>
+            <div class="fact"><strong>Онлайн</strong><span>другие регионы</span></div>
+        </div>
+
+        <div class="marquee" aria-hidden="true">
+            <div class="marquee-track">
+                <div class="marquee-group">
+                    <span>Планировка</span><i>◆</i>
+                    <span>3D-визуализация</span><i>◆</i>
+                    <span>Подбор материалов</span><i>◆</i>
+                    <span>Комплектация</span><i>◆</i>
+                    <span>Авторский надзор</span><i>◆</i>
+                </div>
+                <div class="marquee-group">
+                    <span>Планировка</span><i>◆</i>
+                    <span>3D-визуализация</span><i>◆</i>
+                    <span>Подбор материалов</span><i>◆</i>
+                    <span>Комплектация</span><i>◆</i>
+                    <span>Авторский надзор</span><i>◆</i>
+                </div>
+            </div>
         </div>
 
         <section class="section">
@@ -77,8 +109,8 @@
 
                 <div class="service-grid">
                     <article class="service-card featured reveal">
-                        <span class="tag">основной формат</span>
                         <div>
+                            <span class="tag">основной формат</span>
                             <h3>Дизайн-проект интерьера</h3>
                             <p>Планировка и полный комплект решений для квартиры, студии или дома.</p>
                         </div>
@@ -86,6 +118,7 @@
                     </article>
                     <article class="service-card reveal">
                         <div>
+                            <span class="service-num">02</span>
                             <h3>Проект дома с визуализацией</h3>
                             <p>Рабочие чертежи, 3D-визуализация и подбор материалов.</p>
                         </div>
@@ -93,6 +126,7 @@
                     </article>
                     <article class="service-card reveal">
                         <div>
+                            <span class="service-num">03</span>
                             <h3>Подбор и комплектация</h3>
                             <p>Мебель, свет, отделка и декор по проекту.</p>
                         </div>
@@ -100,6 +134,7 @@
                     </article>
                     <article class="service-card reveal">
                         <div>
+                            <span class="service-num">04</span>
                             <h3>Авторское сопровождение</h3>
                             <p>Выезды на объект, пока идёт ремонт: проверяем, что делают по проекту.</p>
                         </div>
@@ -114,12 +149,12 @@
                 <div class="project-slice">
                     <div class="project-copy reveal">
                         <div>
-                            <p class="kicker">проект</p>
+                            <p class="kicker">реализованный проект</p>
                             <h2>Ванная<br>5,7 м²</h2>
                         </div>
                         <div>
                             <p>Спокойная палитра, графичные линии, хранение по месту. Небольшая площадь, в которой всё под рукой.</p>
-                            <a class="btn light" href="portfolio.html">Открыть проекты</a>
+                            <a class="btn light" href="portfolio.html">Открыть проекты <span class="btn-arrow">→</span></a>
                         </div>
                     </div>
                     <div class="project-images reveal">
@@ -131,6 +166,45 @@
             </div>
         </section>
 
+        <section class="section tint">
+            <div class="container">
+                <div class="section-head reveal">
+                    <div>
+                        <p class="kicker">как строится работа</p>
+                        <h2>Четыре шага<br>до интерьера</h2>
+                    </div>
+                    <p>Всё начинается с того, как вы живёте и что позволяет само помещение.</p>
+                </div>
+
+                <div class="process-grid on-paper">
+                    <article class="process-card reveal">
+                        <span class="process-num">01</span>
+                        <span class="step-label">задача</span>
+                        <h3>Обсуждение пространства</h3>
+                        <p>Смотрим помещение, обсуждаем пожелания и настроение будущего интерьера.</p>
+                    </article>
+                    <article class="process-card reveal">
+                        <span class="process-num">02</span>
+                        <span class="step-label">проект</span>
+                        <h3>Планировка и концепция</h3>
+                        <p>Раскладываем зоны и выбираем визуальное направление.</p>
+                    </article>
+                    <article class="process-card reveal">
+                        <span class="process-num">03</span>
+                        <span class="step-label">образ</span>
+                        <h3>Визуализация</h3>
+                        <p>Смотрим интерьер в 3D до того, как начнётся ремонт.</p>
+                    </article>
+                    <article class="process-card reveal">
+                        <span class="process-num">04</span>
+                        <span class="step-label">реализация</span>
+                        <h3>Материалы и контроль</h3>
+                        <p>Подбираем материалы и следим за работами на объекте.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
         <section class="statement-band">
             <div class="container">
                 <div class="statement-media reveal">
@@ -138,8 +212,46 @@
                 </div>
                 <div class="statement-copy reveal">
                     <p class="kicker">принцип</p>
-                    <p class="statement">Дом собирается из мелочей: где розетка, куда открывается дверь, что видно с порога.</p>
+                    <p class="statement">Дом собирается из мелочей: где розетка, куда открывается дверь, что видно <em>с порога</em>.</p>
                     <p class="statement-note">Эти решения принимаются в проекте — до того, как приедут материалы и бригада.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section compact">
+            <div class="container">
+                <div class="reviews-layout">
+                    <aside class="rating-card reveal">
+                        <strong>4,3</strong>
+                        <span class="stars" aria-hidden="true">★★★★★</span>
+                        <p>Средняя оценка на Яндекс Картах</p>
+                        <a href="https://yandex.ru/maps/org/nova_dom/93283220697/reviews/" target="_blank" rel="noopener">Все отзывы ↗</a>
+                    </aside>
+
+                    <div class="reviews-carousel reveal" role="region" aria-label="Отзывы клиентов" tabindex="0">
+                        <div class="reviews-track">
+                            <article class="review-slide is-active">
+                                <span class="review-mark" aria-hidden="true">„</span>
+                                <p>«Дизайн получился интересный, стильный, с продуманными деталями. Всё было прозрачно и по делу».</p>
+                                <small>Владимир Журавлёв, Яндекс Карты</small>
+                            </article>
+                            <article class="review-slide">
+                                <span class="review-mark" aria-hidden="true">„</span>
+                                <p>«Аня была рядом на каждом этапе — от чертежей и выбора материалов до подбора декора для дома».</p>
+                                <small>Алёна, Яндекс Карты</small>
+                            </article>
+                            <article class="review-slide">
+                                <span class="review-mark" aria-hidden="true">„</span>
+                                <p>«Очень понравилось, что ремонт прошёл для нас с минимальным стрессом благодаря её поддержке».</p>
+                                <small>Светлана Ж., Яндекс Карты</small>
+                            </article>
+                        </div>
+                        <div class="reviews-controls">
+                            <button class="review-arrow" type="button" data-review-prev aria-label="Предыдущий отзыв">←</button>
+                            <span class="review-counter" aria-live="polite">1 / 3</span>
+                            <button class="review-arrow" type="button" data-review-next aria-label="Следующий отзыв">→</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -148,40 +260,33 @@
             <div class="container">
                 <div class="section-head reveal">
                     <div>
-                        <p class="kicker">отзывы</p>
-                        <h2>Клиенты о работе</h2>
+                        <p class="kicker">вопросы</p>
+                        <h2>Коротко<br>о главном</h2>
                     </div>
-                    <a href="https://yandex.ru/maps/org/nova_dom/93283220697/reviews/" target="_blank" rel="noopener">Все отзывы на Яндекс Картах ↗</a>
+                    <p>Не нашли ответ — напишите в Telegram, обсудим вашу задачу.</p>
                 </div>
 
-                <div class="reviews-layout">
-                <aside class="rating-card reveal">
-                    <strong>4,3</strong>
-                    <span class="stars" aria-hidden="true">★★★★★</span>
-                    <p>Средняя оценка на Яндекс Картах</p>
-                </aside>
-
-                <div class="reviews-carousel reveal" role="region" aria-label="Отзывы клиентов" tabindex="0">
-                    <div class="reviews-track">
-                        <article class="review-slide is-active">
-                            <p>«Дизайн получился интересный, стильный, с продуманными деталями. Всё было прозрачно и по делу».</p>
-                            <small>Владимир Журавлёв, Яндекс Карты</small>
-                        </article>
-                        <article class="review-slide">
-                            <p>«Аня была рядом на каждом этапе — от чертежей и выбора материалов до подбора декора для дома».</p>
-                            <small>Алёна, Яндекс Карты</small>
-                        </article>
-                        <article class="review-slide">
-                            <p>«Очень понравилось, что ремонт прошёл для нас с минимальным стрессом благодаря её поддержке».</p>
-                            <small>Светлана Ж., Яндекс Карты</small>
-                        </article>
-                    </div>
-                    <div class="reviews-controls">
-                        <button class="review-arrow" type="button" data-review-prev aria-label="Предыдущий отзыв">←</button>
-                        <span class="review-counter" aria-live="polite">1 / 3</span>
-                        <button class="review-arrow" type="button" data-review-next aria-label="Следующий отзыв">→</button>
-                    </div>
-                </div>
+                <div class="faq">
+                    <details class="faq-item reveal">
+                        <summary>Как начать работу над проектом?<i class="faq-icon" aria-hidden="true"></i></summary>
+                        <p>Напишите в Telegram или позвоните: обсудим объект, задачу и подходящий формат работы. Встретиться можно в Туле или Москве, для других регионов ведём проект онлайн.</p>
+                    </details>
+                    <details class="faq-item reveal">
+                        <summary>Что входит в дизайн-проект?<i class="faq-icon" aria-hidden="true"></i></summary>
+                        <p>Планировочное решение, 3D-визуализация и подбор материалов; для домов добавляются рабочие чертежи. По желанию включаем комплектацию мебели и света и авторское сопровождение ремонта.</p>
+                    </details>
+                    <details class="faq-item reveal">
+                        <summary>Сколько стоит проект?<i class="faq-icon" aria-hidden="true"></i></summary>
+                        <p>Дизайн-проект интерьера — от 1 600 ₽/м², проект дома с визуализацией — от 2 500 ₽/м². Точный состав и стоимость фиксируем до старта работы.</p>
+                    </details>
+                    <details class="faq-item reveal">
+                        <summary>Вы работаете в моём городе?<i class="faq-icon" aria-hidden="true"></i></summary>
+                        <p>Очно работаем в Туле, Москве и области. Для других регионов есть удалённый формат: вся коммуникация онлайн, документы и подбор материалов — тоже.</p>
+                    </details>
+                    <details class="faq-item reveal">
+                        <summary>Как попасть в офис студии?<i class="faq-icon" aria-hidden="true"></i></summary>
+                        <p>Адрес: Тула, Красноармейский проспект, 7, офис 401. Встреча по предварительной записи; в доме есть лифт и доступный вход.</p>
+                    </details>
                 </div>
             </div>
         </section>
@@ -191,7 +296,7 @@
                 <div class="cta-band reveal">
                     <h2>Расскажите про своё пространство</h2>
                     <div class="actions">
-                        <a class="btn light" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Написать в Telegram</a>
+                        <a class="btn light" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Написать в Telegram <span class="btn-arrow">→</span></a>
                         <a class="btn light" href="tel:+79207539997">Позвонить</a>
                     </div>
                 </div>
@@ -201,44 +306,49 @@
 
     <footer class="footer">
         <div class="container">
+            <p class="footer-wordmark" aria-hidden="true">NOVA DOM</p>
             <div class="footer-grid">
                 <div>
                     <a class="brand" href="index.html">
                         <span class="brand-mark">ND</span>
                         <span class="brand-copy"><strong>NOVA DOM</strong><small>дизайн интерьера</small></span>
                     </a>
-                    <p>Студия дизайна интерьеров Анны Царевой в Туле.</p>
+                    <p>Студия дизайна интерьеров Анны Царевой. Работаем в Туле, Москве и области, другие регионы — онлайн.</p>
                 </div>
                 <div>
                     <h4>Разделы</h4>
+                    <a href="index.html">Главная</a>
                     <a href="services.html">Услуги и цены</a>
                     <a href="portfolio.html">Проекты</a>
                     <a href="about.html">О студии</a>
+                    <a href="contacts.html">Контакты</a>
                 </div>
                 <div>
                     <h4>Связаться</h4>
                     <a href="tel:+79207539997">+7 (920) 753-99-97</a>
-                    <a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Telegram</a>
+                    <a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Telegram-канал</a>
+                    <a href="https://t.me/Anna_asten" target="_blank" rel="noopener">Консультация в Telegram</a>
                 </div>
                 <div>
-                    <h4>Адрес</h4>
+                    <h4>Офис</h4>
                     <span>Тула, Красноармейский просп., 7<br>офис 401, 4 этаж</span>
                     <a href="https://yandex.ru/maps/org/nova_dom/93283220697/" target="_blank" rel="noopener">Построить маршрут</a>
+                    <span>Ежедневно 09:00–18:00</span>
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>© <span data-year></span> Нова Дом</span>
-                <span>Дизайн интерьеров</span>
+                <span>© <span data-year></span> Нова Дом · студия дизайна интерьеров</span>
+                <span>Дизайн квартир и домов</span>
             </div>
         </div>
     </footer>
 
     <div class="mobile-bar">
         <a href="tel:+79207539997">Позвонить</a>
-        <a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Telegram</a>
+        <a href="https://t.me/Anna_asten" target="_blank" rel="noopener">Написать</a>
         <a href="https://yandex.ru/maps/org/nova_dom/93283220697/" target="_blank" rel="noopener">Маршрут</a>
     </div>
 
-    <script src="script.js?v=20260824"></script>
+    <script src="script.js?v=20260902"></script>
 </body>
 </html>
