@@ -202,6 +202,7 @@
       "period": "2026",
       "category": "apartment",
       "description": "Классические детали, глубокие цвета и выразительные акценты. Проект — победитель конкурса Askona.",
+      "articleUrl": "https://www.askona.ru/blog/article/interer-vo-frantsuzskom-stile-kvartira-dlya-tsenitelnitsy-antikvariata/",
       "cover": 4
     },
     {
@@ -1204,7 +1205,7 @@
       "period": "2026–2027",
       "category": "apartment",
       "description": "Концепция интерьера квартиры с мягкими формами и цветовыми акцентами.",
-      "cover": 0
+      "cover": 12
     },
     {
       "id": "project-12",
@@ -1925,7 +1926,7 @@
           "alt": "Гостиная загородного дома — кадр 7"
         }
       ],
-      "title": "Гостиная загородного дома",
+      "title": "Концепция гостиной загородного дома",
       "period": "Москва · 2025",
       "category": "room",
       "description": "Концепция гостиной: материалы, мебель и свет в едином образе.",
@@ -2149,9 +2150,83 @@
       ],
       "title": "Офис в Заокске",
       "period": "2024",
-      "category": "office",
+      "category": "room",
       "description": "Клиентская зона, переговорная и вспомогательные пространства офиса.",
       "cover": 7
+    },
+    {
+      "id": "project-23",
+      "sourceName": "Ванная 5,7 м² — Telegram, публикация 892",
+      "images": [
+        {
+          "src": "assets/images/bathroom-01.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 720,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 1"
+        },
+        {
+          "src": "assets/images/bathroom-04.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 600,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 2"
+        },
+        {
+          "src": "assets/images/bathroom-02.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 559,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 3"
+        },
+        {
+          "src": "assets/images/bathroom-03.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 600,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 4"
+        },
+        {
+          "src": "assets/images/bathroom-05.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 559,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 5"
+        },
+        {
+          "src": "assets/images/bathroom-07.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 600,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 6"
+        },
+        {
+          "src": "assets/images/bathroom-06.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 600,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 7"
+        },
+        {
+          "src": "assets/images/bathroom-08.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 602,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 8"
+        },
+        {
+          "src": "assets/images/bathroom-09.jpg",
+          "source": "https://t.me/Anna_Tsareva/892",
+          "width": 602,
+          "height": 800,
+          "alt": "Ванная комната, 5,7 м² — фото 9"
+        }
+      ],
+      "title": "Ванная комната, 5,7 м²",
+      "period": "",
+      "category": "room",
+      "description": "Реализованная ванная комната в загородном доме: светлая плитка, деревянная тумба и душевая зона с окном. В серии — интерьер и кадры процесса.",
+      "cover": 0
     }
   ],
   "reviews": [
@@ -2267,5 +2342,35 @@
       "src": "assets/client/anna-02.webp",
       "source": "/Анна Царева.jpg"
     }
+  ],
+  "featuredProjects": [
+    "project-02",
+    "project-11",
+    "project-19"
+  ],
+  "portfolioOrder": [
+    "project-02",
+    "project-11",
+    "project-19",
+    "project-23",
+    "project-08",
+    "project-14",
+    "project-04",
+    "project-05",
+    "project-09",
+    "project-10",
+    "project-06",
+    "project-07",
+    "project-12",
+    "project-13",
+    "project-15",
+    "project-17",
+    "project-18",
+    "project-20",
+    "project-21",
+    "project-01",
+    "project-03",
+    "project-16",
+    "project-22"
   ]
 }

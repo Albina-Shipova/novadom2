@@ -44,6 +44,42 @@ window.addEventListener('resize', () => {
     }
 });
 
+/* ---------- Активный раздел в меню ---------- */
+
+(() => {
+    const anchors = Array.from(nav?.querySelectorAll(':scope > a') || []).flatMap(link => {
+        const url = new URL(link.href, window.location.href);
+        if (!url.hash || url.origin !== location.origin || url.pathname !== location.pathname) return [];
+        const section = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+        return section ? [{ link, section }] : [];
+    });
+    if (!anchors.length) return;
+
+    let pending = false;
+    const update = () => {
+        pending = false;
+        // Match the anchor offset while keeping the section below the sticky header.
+        const marker = Math.max(110, (header?.getBoundingClientRect().bottom || 0) + 20);
+        anchors.forEach(({ link, section }) => {
+            const rect = section.getBoundingClientRect();
+            const active = rect.top <= marker && rect.bottom > marker;
+            if (active) link.setAttribute('aria-current', 'location');
+            else link.removeAttribute('aria-current');
+        });
+    };
+    const schedule = () => {
+        if (pending) return;
+        pending = true;
+        requestAnimationFrame(update);
+    };
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    window.addEventListener('hashchange', schedule);
+    window.addEventListener('load', schedule);
+    document.fonts?.ready.then(schedule);
+    update();
+})();
+
 /* ---------- Год в подвале ---------- */
 
 document.querySelectorAll('[data-year]').forEach(el => {
@@ -53,32 +89,8 @@ document.querySelectorAll('[data-year]').forEach(el => {
 /* ---------- Появление при скролле ---------- */
 
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const reveals = document.querySelectorAll('.reveal');
-
-if (reduced || !('IntersectionObserver' in window)) {
-    reveals.forEach(el => el.classList.add('visible'));
-} else {
-    const groups = ['.service-grid', '.process-grid', '.principles', '.project-images', '.include-grid'];
-
-    groups.forEach(selector => {
-        document.querySelectorAll(selector).forEach(group => {
-            group.querySelectorAll(':scope > .reveal').forEach((el, index) => {
-                el.style.transitionDelay = `${Math.min(index, 4) * 70}ms`;
-            });
-        });
-    });
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, { threshold: 0, rootMargin: '0px 0px -6% 0px' });
-
-    reveals.forEach(el => observer.observe(el));
-}
+/* Appearance is handled below; content remains visible without JavaScript. */
+document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
 
 /* ---------- FAQ: аккордеон с закрытием остальных ---------- */
 
@@ -101,7 +113,37 @@ faqItems.forEach(item => {
 
 const filters = document.querySelectorAll('.filter');
 const galleryItems = document.querySelectorAll('.gallery-item');
-const projectTiles = document.querySelectorAll('.portfolio-tile');
+const projectTiles = Array.from(document.querySelectorAll('.portfolio-tile'));
+const featuredGrid = document.querySelector('.portfolio-featured-grid');
+const projectGrid = document.querySelector('.portfolio-grid');
+const showProjects = document.querySelector('[data-show-projects]');
+const featuredProjects = projectTiles.slice(0, 3);
+let projectCategory = 'all';
+let projectsExpanded = false;
+
+const renderProjects = () => {
+    if (!featuredGrid || !projectGrid) return;
+    const all = projectCategory === 'all';
+    featuredGrid.hidden = !all;
+    // В категории избранные становятся обычными карточками общей сетки.
+    featuredProjects.forEach(item => item.classList.toggle('portfolio-featured', all));
+    if (all) featuredProjects.forEach(item => featuredGrid.append(item));
+    else featuredProjects.slice().reverse().forEach(item => projectGrid.prepend(item));
+    projectTiles.forEach((item, index) => {
+        item.hidden = all ? (!projectsExpanded && index >= 9) : item.dataset.category !== projectCategory;
+    });
+    const visible = projectTiles.filter(item => !item.hidden).length;
+    const status = document.querySelector('.project-results');
+    if (status) status.textContent = all ? `Показано ${visible} из ${projectTiles.length} проектов` : `Найдено проектов: ${visible}`;
+    if (showProjects) showProjects.hidden = !all || projectsExpanded;
+};
+renderProjects();
+showProjects?.addEventListener('click', () => {
+    const firstNew = projectTiles.find(item => item.hidden);
+    projectsExpanded = true;
+    renderProjects();
+    firstNew?.querySelector('a')?.focus({ preventScroll: true });
+});
 
 filters.forEach(button => {
     button.addEventListener('click', () => {
@@ -117,9 +159,9 @@ filters.forEach(button => {
         galleryItems.forEach(item => {
             item.classList.toggle('hidden', value !== 'all' && item.dataset.category !== value);
         });
-        projectTiles.forEach(item => { item.hidden = value !== 'all' && item.dataset.category !== value; });
-        const status = document.querySelector('.project-results');
-        if (status) status.textContent = `Показано проектов: ${Array.from(projectTiles).filter(item => !item.hidden).length}`;
+        projectCategory = value;
+        projectsExpanded = false;
+        renderProjects();
     });
 });
 
@@ -154,7 +196,21 @@ const closeLightbox = () => {
     document.body.classList.remove('lightbox-open');
     inertElements.forEach(element => { element.inert = false; });
     inertElements = [];
+    lightbox.dispatchEvent(new CustomEvent('viewer-close', { detail: { items: viewerGroup, index: imageIndex } }));
     lastFocus?.focus();
+};
+
+const openImageViewer = (items, index, origin) => {
+    if (!lightbox || !lightboxImage || !items.length) return;
+    lastFocus = origin;
+    viewerGroup = items;
+    displayImage(index);
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('lightbox-open');
+    inertElements = Array.from(document.body.children).filter(el => el !== lightbox && !el.inert && el.tagName !== 'SCRIPT');
+    inertElements.forEach(element => { element.inert = true; });
+    lightbox.querySelector('.lightbox-close').focus();
 };
 
 viewerItems.forEach(item => {
@@ -165,17 +221,9 @@ viewerItems.forEach(item => {
     }
     const open = () => {
         if (!lightbox || !lightboxImage) return;
-        lastFocus = item;
-        // Отзывы и документы можно листать независимо от галереи проекта.
         const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid');
-        viewerGroup = group ? Array.from(group.querySelectorAll('[data-viewer]')) : [item];
-        displayImage(viewerGroup.indexOf(item));
-        lightbox.classList.add('open');
-        lightbox.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('lightbox-open');
-        inertElements = Array.from(document.body.children).filter(el => el !== lightbox && !el.inert && el.tagName !== 'SCRIPT');
-        inertElements.forEach(element => { element.inert = true; });
-        lightbox.querySelector('.lightbox-close').focus();
+        const items = group ? Array.from(group.querySelectorAll('[data-viewer]')) : [item];
+        openImageViewer(items, items.indexOf(item), item);
     };
     item.addEventListener('click', open);
     if (item.tagName !== 'BUTTON') item.addEventListener('keydown', event => {
@@ -185,6 +233,9 @@ viewerItems.forEach(item => {
 lightbox?.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
 lightbox?.querySelector('.lightbox-prev')?.addEventListener('click', () => displayImage(imageIndex - 1));
 lightbox?.querySelector('.lightbox-next')?.addEventListener('click', () => displayImage(imageIndex + 1));
+lightboxImage?.addEventListener('click', () => {
+    if (viewerGroup.length > 1) displayImage(imageIndex + 1);
+});
 lightbox?.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { closeLightbox(); closeMenu(); }
@@ -289,3 +340,429 @@ backToTop?.addEventListener('click', () => {
     // После возврата кнопка скрывается, поэтому переносим фокус на логотип.
     document.querySelector('.header .brand')?.focus({ preventScroll: true });
 });
+
+/* ---------- Просмотр проекта с миниатюрами ---------- */
+document.querySelectorAll('[data-project-viewer]').forEach(viewer => {
+    const thumbs = Array.from(viewer.querySelectorAll('[data-gallery-thumb]'));
+    const image = viewer.querySelector('.project-current-image');
+    const counter = viewer.querySelector('[data-gallery-counter]');
+    const strip = viewer.querySelector('.project-thumbnails');
+    const stage = viewer.querySelector('.project-stage');
+    if (!thumbs.length || !image) return;
+    const syncPhotoBounds = () => {
+        const width = Number(image.getAttribute('width')) || image.naturalWidth;
+        const height = Number(image.getAttribute('height')) || image.naturalHeight;
+        if (!width || !height) return;
+        const imageButton = viewer.querySelector('.project-stage-image');
+        const imageStyle = getComputedStyle(imageButton);
+        const availableWidth = stage.clientWidth - parseFloat(imageStyle.paddingLeft) - parseFloat(imageStyle.paddingRight);
+        const scale = Math.min(availableWidth / width, stage.clientHeight / height);
+        stage.style.setProperty('--display-width', `${width * scale}px`);
+        stage.style.setProperty('--display-height', `${height * scale}px`);
+    };
+    image.addEventListener('load', syncPhotoBounds);
+    window.addEventListener('resize', syncPhotoBounds);
+    if ('ResizeObserver' in window) new ResizeObserver(syncPhotoBounds).observe(stage);
+    syncPhotoBounds();
+    let current = Math.min(1, thumbs.length - 1);
+    const show = index => {
+        current = (index + thumbs.length) % thumbs.length;
+        const source = thumbs[current].querySelector('img');
+        const width = Number(source.getAttribute('width')) || source.naturalWidth;
+        const height = Number(source.getAttribute('height')) || source.naturalHeight;
+        if (width && height) {
+            image.width = width;
+            image.height = height;
+        }
+        image.src = source.src;
+        image.alt = source.alt;
+        syncPhotoBounds();
+        thumbs.forEach((thumb, i) => {
+            thumb.classList.toggle('is-active', i === current);
+            thumb.setAttribute('aria-pressed', String(i === current));
+        });
+        counter.textContent = `${current + 1} из ${thumbs.length}`;
+        strip.scrollTo({ top: thumbs[current].offsetTop - (strip.clientHeight - thumbs[current].offsetHeight) / 2, behavior: reduced ? 'instant' : 'smooth' });
+    };
+    thumbs.forEach((thumb, index) => thumb.addEventListener('click', () => show(index)));
+    viewer.querySelector('[data-gallery-prev]')?.addEventListener('click', () => show(current - 1));
+    viewer.querySelector('[data-gallery-next]')?.addEventListener('click', () => show(current + 1));
+    viewer.querySelectorAll('[data-gallery-open]').forEach(button => button.addEventListener('click', () => openImageViewer(thumbs, current, button)));
+    document.querySelector('[data-hero-open]')?.addEventListener('click', event => openImageViewer(thumbs, 0, event.currentTarget));
+    viewer.addEventListener('keydown', event => {
+        if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
+            event.preventDefault();
+            show(current + (['ArrowLeft', 'ArrowUp'].includes(event.key) ? -1 : 1));
+        }
+    });
+    lightbox?.addEventListener('viewer-close', event => {
+        if (event.detail.items === thumbs) show(event.detail.index);
+    });
+    let start = null;
+    let swiped = false;
+    stage.addEventListener('pointerdown', event => {
+        swiped = false;
+        start = event.pointerType === 'touch' ? { x: event.clientX, y: event.clientY } : null;
+    });
+    stage.addEventListener('pointercancel', () => { start = null; });
+    stage.addEventListener('pointerup', event => {
+        if (!start) return;
+        const dx = event.clientX - start.x, dy = event.clientY - start.y;
+        start = null;
+        if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+            swiped = true;
+            show(current + (dx < 0 ? 1 : -1));
+        }
+    });
+    stage.addEventListener('click', event => {
+        if (!swiped) return;
+        swiped = false;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+    }, true);
+});
+
+
+/* ---------- Homepage project coverflow ---------- */
+document.querySelectorAll('[data-coverflow]').forEach(carousel => {
+    const stage = carousel.querySelector('.coverflow-stage');
+    const cards = Array.from(stage.querySelectorAll('.coverflow-card'));
+    if (cards.length < 3) return;
+    const counter = carousel.querySelector('[data-coverflow-counter]');
+    const status = carousel.querySelector('[data-coverflow-status]');
+    let current = 0;
+    const render = (offset = 0) => {
+        cards.forEach((card, i) => {
+            let slot = ((i - current + cards.length * 1.5) % cards.length) - cards.length / 2;
+            // Place the incoming outer card on the side of the gesture.
+            if (slot === -cards.length / 2 && offset < 0) slot += cards.length;
+            slot += offset;
+            const distance = Math.abs(slot);
+            const depth = Math.min(distance, 1);
+            card.style.top = '0px';
+            card.style.transform = `translateX(calc(-50% + var(--cover-offset) * ${slot})) translateY(${20 * depth}px) translateZ(${-100 * depth}px) rotateY(${12 * Math.max(-1, Math.min(1, slot))}deg) scale(${1 - .1 * depth})`;
+            card.style.opacity = String(Math.max(0, Math.min(1, 2 - distance)));
+            card.style.visibility = distance < 2 ? 'visible' : 'hidden';
+            card.style.zIndex = String(Math.round((3 - Math.min(distance, 2)) * 100));
+        });
+    };
+    function show(index) {
+        current = (index + cards.length) % cards.length;
+        cards.forEach((card, i) => {
+            const position = i === current ? 'active' : i === (current + cards.length - 1) % cards.length ? 'prev' : i === (current + 1) % cards.length ? 'next' : 'hidden';
+            if (position === 'hidden' && card.contains(document.activeElement)) stage.focus({ preventScroll: true });
+            card.dataset.position = position;
+            card.inert = position === 'hidden';
+            card.setAttribute('aria-hidden', String(position === 'hidden'));
+        });
+        counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
+        status.textContent = `${current + 1} из ${cards.length}: ${cards[current].querySelector('h3').textContent}`;
+        render();
+    }
+    carousel.querySelector('[data-coverflow-prev]').addEventListener('click', () => show(current - 1));
+    carousel.querySelector('[data-coverflow-next]').addEventListener('click', () => show(current + 1));
+    carousel.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        show(current + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    let start = null;
+    let suppressClick = false;
+    stage.addEventListener('pointerdown', event => {
+        if (!event.isPrimary || event.button !== 0 || start) return;
+        suppressClick = false;
+        start = { x: event.clientX, y: event.clientY, id: event.pointerId, dragging: false };
+    });
+    stage.addEventListener('pointermove', event => {
+        if (!start || event.pointerId !== start.id) return;
+        const dx = event.clientX - start.x, dy = event.clientY - start.y;
+        if (!start.dragging) {
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 6) return;
+            if (Math.abs(dy) > Math.abs(dx)) { start = null; return; }
+            start.dragging = true;
+            suppressClick = true;
+            stage.setPointerCapture(event.pointerId);
+            stage.classList.add('is-dragging');
+        }
+        const card = cards[current];
+        const offset = parseFloat(getComputedStyle(carousel).getPropertyValue('--cover-offset')) / 100;
+        const step = card.offsetWidth * offset;
+        render(Math.max(-1, Math.min(1, dx / Math.max(1, step))));
+    });
+    const finishDrag = event => {
+        if (!start || event.pointerId !== start.id) return;
+        const gesture = start;
+        const dx = event.clientX - gesture.x;
+        start = null;
+        stage.classList.remove('is-dragging');
+        if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+        if (gesture.dragging && event.type === 'pointerup' && Math.abs(dx) >= Math.min(70, stage.clientWidth * .12)) {
+            show(current + (dx < 0 ? 1 : -1));
+        } else render();
+    };
+    stage.addEventListener('pointerup', finishDrag);
+    stage.addEventListener('pointercancel', finishDrag);
+    stage.addEventListener('lostpointercapture', finishDrag);
+    stage.addEventListener('pointerleave', event => {
+        if (start && !start.dragging) finishDrag(event);
+    });
+    stage.addEventListener('click', event => {
+        if (!suppressClick) return;
+        event.preventDefault();
+        event.stopPropagation();
+        suppressClick = false;
+    }, true);
+    stage.addEventListener('dragstart', event => event.preventDefault());
+    show(0);
+    carousel.classList.add('is-ready');
+    carousel.querySelector('.coverflow-controls').hidden = false;
+});
+
+
+/* Reserve the actual sticky navigation and mobile contact bar heights. */
+(() => {
+    const section = document.querySelector('.home-projects');
+    if (!section) return;
+    const header = document.querySelector('.header');
+    const mobileBar = document.querySelector('.mobile-bar');
+    const update = () => {
+        section.style.setProperty('--projects-header-height', `${header?.getBoundingClientRect().height || 0}px`);
+        section.style.setProperty('--projects-mobile-bar-height', `${mobileBar?.getBoundingClientRect().height || 0}px`);
+    };
+    const observer = new ResizeObserver(update);
+    [header, mobileBar].filter(Boolean).forEach(element => observer.observe(element));
+    update();
+})();
+
+/* ---------- First-screen slideshow ---------- */
+document.querySelectorAll('[data-hero-slideshow]').forEach(carousel => {
+    const slides = Array.from(carousel.querySelectorAll('.hero-slide'));
+    const count = carousel.querySelector('[data-hero-count]');
+    const backdrop = document.querySelector('.hero-backdrop');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let current = 0;
+    let paused = motion.matches;
+    let timer;
+    const stop = () => window.clearTimeout(timer);
+    const schedule = () => {
+        stop();
+        if (!paused && !document.hidden && !carousel.matches(':hover') && !carousel.contains(document.activeElement)) {
+            timer = window.setTimeout(() => show(current + 1), 6500);
+        }
+    };
+    const show = async index => {
+        stop();
+        current = (index + slides.length) % slides.length;
+        const target = current;
+        const next = slides[target];
+        next.loading = 'eager';
+        try { await next.decode(); } catch { /* Keep navigation available if an image cannot decode. */ }
+        if (current !== target) return;
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('is-active', i === current);
+            slide.setAttribute('aria-hidden', String(i !== current));
+        });
+        count.textContent = `${String(current + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
+        const title = carousel.querySelector('[data-hero-title]');
+        if (title) {
+            title.textContent = next.dataset.projectTitle;
+            title.href = next.dataset.projectUrl;
+        }
+        if (backdrop) backdrop.src = next.src;
+        schedule();
+    };
+    carousel.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1));
+    carousel.querySelector('[data-hero-next]').addEventListener('click', () => show(current + 1));
+    carousel.addEventListener('mouseenter', stop);
+    carousel.addEventListener('mouseleave', schedule);
+    carousel.addEventListener('focusin', stop);
+    carousel.addEventListener('focusout', () => window.setTimeout(schedule, 0));
+    carousel.addEventListener('keydown', event => {
+        if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+        event.preventDefault();
+        show(current + (event.key === 'ArrowRight' ? 1 : -1));
+    });
+    document.addEventListener('visibilitychange', schedule);
+    motion.addEventListener('change', () => { paused = motion.matches; schedule(); });
+    carousel.querySelector('.hero-slide-controls').hidden = false;
+    schedule();
+});
+
+/* Continuous, slow homepage slideshow without pointer-triggered pauses. */
+document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
+    const frames = Array.from(figure.querySelectorAll('.ambient-frame'));
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    frames[0]?.classList.add('is-zooming');
+    let current = 0;
+    let timer;
+    const schedule = () => {
+        clearTimeout(timer);
+        if (!document.hidden && !motion.matches && frames.length > 1) {
+            timer = setTimeout(advance, 5000);
+        }
+    };
+    const advance = async () => {
+        const next = (current + 1) % frames.length;
+        const frame = frames[next];
+        frame.loading = 'eager';
+        try { await frame.decode(); } catch { schedule(); return; }
+        if (document.hidden || motion.matches) { schedule(); return; }
+        const outgoing = frames[current];
+        outgoing.classList.remove('is-active');
+        outgoing.setAttribute('aria-hidden', 'true');
+        setTimeout(() => outgoing.classList.remove('is-zooming'), 2500);
+        frame.classList.add('is-zooming', 'is-active');
+        frame.removeAttribute('aria-hidden');
+        current = next;
+        schedule();
+    };
+    document.addEventListener('visibilitychange', schedule);
+    motion.addEventListener('change', schedule);
+    schedule();
+});
+
+/* ---------- Cinematic entrances, once per element ---------- */
+(() => {
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (motion.matches || !('IntersectionObserver' in window) || !Element.prototype.animate) return;
+    const main = document.querySelector('main');
+    if (!main) return;
+    const ease = 'cubic-bezier(.22,.61,.36,1)';
+    const headings = new Map();
+    const animations = new Set();
+    const completed = new WeakSet();
+    const play = (element, frames, duration, delay = 0) => {
+        const animation = element.animate(frames, { duration, delay, easing: ease, fill: 'both' });
+        animations.add(animation);
+        animation.finished.then(() => {
+            animation.cancel();
+            animations.delete(animation);
+        }).catch(() => animations.delete(animation));
+    };
+    // Measure the actual font and available width; keep emphasis and explicit breaks.
+    const splitLines = heading => {
+        const original = headings.get(heading);
+        heading.replaceChildren(...Array.from(original.childNodes, node => node.cloneNode(true)));
+        const walker = document.createTreeWalker(heading, NodeFilter.SHOW_TEXT);
+        const texts = [];
+        while (walker.nextNode()) texts.push(walker.currentNode);
+        texts.forEach(text => {
+            const fragment = document.createDocumentFragment();
+            text.textContent.split(/(\s+)/).filter(Boolean).forEach(part => {
+                if (/^\s+$/.test(part)) fragment.append(document.createTextNode(part));
+                else {
+                    const word = document.createElement('span');
+                    word.dataset.cinemaWord = '';
+                    word.textContent = part;
+                    fragment.append(word);
+                }
+            });
+            text.replaceWith(fragment);
+        });
+        const rows = [];
+        heading.querySelectorAll('[data-cinema-word]').forEach(word => {
+            const top = word.getBoundingClientRect().top;
+            let row = rows[rows.length - 1];
+            if (!row || Math.abs(top - row.top) > parseFloat(getComputedStyle(heading).fontSize) * .5) {
+                row = { top, words: [] }; rows.push(row);
+            }
+            let content = document.createTextNode(word.textContent);
+            for (let parent = word.parentElement; parent && parent !== heading; parent = parent.parentElement) {
+                const wrapper = parent.cloneNode(false);
+                wrapper.removeAttribute('id');
+                wrapper.append(content); content = wrapper;
+            }
+            row.words.push(content);
+        });
+        const accessible = original.cloneNode(true);
+        accessible.querySelectorAll('br').forEach(br => br.replaceWith(' '));
+        heading.setAttribute('aria-label', accessible.textContent.replace(/\s+/g, ' ').trim());
+        heading.replaceChildren(...rows.map(row => {
+            const mask = document.createElement('span'); mask.className = 'cinema-line'; mask.setAttribute('aria-hidden', 'true');
+            const inner = document.createElement('span'); inner.className = 'cinema-line-inner';
+            row.words.forEach((word, index) => { if (index) inner.append(' '); inner.append(word); });
+            mask.append(inner); return mask;
+        }));
+    };
+    const headingEntrance = (heading, delay = 0) => {
+        // Filtered portfolio cards need measurement after becoming visible.
+        if (headings.has(heading)) splitLines(heading);
+        heading.querySelectorAll('.cinema-line-inner').forEach((line, index) => {
+            play(line, [{ transform: 'translateY(115%)' }, { transform: 'translateY(0)' }], 1050, delay + index * 110);
+        });
+    };
+    const textEntrance = (element, delay) => play(element, [
+        { opacity: 0, filter: 'blur(4px)', translate: '0 18px' },
+        { opacity: 1, filter: 'blur(0px)', translate: '0 0' }
+    ], 820, delay);
+    const elementEntrance = (element, delay = 0) => play(element, [
+        { opacity: 0, translate: '0 18px' }, { opacity: 1, translate: '0 0' }
+    ], 850, delay);
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(({ target, isIntersecting }) => {
+            if (!isIntersecting || completed.has(target)) return;
+            completed.add(target); observer.unobserve(target);
+            const type = target.dataset.cinema;
+            if (type === 'sequence') {
+                target.querySelectorAll('h1, h2').forEach(h => headingEntrance(h));
+                target.querySelectorAll('p').forEach((p, i) => textEntrance(p, 240 + i * 80));
+                target.querySelectorAll('.hero-actions, .actions, .btn, .text-link, .hero-portfolio-link, .project-back, .project-gallery-link, .contact-link, .hours').forEach(el => {
+                    if (!el.parentElement.closest('.hero-actions, .actions')) elementEntrance(el, 420);
+                });
+            } else if (type === 'heading') headingEntrance(target);
+            else if (type === 'photo') {
+                play(target, [{ opacity: 0 }, { opacity: 1 }], 1100);
+                // Slideshow frames already have their continuous cinematic movement.
+                if (!target.matches('[data-hero-ambient]')) {
+                    target.querySelectorAll('img').forEach(img => play(img, [
+                        { scale: '1.06', opacity: 0 }, { scale: '1', opacity: 1 }
+                    ], 1250));
+                }
+            } else elementEntrance(target, Number(target.dataset.cinemaDelay || 0));
+        });
+    }, { threshold: .08, rootMargin: '0px 0px -4% 0px' });
+    const register = (element, type, delay = 0) => {
+        if (element.dataset.cinema) return;
+        element.dataset.cinema = type; element.dataset.cinemaDelay = delay;
+        observer.observe(element);
+    };
+    const init = () => {
+        if (motion.matches) return;
+        main.querySelectorAll('h1, h2').forEach(h => {
+            if (!h.textContent.trim()) return;
+            headings.set(h, h.cloneNode(true)); splitLines(h);
+        });
+        main.querySelectorAll('.hero-copy, .page-hero-copy, .section-head, .statement-copy, .principle-copy, .journal-heading, .cta-band, .project-story-copy, .portfolio-intro, .contact-panel, .project-viewer-heading').forEach(el => register(el, 'sequence'));
+        headings.forEach((_, h) => { if (!h.closest('[data-cinema="sequence"]')) register(h, 'heading'); });
+        main.querySelectorAll('.service-grid, .project-packages, .service-extras, .process-grid, .include-grid').forEach(grid => {
+            Array.from(grid.children).forEach((card, i) => register(card, 'element', i * 100));
+        });
+        main.querySelectorAll('.services-finale').forEach(el => register(el, 'element', 150));
+        main.querySelectorAll('.hero-figure, .page-hero-figure, .statement-media, .principle-photo, .portfolio-cover, .project-images > *, .project-story-image').forEach(el => register(el, 'photo'));
+        // Observe metadata separately: it can enter the viewport after the hero title.
+        main.querySelectorAll('.hero-meta > span, .project-stage, .project-thumb-rail, .filters, .project-results, .portfolio-more, .journal-signature').forEach((el, i) => register(el, 'element', (i % 2) * 100));
+        main.querySelectorAll('.reveal').forEach(el => {
+            if (!el.dataset.cinema && !el.querySelector('[data-cinema]') && !el.closest('[data-cinema]')) register(el, 'element');
+        });
+        // Cover text outside the named compositions, without animating nested content twice.
+        main.querySelectorAll('p, h3, h4, ul, ol, dl, .actions, .text-link, .portfolio-caption, .project-navigation, .project-nav, .project-next, .project-prev, .project-gallery-link, .btn').forEach(el => {
+            if (!el.closest('[data-cinema]') && !el.querySelector('[data-cinema]')) register(el, 'element');
+        });
+        document.querySelectorAll('.footer-grid > *, .footer-bottom, .footer-wordmark').forEach(el => register(el, 'element'));
+    };
+    Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 800))]).then(init);
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => headings.forEach((_, h) => splitLines(h)), 180);
+    });
+    motion.addEventListener('change', () => {
+        if (!motion.matches) return;
+        observer.disconnect(); animations.forEach(animation => animation.cancel()); animations.clear();
+        headings.forEach((original, heading) => {
+            heading.replaceChildren(...Array.from(original.childNodes, node => node.cloneNode(true)));
+            heading.removeAttribute('aria-label');
+        });
+        headings.clear();
+    });
+})();

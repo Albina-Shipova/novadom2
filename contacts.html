@@ -14,28 +14,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..600&family=Prata&display=swap">
-    <link rel="stylesheet" href="styles.css?v=20261106-contact-round">
+    <link rel="stylesheet" href="styles.css?v=20261106-cinema-entrance">
 </head>
 <body>
     <a class="skip-link" href="#main">К содержанию</a>
 
-    <div class="source-strip">
-        <div class="container">
-            <span>Встреча по предварительной записи</span>
-            <span>Тула, Красноармейский проспект, 7</span>
-        </div>
-    </div>
-
-    <header class="header" data-header>
+<header class="header" data-header>
         <div class="container nav">
             <a class="brand" href="index.html">
-                <span class="brand-identity"><img class="brand-logo" src="assets/client/logo.svg" width="185" height="32" alt="Нова Дом"><small>студия Анны Царевой</small></span>
+                <img class="brand-symbol" src="assets/client/logo-symbol.svg" width="48" height="48" alt=""><span class="brand-identity"><img class="brand-wordmark" src="assets/client/logo-wordmark.svg" width="139" height="32" alt="Нова Дом"><small>студия Анны Царевой</small></span>
             </a>
             <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">Меню</button>
             <nav class="navlinks" aria-label="Основная навигация">
-                <a href="services.html">Услуги</a>
+                <a href="index.html#services">Услуги</a>
                 <a href="portfolio.html">Проекты</a>
-                <a href="about.html">О студии</a>
+                <a href="index.html#about">О студии</a>
                 <a href="index.html#reviews">Отзывы</a>
                 <a href="index.html#faq">Вопросы</a>
                 <a aria-current="page" href="contacts.html">Контакты</a>
@@ -118,6 +111,53 @@
                 </div>
             </div>
         </section>
+        <section class="section journal-section" id="journal" aria-labelledby="journal-title">
+            <div class="container">
+                <div class="journal-heading reveal">
+                    <div>
+                        <p class="kicker">Дневник дизайнера · Telegram</p>
+                        <h2 id="journal-title">То, что остаётся<br><em>за кадром</em></h2>
+                    </div>
+                    <div class="journal-intro">
+                        <p>Как принимаю работы, выбираю материалы и собираю интерьер вместе с заказчиками. В Telegram показываю проекты в процессе и рассказываю о решениях, из которых складывается дом.</p>
+                        <a class="btn" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Читать дневник в Telegram <span class="btn-arrow">↗</span></a>
+                    </div>
+                </div>
+                <div class="journal-grid">
+                    <a class="journal-feature reveal" href="https://t.me/Anna_Tsareva/901" target="_blank" rel="noopener">
+                        <img src="assets/images/site-05.jpg" alt="Загородный дом в Московской области на этапе электрики и освещения" width="600" height="800" loading="lazy">
+                        <span class="journal-feature-tag">Из рабочего дня</span>
+                        <div class="journal-feature-copy">
+                            <span class="journal-category">Авторское сопровождение</span>
+                            <h3>До красивого кадра —<br>сотни решений на объекте</h3>
+                            <p>Приёмка электрики и света в загородном доме. Показываю, как проект становится реальностью.</p>
+                            <span class="journal-read">Заглянуть на объект <span aria-hidden="true">↗</span></span>
+                        </div>
+                    </a>
+                    <div class="journal-notes">
+                        <a class="journal-note reveal" href="https://t.me/Anna_Tsareva/918" target="_blank" rel="noopener">
+                            <div class="journal-note-image"><img src="assets/client/telegram/post-918-1.webp" alt="Визуализация ванной из публикации о плиточных работах в Зарайске" width="720" height="800" loading="lazy"></div>
+                            <div class="journal-note-copy">
+                                <span class="journal-category">На стройке</span>
+                                <h3>От проекта<br>к реализации</h3>
+                                <p>Плиточные работы в Зарайске: будущий интерьер и видео с объекта.</p>
+                                <span class="journal-read">Читать публикацию ↗</span>
+                            </div>
+                        </a>
+                        <a class="journal-note reveal" href="https://t.me/Anna_Tsareva/911" target="_blank" rel="noopener">
+                            <div class="journal-note-image journal-materials"><img src="assets/client/telegram/post-911-2.webp" alt="Образцы древесных декоров и цветных поверхностей на презентации Egger" width="450" height="800" loading="lazy"></div>
+                            <div class="journal-note-copy">
+                                <span class="journal-category">Выбираем материалы</span>
+                                <h3>Фактуры, которые<br>хочется потрогать</h3>
+                                <p>Новые декоры Egger — и находки, которые уже использую в проектах.</p>
+                                <span class="journal-read">Смотреть находки ↗</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="journal-signature"><span>Анна Царева</span><a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">@Anna_Tsareva ↗</a></div>
+            </div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -130,14 +170,6 @@
                     <p>Студия дизайна интерьеров Анны Царевой. Работаем в Туле, Москве и области, другие регионы — онлайн.</p>
                 </div>
                 <div>
-                    <h4>Разделы</h4>
-                    <a href="index.html">Главная</a>
-                    <a href="services.html">Услуги и цены</a>
-                    <a href="portfolio.html">Проекты</a>
-                    <a href="about.html">О студии</a>
-                    <a href="contacts.html">Контакты</a>
-                </div>
-                <div>
                     <h4>Связаться</h4>
                     <a href="tel:+79207539997">+7 (920) 753-99-97</a>
                     <a href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Telegram-канал</a>
@@ -146,8 +178,6 @@
                 <div>
                     <h4>Офис</h4>
                     <span>Тула, Красноармейский просп., 7<br>офис 401, 4 этаж</span>
-                    <a href="https://yandex.ru/maps/org/nova_dom/93283220697/" target="_blank" rel="noopener">Построить маршрут</a>
-                    <span>Ежедневно 09:00–18:00</span>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -174,6 +204,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=20261106-contact-round"></script>
+    <script src="script.js?v=20261106-cinema-all-pages"></script>
 </body>
 </html>
