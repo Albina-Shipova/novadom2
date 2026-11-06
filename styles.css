@@ -1,6 +1,6 @@
 /* ============================================================
    NOVA DOM — студия дизайна интерьеров
-   Дизайн-система: тёплая «бумага», мох, латунь, сериф Prata
+   Дизайн-система: тёплая «бумага», фирменный зелёный, латунь, сериф Prata
    ============================================================ */
 
 :root {
@@ -13,9 +13,9 @@
   --white-warm: #fbfaf6;
   --sand: #d9d2c2;
 
-  --moss: #47543d;
-  --moss-deep: #36422f;
-  --moss-light: #cdd3c2;
+  --moss: #47665d;
+  --moss-deep: #354d46;
+  --moss-light: #cbd7d3;
 
   --brass: #9a7a3f;
   --brass-light: #c9a962;
@@ -371,7 +371,7 @@ button {
 }
 
 .hero h1 em {
-  color: #c9d6bd;
+  color: #c9d6d2;
 }
 
 .hero-lede {
@@ -590,7 +590,7 @@ button {
 .marquee {
   overflow: hidden;
   background: var(--moss-deep);
-  color: #dfe4da;
+  color: #dfe6e3;
   border-bottom: 1px solid var(--line);
   padding: 15px 0;
 }
@@ -766,7 +766,7 @@ button {
 }
 
 .service-card.featured p {
-  color: #dbe0d5;
+  color: #dbe3e0;
 }
 
 .service-card.featured strong {
@@ -842,7 +842,7 @@ button {
 
 .project-copy p {
   max-width: 420px;
-  color: #dbe0d5;
+  color: #dbe3e0;
 }
 
 .project-images {
@@ -1393,7 +1393,7 @@ button {
 }
 
 .page-hero h1 em {
-  color: #c9d6bd;
+  color: #c9d6d2;
 }
 
 .page-hero .intro {
@@ -2508,4 +2508,125 @@ button {
     opacity: 1;
     transform: none;
   }
+}
+/* Материалы клиента: фирменный знак, проекты, отзывы и документы. */
+.brand-identity { display: grid; gap: 7px; }
+.brand-logo { width: 185px; height: auto; }
+.brand-identity small { color: var(--muted); font-size: .62rem; letter-spacing: .14em; text-transform: uppercase; }
+.footer .brand-logo { filter: brightness(0) invert(1); }
+.footer .brand-identity small { color: var(--sand); }
+.footer-wordmark img { width: 100%; height: auto; opacity: .13; }
+.portfolio-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 48px 28px; }
+.portfolio-tile[hidden] { display: none; }
+.portfolio-cover { position: relative; overflow: hidden; background: var(--sand); }
+.portfolio-cover img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; transition: transform .6s var(--ease-out); }
+.portfolio-tile a:hover img { transform: scale(1.035); }
+.project-open { position: absolute; bottom: 18px; right: 18px; background: var(--paper); color: var(--ink); padding: 10px 16px; font-size: .72rem; letter-spacing: .05em; }
+.portfolio-caption { padding-top: 20px; }
+.portfolio-caption > span { color: var(--muted); font-size: .71rem; text-transform: uppercase; letter-spacing: .1em; }
+.portfolio-caption h2 { font-size: clamp(1.2rem, 2.1vw, 1.8rem); line-height: 1.35; margin: 10px 0; }
+.award-label { display: inline-block; color: var(--moss); font-size: .74rem; letter-spacing: .04em; border-bottom: 1px solid currentColor; padding-bottom: 4px; }
+.project-results { color: var(--muted); font-size: .78rem; margin: 0 0 26px; }
+.project-detail-hero { padding: clamp(42px, 7vw, 90px) 0 20px; }
+.project-detail-hero h1 { font-size: clamp(2.2rem, 5vw, 4.7rem); line-height: 1.15; max-width: 1000px; margin: 14px 0 26px; }
+.project-detail-hero .intro { max-width: 720px; }
+.back-link { display: inline-block; color: var(--muted); font-size: .8rem; margin-bottom: 32px; }
+.project-series-note { color: var(--muted); margin-bottom: 28px; font-size: .85rem; }
+.project-gallery { columns: 2; }
+.project-gallery .gallery-item { margin-bottom: 20px; }
+.project-bottom { display: flex; gap: 16px; justify-content: space-between; flex-wrap: wrap; margin-top: 48px; }
+.dark-btn { background: var(--ink); color: var(--paper); }
+.credentials-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px 28px; }
+.credential-preview { display: grid; place-items: center; width: 100%; height: 310px; background: var(--white-warm); border: 1px solid var(--line); padding: 20px; cursor: zoom-in; }
+.credential-preview img { width: 100%; height: 100%; object-fit: contain; }
+.credential-card h3 { font-size: 1.08rem; line-height: 1.4; margin: 20px 0 8px; }
+.credential-card p { color: var(--muted); font-size: .83rem; }
+.text-link { display: inline-block; font-size: .8rem; border-bottom: 1px solid currentColor; padding-bottom: 4px; }
+.portrait-emblem { width: auto; height: auto; background: transparent; border: 0; border-radius: 0; }
+.portrait-emblem img { width: 185px; height: auto; border-radius: 0; }
+.review-original { border: 0; background: transparent; width: 100%; display: grid; justify-items: center; gap: 16px; color: var(--ink); cursor: zoom-in; padding: 0; font: inherit; }
+.review-original img { height: 320px; width: 100%; object-fit: contain; object-position: center; }
+.review-original span { font-size: .78rem; border-bottom: 1px solid var(--line); }
+.lightbox img { max-height: 72vh; width: auto; height: auto; }
+.lightbox-prev, .lightbox-next { position: absolute; top: 48%; border: 1px solid var(--line-dark); color: white; background: rgba(17,16,13,.6); width: 44px; height: 48px; font-size: 1.3rem; cursor: pointer; }
+.lightbox-prev { left: 14px; } .lightbox-next { right: 14px; }
+[data-viewer] { cursor: zoom-in; }
+:target { scroll-margin-top: 110px; }
+@media (max-width: 980px) { .credentials-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+ .brand-logo { width: 150px; } .brand-identity small { font-size: .53rem; }
+ .portfolio-grid { grid-template-columns: 1fr; gap: 30px; }
+ .portfolio-cover img { aspect-ratio: 4 / 3; }
+ .credentials-grid { grid-template-columns: 1fr; gap: 30px; }
+ .credential-preview { height: 340px; }
+ .project-gallery { columns: 1; }
+ .lightbox-prev, .lightbox-next { top: auto; bottom: 16px; }
+ .lightbox-caption { margin-top: 16px; font-size: .65rem; letter-spacing: .02em; }
+ .review-original img { height: 300px; }
+ .project-detail-hero h1 { overflow-wrap: anywhere; }
+}
+.credential-preview { display: block; overflow: hidden; }
+.credential-preview img { height: 268px; max-height: 100%; }
+@media (max-width: 600px) { .credential-preview img { height: 298px; } }
+
+/* Скриншоты слева, текстовые отзывы с Яндекс Карт справа. */
+.screenshot-carousel { position: relative; min-width: 0; height: 520px; padding: 0; overflow: hidden; background: var(--white-warm); border: 1px solid var(--line-soft); touch-action: pan-y; }
+.screenshot-carousel .review-slide { min-height: 0; height: 100%; }
+.screenshot-carousel .review-original { display: block; height: 100%; }
+.screenshot-carousel .review-original img { width: 100%; height: 100%; object-fit: contain; object-position: center; }
+.screenshot-carousel .reviews-controls { position: absolute; inset: auto 14px 14px; z-index: 1; justify-content: space-between; margin: 0; padding: 0; border: 0; pointer-events: none; }
+.screenshot-carousel .review-arrow, .screenshot-carousel .review-counter { pointer-events: auto; background: var(--white-warm); color: var(--ink); box-shadow: 0 2px 14px rgba(0,0,0,.15); }
+.screenshot-carousel .review-counter { padding: 7px 12px; }
+.screenshot-carousel .review-arrow:hover { background: var(--moss); color: var(--paper); border-color: var(--moss); }
+.screenshot-carousel .screenshot-slides { height: 100%; }
+.reviews-carousel { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.reviews-carousel > .kicker { margin: 0 0 32px; color: var(--brass-light); }
+.reviews-carousel .review-slide .review-mark { color: var(--brass-light); }
+.reviews-carousel .review-slide small, .reviews-carousel .review-counter { color: #bdbbb2; }
+.reviews-carousel .reviews-controls { border-top-color: var(--line-dark); flex-wrap: wrap; }
+.reviews-carousel .review-arrow { border-color: var(--line-dark); color: var(--paper); }
+.reviews-carousel .review-arrow:hover { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.reviews-source { margin-left: auto; font-size: .7rem; letter-spacing: .06em; border-bottom: 1px solid var(--line-dark); padding-bottom: 4px; }
+.reviews-source:hover { color: var(--brass-light); }
+@media (max-width: 600px) {
+    .reviews-carousel { padding: 28px 24px; }
+    .reviews-source { flex-basis: 100%; margin-top: 12px; margin-left: 0; width: fit-content; }
+}
+
+.screenshot-carousel .review-original img.review-landscape { object-fit: contain; object-position: center; }
+
+@media (min-width: 981px) and (max-width: 1200px) {
+    .nav { gap: 18px; }
+    .navlinks { gap: 18px; font-size: .7rem; }
+}
+@media (min-width: 981px) and (max-width: 1100px) {
+    .nav-cta { display: none; }
+}
+
+/* Быстрая связь и возврат к началу страницы. */
+.floating-tools { position: fixed; right: 26px; bottom: 26px; z-index: 125; display: grid; justify-items: end; gap: 12px; }
+.floating-tools button { display: grid; place-items: center; width: 52px; height: 52px; border: 1px solid var(--line); border-radius: 50%; cursor: pointer; box-shadow: 0 4px 18px rgba(26,25,21,.1); transition: background .2s, color .2s, border-color .2s, transform .2s; }
+.floating-tools svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.floating-tools .back-to-top { width: 44px; height: 44px; margin-right: 7px; background: var(--white-warm); color: var(--moss); }
+.floating-tools.contact-open .back-to-top { visibility: hidden; }
+.floating-tools .back-to-top:hover { background: var(--ink); color: var(--paper); }
+.floating-tools .back-to-top[hidden], .quick-options[hidden] { display: none; }
+.quick-contact { position: relative; }
+.floating-tools .quick-toggle { width: 58px; height: 58px; background: var(--moss); color: var(--white-warm); border: 3px solid var(--white-warm); box-shadow: 0 6px 24px rgba(53,77,70,.22); }
+.floating-tools .quick-toggle:hover { background: var(--moss-deep); transform: translateY(-2px); }
+.quick-chat { display: grid; place-items: center; }
+.quick-close { display: none; font-size: 30px; line-height: 1; font-weight: 300; }
+.quick-toggle[aria-expanded="true"] .quick-chat { display: none; }
+.quick-toggle[aria-expanded="true"] .quick-close { display: block; }
+.quick-options { position: absolute; right: 0; bottom: calc(100% + 14px); width: 236px; display: grid; gap: 8px; }
+.quick-options a { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 8px 16px 8px 9px; border-radius: 30px; background: var(--white-warm); box-shadow: 0 4px 20px rgba(26,25,21,.12); color: var(--ink); font-size: .8rem; }
+.quick-options a:hover { background: var(--paper); color: var(--moss); }
+.quick-options svg { flex: 0 0 36px; width: 36px; height: 36px; padding: 9px; border-radius: 50%; background: var(--moss); color: var(--white-warm); }
+.menu-open .floating-tools { visibility: hidden; }
+@media (max-width: 600px) {
+    .floating-tools { right: 14px; bottom: calc(82px + env(safe-area-inset-bottom)); gap: 10px; }
+    .floating-tools button { width: 48px; height: 48px; }
+    .floating-tools .quick-toggle { width: 54px; height: 54px; }
+    .floating-tools .back-to-top { width: 42px; height: 42px; margin-right: 6px; }
+    .quick-options { right: 0; width: min(236px, calc(100vw - 28px)); }
 }

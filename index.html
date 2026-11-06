@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..600&family=Prata&display=swap">
-    <link rel="stylesheet" href="styles.css?v=20260904">
+    <link rel="stylesheet" href="styles.css?v=20261106-contact-round">
 </head>
 <body>
     <a class="skip-link" href="#main">К содержанию</a>
@@ -29,15 +29,15 @@
     <header class="header" data-header>
         <div class="container nav">
             <a class="brand" href="index.html">
-                <span class="brand-mark">ND</span>
-                <span class="brand-copy"><strong>NOVA DOM</strong><small>студия Анны Царевой</small></span>
+                <span class="brand-identity"><img class="brand-logo" src="assets/client/logo.svg" width="185" height="32" alt="Нова Дом"><small>студия Анны Царевой</small></span>
             </a>
             <button class="menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false">Меню</button>
             <nav class="navlinks" aria-label="Основная навигация">
-                <a aria-current="page" href="index.html">Главная</a>
                 <a href="services.html">Услуги</a>
                 <a href="portfolio.html">Проекты</a>
                 <a href="about.html">О студии</a>
+                <a href="index.html#reviews">Отзывы</a>
+                <a href="index.html#faq">Вопросы</a>
                 <a href="contacts.html">Контакты</a>
                 <div class="nav-extra">
                     <a href="tel:+79207539997">+7 920 753-99-97</a>
@@ -50,7 +50,7 @@
 
     <main id="main">
         <section class="hero">
-            <img class="hero-backdrop" src="assets/images/bathroom-01.jpg" alt="" aria-hidden="true">
+            <img class="hero-backdrop" src="assets/client/project-02-05.webp" alt="" aria-hidden="true" width="907" height="1280">
             <div class="container hero-inner">
                 <div class="hero-copy">
                     <p class="eyebrow">Нова Дом · Тула / Москва / онлайн</p>
@@ -61,18 +61,18 @@
                         <a class="btn ghost" href="portfolio.html">Смотреть проекты</a>
                     </div>
                     <div class="hero-meta">
-                        <span><span class="stars" aria-hidden="true">★★★★★</span><b>4,3</b> на Яндекс Картах</span>
+                        <span><b>22 проекта</b> в портфолио студии</span>
                         <span>Офис: <b>Тула</b>, Красноармейский проспект, 7</span>
                     </div>
                 </div>
                 <figure class="hero-figure">
-                    <img src="assets/images/bathroom-01.jpg" alt="Светлая ванная комната с зеркалом, деревянной тумбой и вертикальной плиткой" width="720" height="800" fetchpriority="high">
+                    <img src="assets/client/project-02-05.webp" alt="Гостиная с синим диваном и красным ковром — проект квартиры в Туле" fetchpriority="high" width="907" height="1280">
                 </figure>
             </div>
         </section>
 
         <div class="fact-rail">
-            <div class="fact"><strong>4,3</strong><span>рейтинг на Картах</span></div>
+            <div class="fact"><strong>Askona</strong><span>победитель конкурса · 2026</span></div>
             <div class="fact"><strong>Тула</strong><span>офис студии</span></div>
             <div class="fact"><strong>Москва</strong><span>встречи и проекты</span></div>
             <div class="fact"><strong>Онлайн</strong><span>другие регионы</span></div>
@@ -149,19 +149,15 @@
                 <div class="project-slice">
                     <div class="project-copy reveal">
                         <div>
-                            <p class="kicker">реализованный проект</p>
-                            <h2>Ванная<br>5,7 м²</h2>
+                            <p class="kicker">победитель конкурса Askona · 2026</p>
+                            <h2>Квартира<br>с характером</h2>
                         </div>
                         <div>
-                            <p>Спокойная палитра, графичные линии, хранение по месту. Небольшая площадь, в которой всё под рукой.</p>
-                            <a class="btn light" href="portfolio.html">Открыть проекты <span class="btn-arrow">→</span></a>
+                            <p>Глубокий синий, терракотовые акценты и классические детали. Двухкомнатная квартира в Туле, где у каждого предмета своё место.</p>
+                            <a class="btn light" href="project-02.html">Смотреть этот проект <span class="btn-arrow">→</span></a>
                         </div>
                     </div>
-                    <div class="project-images reveal">
-                        <img src="assets/images/bathroom-02.jpg" alt="Ванная комната с душевой зоной и нишей для хранения" width="559" height="800" loading="lazy">
-                        <img src="assets/images/bathroom-01.jpg" alt="Зеркало, тумба и вертикальная плитка в ванной" width="720" height="800" loading="lazy">
-                        <img src="assets/images/bathroom-05.jpg" alt="Душевая зона с чёрным полотенцесушителем" width="559" height="800" loading="lazy">
-                    </div>
+                    <div class="project-images reveal"><img src="assets/client/project-02-04.webp" alt="Гостиная: синий диван и библиотека" loading="lazy" width="907" height="1280"><img src="assets/client/project-02-12.webp" alt="Кухня с синими фасадами" loading="lazy" width="907" height="1280"><img src="assets/client/project-02-14.webp" alt="Спальня с красными шторами" loading="lazy" width="854" height="1280"></div>
                 </div>
             </div>
         </section>
@@ -208,27 +204,42 @@
         <section class="statement-band">
             <div class="container">
                 <div class="statement-media reveal">
-                    <img src="assets/images/bathroom-03.jpg" alt="Ванная комната с окном и стеклянной душевой перегородкой" width="600" height="800" loading="lazy">
+                    <img src="assets/client/anna-01.webp" alt="Анна Царева — дизайнер интерьеров, основатель студии Нова Дом" loading="lazy" width="1280" height="853">
                 </div>
                 <div class="statement-copy reveal">
-                    <p class="kicker">принцип</p>
+                    <p class="kicker">Анна Царева · основатель студии</p>
                     <p class="statement">Дом собирается из мелочей: где розетка, куда открывается дверь, что видно <em>с порога</em>.</p>
-                    <p class="statement-note">Эти решения принимаются в проекте — до того, как приедут материалы и бригада.</p>
+                    <p class="statement-note">Эти решения принимаются в проекте — до того, как приедут материалы и бригада.</p><a class="text-link" href="about.html">О дизайнере и образовании ↗</a>
                 </div>
             </div>
         </section>
 
-        <section class="section compact">
+        <section class="section compact" id="reviews">
             <div class="container">
+                <div class="section-head reveal"><h2>Отзывы клиентов</h2></div>
                 <div class="reviews-layout">
-                    <aside class="rating-card reveal">
-                        <strong>4,3</strong>
-                        <span class="stars" aria-hidden="true">★★★★★</span>
-                        <p>Средняя оценка на Яндекс Картах</p>
-                        <a href="https://yandex.ru/maps/org/nova_dom/93283220697/reviews/" target="_blank" rel="noopener">Все отзывы ↗</a>
+                    <aside class="screenshot-carousel reveal" data-review-carousel data-autoplay="false" role="region" aria-label="Скриншоты отзывов клиентов" tabindex="0">
+                        <div class="screenshot-slides">
+                            <div class="review-slide is-active"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 1 в полном размере"><img src="assets/client/reviews-05-private.webp" alt="Отзыв клиента, изображение 1" loading="lazy" width="591" height="942"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 2 в полном размере"><img src="assets/client/reviews-01-private.webp" alt="Отзыв клиента, изображение 2" loading="lazy" width="591" height="694"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 3 в полном размере"><img class="review-landscape" src="assets/client/reviews-02-private.webp" alt="Отзыв клиента, изображение 3" loading="lazy" width="690" height="252"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 4 в полном размере"><img src="assets/client/reviews-03-private.webp" alt="Отзыв клиента, изображение 4" loading="lazy" width="591" height="789"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 5 в полном размере"><img src="assets/client/reviews-04-private.webp" alt="Отзыв клиента, изображение 5" loading="lazy" width="591" height="454"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 6 в полном размере"><img src="assets/client/reviews-06-private.webp" alt="Отзыв клиента, изображение 6" loading="lazy" width="591" height="1029"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 7 в полном размере"><img src="assets/client/reviews-07-private.webp" alt="Отзыв клиента, изображение 7" loading="lazy" width="591" height="1021"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 8 в полном размере"><img src="assets/client/reviews-08-private.webp" alt="Отзыв клиента, изображение 8" loading="lazy" width="591" height="947"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 9 в полном размере"><img src="assets/client/reviews-09-private.webp" alt="Отзыв клиента, изображение 9" loading="lazy" width="591" height="1021"></button></div>
+                            <div class="review-slide"><button class="review-original" type="button" data-viewer data-caption="Отзыв клиента" aria-label="Открыть отзыв 10 в полном размере"><img src="assets/client/reviews-11-private.webp" alt="Отзыв клиента, изображение 10" loading="lazy" width="1170" height="965"></button></div>
+                        </div>
+                        <div class="reviews-controls">
+                            <button class="review-arrow" type="button" data-review-prev aria-label="Предыдущий скриншот отзыва">←</button>
+                            <span class="review-counter" aria-live="polite">1 / 10</span>
+                            <button class="review-arrow" type="button" data-review-next aria-label="Следующий скриншот отзыва">→</button>
+                        </div>
                     </aside>
 
-                    <div class="reviews-carousel reveal" role="region" aria-label="Отзывы клиентов" tabindex="0">
+                    <div class="reviews-carousel reveal" data-review-carousel role="region" aria-label="Отзывы с Яндекс Карт" tabindex="0">
+                        <p class="kicker">Яндекс Карты</p>
                         <div class="reviews-track">
                             <article class="review-slide is-active">
                                 <span class="review-mark" aria-hidden="true">„</span>
@@ -250,13 +261,15 @@
                             <button class="review-arrow" type="button" data-review-prev aria-label="Предыдущий отзыв">←</button>
                             <span class="review-counter" aria-live="polite">1 / 3</span>
                             <button class="review-arrow" type="button" data-review-next aria-label="Следующий отзыв">→</button>
+                            <a class="reviews-source" href="https://yandex.ru/maps/org/nova_dom/93283220697/reviews/" target="_blank" rel="noopener">Все отзывы на Картах ↗</a>
                         </div>
                     </div>
                 </div>
+
             </div>
         </section>
 
-        <section class="section compact">
+        <section class="section compact" id="faq">
             <div class="container">
                 <div class="section-head reveal">
                     <div>
@@ -304,14 +317,17 @@
         </section>
     </main>
 
-    <footer class="footer">
+    <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Просмотр изображения" tabindex="-1">
+<button class="lightbox-close" type="button" aria-label="Закрыть">×</button>
+<button class="lightbox-prev" type="button" aria-label="Предыдущее изображение">←</button>
+<img alt=""><button class="lightbox-next" type="button" aria-label="Следующее изображение">→</button>
+<p class="lightbox-caption" aria-live="polite"></p></div>
+<footer class="footer">
         <div class="container">
-            <p class="footer-wordmark" aria-hidden="true">NOVA DOM</p>
             <div class="footer-grid">
                 <div>
                     <a class="brand" href="index.html">
-                        <span class="brand-mark">ND</span>
-                        <span class="brand-copy"><strong>NOVA DOM</strong><small>дизайн интерьера</small></span>
+                        <span class="brand-identity"><img class="brand-logo" src="assets/client/logo.svg" width="185" height="32" alt="Нова Дом"><small>дизайн интерьера</small></span>
                     </a>
                     <p>Студия дизайна интерьеров Анны Царевой. Работаем в Туле, Москве и области, другие регионы — онлайн.</p>
                 </div>
@@ -349,6 +365,17 @@
         <a href="https://yandex.ru/maps/org/nova_dom/93283220697/" target="_blank" rel="noopener">Маршрут</a>
     </div>
 
-    <script src="script.js?v=20260902"></script>
+    <div class="floating-tools" aria-label="Быстрые действия">
+        <button class="back-to-top" type="button" aria-label="Наверх" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20V4m-7 7 7-7 7 7"/></svg></button>
+        <div class="quick-contact">
+            <div class="quick-options" id="quick-options" hidden>
+                <a href="https://t.me/Anna_asten" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 18-7-4 17-6-5-4 3 1-6 9-6-11 5Z"/></svg><span>Написать в Telegram</span></a>
+                <a href="tel:+79207539997"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 3 4 1 1 5-3 2a15 15 0 0 0 6 6l2-3 5 1 1 4c-1 4-7 2-11-2S1 4 5 3Z"/></svg><span>Позвонить</span></a>
+            </div>
+            <button class="quick-toggle" type="button" aria-label="Выбрать способ связи" aria-expanded="false" aria-controls="quick-options"><span class="quick-chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5Z"/><circle cx="8.5" cy="10.5" r=".75" fill="currentColor" stroke="none"/><circle cx="12" cy="10.5" r=".75" fill="currentColor" stroke="none"/><circle cx="15.5" cy="10.5" r=".75" fill="currentColor" stroke="none"/></svg></span><span class="quick-close" aria-hidden="true">×</span></button>
+        </div>
+    </div>
+
+    <script src="script.js?v=20261106-contact-round"></script>
 </body>
 </html>

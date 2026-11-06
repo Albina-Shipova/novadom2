@@ -20,6 +20,7 @@ const nav = document.querySelector('.navlinks');
 const closeMenu = () => {
     nav?.classList.remove('open');
     menuButton?.setAttribute('aria-expanded', 'false');
+    menuButton?.setAttribute('aria-label', 'Открыть меню');
     if (menuButton) {
         menuButton.textContent = 'Меню';
     }
@@ -30,6 +31,7 @@ menuButton?.addEventListener('click', () => {
     const open = !nav.classList.contains('open');
     nav.classList.toggle('open', open);
     menuButton.setAttribute('aria-expanded', String(open));
+    menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     menuButton.textContent = open ? 'Закрыть' : 'Меню';
     document.body.classList.toggle('menu-open', open);
 });
@@ -99,6 +101,7 @@ faqItems.forEach(item => {
 
 const filters = document.querySelectorAll('.filter');
 const galleryItems = document.querySelectorAll('.gallery-item');
+const projectTiles = document.querySelectorAll('.portfolio-tile');
 
 filters.forEach(button => {
     button.addEventListener('click', () => {
@@ -114,6 +117,9 @@ filters.forEach(button => {
         galleryItems.forEach(item => {
             item.classList.toggle('hidden', value !== 'all' && item.dataset.category !== value);
         });
+        projectTiles.forEach(item => { item.hidden = value !== 'all' && item.dataset.category !== value; });
+        const status = document.querySelector('.project-results');
+        if (status) status.textContent = `Показано проектов: ${Array.from(projectTiles).filter(item => !item.hidden).length}`;
     });
 });
 
@@ -122,80 +128,80 @@ filters.forEach(button => {
 const lightbox = document.querySelector('.lightbox');
 const lightboxImage = lightbox?.querySelector('img');
 const lightboxCaption = lightbox?.querySelector('.lightbox-caption');
-
+const viewerItems = Array.from(document.querySelectorAll('[data-viewer]'));
 let lastFocus = null;
+let imageIndex = 0;
+let viewerGroup = [];
+let inertElements = [];
+
+const displayImage = index => {
+    imageIndex = (index + viewerGroup.length) % viewerGroup.length;
+    const item = viewerGroup[imageIndex];
+    const source = item.querySelector('img');
+    lightboxImage.src = source.src;
+    lightboxImage.alt = source.alt;
+    const caption = item.dataset.caption || item.querySelector('figcaption span')?.textContent || source.alt;
+    lightboxCaption.textContent = `${caption} · ${imageIndex + 1} / ${viewerGroup.length}`;
+    lightbox.querySelectorAll('.lightbox-prev, .lightbox-next').forEach(button => {
+        button.hidden = viewerGroup.length < 2;
+    });
+};
 
 const closeLightbox = () => {
-    if (!lightbox) {
-        return;
-    }
-
+    if (!lightbox?.classList.contains('open')) return;
     lightbox.classList.remove('open');
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('lightbox-open');
+    inertElements.forEach(element => { element.inert = false; });
+    inertElements = [];
     lastFocus?.focus();
 };
 
-galleryItems.forEach(item => {
-    item.setAttribute('tabindex', '0');
-
+viewerItems.forEach(item => {
+    if (item.tagName !== 'BUTTON') {
+        item.tabIndex = 0;
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', `Рассмотреть: ${item.querySelector('img')?.alt}`);
+    }
     const open = () => {
-        if (!lightbox || !lightboxImage) {
-            return;
-        }
-
+        if (!lightbox || !lightboxImage) return;
         lastFocus = item;
-        const image = item.querySelector('img');
-        lightboxImage.src = image.src;
-        lightboxImage.alt = image.alt;
-
-        if (lightboxCaption) {
-            const label = item.querySelector('figcaption span')?.textContent ?? '';
-            const title = item.querySelector('figcaption b')?.textContent ?? '';
-            lightboxCaption.textContent = '';
-            if (label) {
-                const tag = document.createElement('b');
-                tag.textContent = label;
-                lightboxCaption.append(tag);
-            }
-            lightboxCaption.append(title);
-        }
-
+        // Отзывы и документы можно листать независимо от галереи проекта.
+        const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid');
+        viewerGroup = group ? Array.from(group.querySelectorAll('[data-viewer]')) : [item];
+        displayImage(viewerGroup.indexOf(item));
         lightbox.classList.add('open');
         lightbox.setAttribute('aria-hidden', 'false');
         document.body.classList.add('lightbox-open');
-        lightbox.querySelector('.lightbox-close')?.focus();
+        inertElements = Array.from(document.body.children).filter(el => el !== lightbox && !el.inert && el.tagName !== 'SCRIPT');
+        inertElements.forEach(element => { element.inert = true; });
+        lightbox.querySelector('.lightbox-close').focus();
     };
-
     item.addEventListener('click', open);
-    item.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            open();
-        }
+    if (item.tagName !== 'BUTTON') item.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); open(); }
     });
 });
-
 lightbox?.querySelector('.lightbox-close')?.addEventListener('click', closeLightbox);
-
-lightbox?.addEventListener('click', e => {
-    if (e.target === lightbox) {
-        closeLightbox();
-    }
-});
-
-document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-        closeLightbox();
-        closeMenu();
+lightbox?.querySelector('.lightbox-prev')?.addEventListener('click', () => displayImage(imageIndex - 1));
+lightbox?.querySelector('.lightbox-next')?.addEventListener('click', () => displayImage(imageIndex + 1));
+lightbox?.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') { closeLightbox(); closeMenu(); }
+    if (!lightbox?.classList.contains('open')) return;
+    if (event.key === 'ArrowLeft') { event.preventDefault(); displayImage(imageIndex - 1); }
+    if (event.key === 'ArrowRight') { event.preventDefault(); displayImage(imageIndex + 1); }
+    if (event.key === 'Tab') {
+        const buttons = Array.from(lightbox.querySelectorAll('button')).filter(button => !button.hidden);
+        const first = buttons[0], last = buttons[buttons.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
     }
 });
 
 /* ---------- Отзывы: карусель ---------- */
 
-const reviewsCarousel = document.querySelector('.reviews-carousel');
-
-if (reviewsCarousel) {
+document.querySelectorAll('[data-review-carousel]').forEach(reviewsCarousel => {
     const slides = Array.from(reviewsCarousel.querySelectorAll('.review-slide'));
     const counter = reviewsCarousel.querySelector('.review-counter');
     let reviewIndex = 0;
@@ -237,8 +243,8 @@ if (reviewsCarousel) {
     });
 
     /* Автопрокрутка отключена для тех, кто предпочитает меньше анимации */
-    if (!reduced && slides.length > 1) {
-        autoplayTimer = setInterval(() => showReview(reviewIndex + 1), 7000);
+    if (!reduced && slides.length > 1 && reviewsCarousel.dataset.autoplay !== 'false') {
+        autoplayTimer = setInterval(() => { if (!lightbox?.classList.contains('open')) showReview(reviewIndex + 1); }, 12000);
 
         ['pointerdown', 'focusin'].forEach(eventType => {
             reviewsCarousel.addEventListener(eventType, () => {
@@ -247,4 +253,39 @@ if (reviewsCarousel) {
             }, { once: true });
         });
     }
-}
+});
+
+/* ---------- Быстрая связь и кнопка «Наверх» ---------- */
+const quickContact = document.querySelector('.quick-contact');
+const quickToggle = quickContact?.querySelector('.quick-toggle');
+const quickOptions = quickContact?.querySelector('.quick-options');
+const setQuickOpen = open => {
+    if (!quickToggle || !quickOptions) return;
+    quickOptions.hidden = !open;
+    quickContact.closest('.floating-tools')?.classList.toggle('contact-open', open);
+    quickToggle.setAttribute('aria-expanded', String(open));
+    quickToggle.setAttribute('aria-label', open ? 'Закрыть способы связи' : 'Выбрать способ связи');
+};
+quickToggle?.addEventListener('click', () => setQuickOpen(quickOptions.hidden));
+document.addEventListener('click', event => {
+    if (quickContact && !quickContact.contains(event.target)) setQuickOpen(false);
+});
+quickOptions?.addEventListener('click', event => {
+    if (event.target.closest('a')) { setQuickOpen(false); quickToggle.focus(); }
+});
+document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && quickOptions && !quickOptions.hidden) {
+        setQuickOpen(false);
+        quickToggle.focus();
+    }
+});
+const backToTop = document.querySelector('.back-to-top');
+const syncBackToTop = () => { if (backToTop) backToTop.hidden = window.scrollY < 600; };
+window.addEventListener('scroll', syncBackToTop, { passive: true });
+syncBackToTop();
+backToTop?.addEventListener('click', () => {
+    setQuickOpen(false);
+    window.scrollTo({ top: 0, behavior: reduced ? 'instant' : 'smooth' });
+    // После возврата кнопка скрывается, поэтому переносим фокус на логотип.
+    document.querySelector('.header .brand')?.focus({ preventScroll: true });
+});
