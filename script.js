@@ -16,6 +16,9 @@ window.addEventListener('scroll', syncHeader, { passive: true });
 
 const menuButton = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.navlinks');
+const syncMenuGeometry = () => {
+    header?.style.setProperty('--menu-top', `${header.getBoundingClientRect().bottom}px`);
+};
 
 const closeMenu = () => {
     nav?.classList.remove('open');
@@ -34,15 +37,18 @@ menuButton?.addEventListener('click', () => {
     menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
     menuButton.textContent = open ? 'Закрыть' : 'Меню';
     document.body.classList.toggle('menu-open', open);
+    if (open) syncMenuGeometry();
 });
 
 nav?.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMenu));
 
 window.addEventListener('resize', () => {
+    syncMenuGeometry();
     if (window.innerWidth > 980) {
         closeMenu();
     }
 });
+if (header) new ResizeObserver(syncMenuGeometry).observe(header);
 
 /* ---------- Активный раздел в меню ---------- */
 
@@ -175,8 +181,26 @@ let lastFocus = null;
 let imageIndex = 0;
 let viewerGroup = [];
 let inertElements = [];
+let photoScale = 1, photoX = 0, photoY = 0;
+const photoPointers = new Map();
+let photoGesture = null;
+let photoMoved = false;
+const paintPhotoZoom = () => {
+    const maxX = lightboxImage.offsetWidth * (photoScale - 1) / 2;
+    const maxY = lightboxImage.offsetHeight * (photoScale - 1) / 2;
+    photoX = Math.max(-maxX, Math.min(maxX, photoX));
+    photoY = Math.max(-maxY, Math.min(maxY, photoY));
+    lightboxImage.style.transform = `translate(${photoX}px, ${photoY}px) scale(${photoScale})`;
+    lightboxImage.classList.toggle('is-zoomed', photoScale > 1);
+};
+const resetPhotoZoom = () => {
+    photoScale = 1; photoX = 0; photoY = 0;
+    photoPointers.clear(); photoGesture = null;
+    if (lightboxImage) paintPhotoZoom();
+};
 
 const displayImage = index => {
+    resetPhotoZoom();
     imageIndex = (index + viewerGroup.length) % viewerGroup.length;
     const item = viewerGroup[imageIndex];
     const source = item.querySelector('img');
@@ -192,6 +216,7 @@ const displayImage = index => {
 const closeLightbox = () => {
     if (!lightbox?.classList.contains('open')) return;
     lightbox.classList.remove('open');
+    resetPhotoZoom();
     lightbox.setAttribute('aria-hidden', 'true');
     document.body.classList.remove('lightbox-open');
     inertElements.forEach(element => { element.inert = false; });
@@ -234,8 +259,53 @@ lightbox?.querySelector('.lightbox-close')?.addEventListener('click', closeLight
 lightbox?.querySelector('.lightbox-prev')?.addEventListener('click', () => displayImage(imageIndex - 1));
 lightbox?.querySelector('.lightbox-next')?.addEventListener('click', () => displayImage(imageIndex + 1));
 lightboxImage?.addEventListener('click', () => {
+    if (photoMoved || photoScale > 1) return;
     if (viewerGroup.length > 1) displayImage(imageIndex + 1);
 });
+const beginPhotoGesture = () => {
+    const points = [...photoPointers.values()];
+    if (!points.length) { photoGesture = null; return; }
+    const [a, b] = points;
+    photoGesture = { x: a.x, y: a.y, scale: photoScale, panX: photoX, panY: photoY };
+    if (b) {
+        const rect = lightboxImage.getBoundingClientRect();
+        photoGesture.distance = Math.hypot(b.x - a.x, b.y - a.y);
+        photoGesture.x = (a.x + b.x) / 2;
+        photoGesture.y = (a.y + b.y) / 2;
+        photoGesture.centerX = rect.left + rect.width / 2 - photoX;
+        photoGesture.centerY = rect.top + rect.height / 2 - photoY;
+    }
+};
+lightboxImage?.addEventListener('pointerdown', event => {
+    if (event.pointerType === 'mouse' && event.button !== 0) return;
+    if (!photoPointers.size) photoMoved = false;
+    photoPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    lightboxImage.setPointerCapture(event.pointerId);
+    if (photoPointers.size > 1) photoMoved = true;
+    beginPhotoGesture();
+});
+lightboxImage?.addEventListener('pointermove', event => {
+    if (!photoPointers.has(event.pointerId) || !photoGesture) return;
+    photoPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+    const [a, b] = [...photoPointers.values()];
+    const g = photoGesture;
+    if (b && g.distance) {
+        photoScale = Math.max(1, Math.min(4, g.scale * Math.hypot(b.x - a.x, b.y - a.y) / g.distance));
+        const ratio = photoScale / g.scale;
+        photoX = (a.x + b.x) / 2 - g.centerX - (g.x - g.centerX - g.panX) * ratio;
+        photoY = (a.y + b.y) / 2 - g.centerY - (g.y - g.centerY - g.panY) * ratio;
+    } else if (photoScale > 1) {
+        photoX = g.panX + a.x - g.x;
+        photoY = g.panY + a.y - g.y;
+    }
+    if (Math.hypot(a.x - g.x, a.y - g.y) > 6) photoMoved = true;
+    paintPhotoZoom();
+});
+['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => lightboxImage?.addEventListener(type, event => {
+    photoPointers.delete(event.pointerId);
+    beginPhotoGesture();
+}));
+window.addEventListener('resize', resetPhotoZoom);
 lightbox?.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
 document.addEventListener('keydown', event => {
     if (event.key === 'Escape') { closeLightbox(); closeMenu(); }
@@ -255,6 +325,9 @@ document.addEventListener('keydown', event => {
 document.querySelectorAll('[data-review-carousel]').forEach(reviewsCarousel => {
     const slides = Array.from(reviewsCarousel.querySelectorAll('.review-slide'));
     const counter = reviewsCarousel.querySelector('.review-counter');
+    const track = reviewsCarousel.querySelector('.reviews-track, .screenshot-slides');
+    if (!track || !slides.length) return;
+    reviewsCarousel.classList.add('reviews-scroll-ready');
     let reviewIndex = 0;
     let autoplayTimer = null;
 
@@ -262,6 +335,7 @@ document.querySelectorAll('[data-review-carousel]').forEach(reviewsCarousel => {
         reviewIndex = (next + slides.length) % slides.length;
         slides.forEach((slide, index) => slide.classList.toggle('is-active', index === reviewIndex));
         counter.textContent = `${reviewIndex + 1} / ${slides.length}`;
+        track.scrollTo({ left: slides[reviewIndex].offsetLeft - slides[0].offsetLeft, behavior: reduced ? 'instant' : 'smooth' });
     };
 
     reviewsCarousel.querySelector('[data-review-prev]')?.addEventListener('click', () => showReview(reviewIndex - 1));
@@ -279,19 +353,35 @@ document.querySelectorAll('[data-review-carousel]').forEach(reviewsCarousel => {
         }
     });
 
-    let startX = 0;
-
-    reviewsCarousel.addEventListener('pointerdown', event => {
-        startX = event.clientX;
-    });
-
-    reviewsCarousel.addEventListener('pointerup', event => {
-        const delta = event.clientX - startX;
-
-        if (Math.abs(delta) > 42) {
-            showReview(reviewIndex + (delta < 0 ? 1 : -1));
-        }
-    });
+    let settleTimer;
+    let touching = false;
+    const settle = () => {
+        clearTimeout(settleTimer);
+        settleTimer = setTimeout(() => {
+            if (touching) return;
+            const left = slides[reviewIndex].offsetLeft - slides[0].offsetLeft;
+            if (Math.abs(track.scrollLeft - left) > 1) {
+                track.scrollTo({ left, behavior: reduced ? 'instant' : 'smooth' });
+            }
+        }, 160);
+    };
+    track.addEventListener('pointerdown', () => { touching = true; });
+    ['pointerup', 'pointercancel'].forEach(type => track.addEventListener(type, () => {
+        touching = false;
+        settle();
+    }));
+    // Native touch scrolling follows the finger and retains momentum on phones.
+    track.addEventListener('scroll', () => {
+        settle();
+        const index = Math.max(0, Math.min(slides.length - 1, Math.round(track.scrollLeft / track.clientWidth)));
+        if (index === reviewIndex) return;
+        reviewIndex = index;
+        slides.forEach((slide, i) => slide.classList.toggle('is-active', i === index));
+        counter.textContent = `${index + 1} / ${slides.length}`;
+    }, { passive: true });
+    new ResizeObserver(() => {
+        track.scrollTo({ left: slides[reviewIndex].offsetLeft - slides[0].offsetLeft, behavior: 'instant' });
+    }).observe(track);
 
     /* Автопрокрутка отключена для тех, кто предпочитает меньше анимации */
     if (!reduced && slides.length > 1 && reviewsCarousel.dataset.autoplay !== 'false') {
@@ -382,7 +472,12 @@ document.querySelectorAll('[data-project-viewer]').forEach(viewer => {
             thumb.setAttribute('aria-pressed', String(i === current));
         });
         counter.textContent = `${current + 1} из ${thumbs.length}`;
-        strip.scrollTo({ top: thumbs[current].offsetTop - (strip.clientHeight - thumbs[current].offsetHeight) / 2, behavior: reduced ? 'instant' : 'smooth' });
+        const horizontal = getComputedStyle(strip).flexDirection === 'row';
+        strip.scrollTo({
+            left: horizontal ? thumbs[current].getBoundingClientRect().left - strip.getBoundingClientRect().left + strip.scrollLeft - (strip.clientWidth - thumbs[current].offsetWidth) / 2 : 0,
+            top: horizontal ? 0 : thumbs[current].getBoundingClientRect().top - strip.getBoundingClientRect().top + strip.scrollTop - (strip.clientHeight - thumbs[current].offsetHeight) / 2,
+            behavior: reduced ? 'instant' : 'smooth'
+        });
     };
     thumbs.forEach((thumb, index) => thumb.addEventListener('click', () => show(index)));
     viewer.querySelector('[data-gallery-prev]')?.addEventListener('click', () => show(current - 1));
@@ -502,7 +597,11 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
     };
     stage.addEventListener('pointerup', finishDrag);
     stage.addEventListener('pointercancel', finishDrag);
-    stage.addEventListener('lostpointercapture', finishDrag);
+    stage.addEventListener('lostpointercapture', event => {
+        // Touch starts with implicit capture on the image/link. Its loss bubbles
+        // when capture moves to the stage; only the stage losing capture ends a drag.
+        if (event.target === stage) finishDrag(event);
+    });
     stage.addEventListener('pointerleave', event => {
         if (start && !start.dragging) finishDrag(event);
     });
@@ -765,4 +864,22 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         });
         headings.clear();
     });
+})();
+/* Keep one live carousel, relocating it below the hero heading on phones. */
+(() => {
+    const carousel = document.querySelector('.home-projects [data-coverflow]');
+    const heading = document.querySelector('.hero-copy h1');
+    if (!carousel || !heading) return;
+    const origin = document.createComment('Portfolio carousel position');
+    carousel.before(origin);
+    const slot = document.createElement('div');
+    slot.className = 'home-projects mobile-hero-gallery';
+    heading.after(slot);
+    const mobile = window.matchMedia('(max-width: 600px)');
+    const relocate = () => {
+        if (mobile.matches) slot.append(carousel);
+        else origin.after(carousel);
+    };
+    mobile.addEventListener('change', relocate);
+    relocate();
 })();

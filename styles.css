@@ -2168,16 +2168,16 @@ button {
   /* Мобильное меню — во всю ширину */
 
   .navlinks.open {
-    position: fixed;
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    top: 124px;
+    top: 100%;
     left: 0;
     right: 0;
-    height: calc(100vh - 124px);
-    height: calc(100dvh - 124px);
+    height: calc(100vh - var(--menu-top, 85px));
+    height: calc(100dvh - var(--menu-top, 85px));
     background: var(--paper);
     padding: 20px 28px 40px;
     z-index: 90;
@@ -2375,9 +2375,6 @@ button {
   }
 
   .navlinks.open {
-    top: 114px;
-    height: calc(100vh - 114px);
-    height: calc(100dvh - 114px);
     padding: 12px 22px 36px;
   }
 
@@ -2454,6 +2451,10 @@ button {
     padding: 30px 24px 34px;
   }
 
+  .cta-band .actions {
+    margin-top: 28px;
+  }
+
   .cta-band .actions .btn {
     width: 100%;
   }
@@ -2527,8 +2528,21 @@ button {
 
   .footer-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 12px;
   }
+
+  .footer-grid p,
+  .footer-grid h4,
+  .footer .brand-identity small,
+  .footer-grid a:not(.brand):not([href^="tel:"]),
+  .footer-bottom > span:last-child,
+  .footer-bottom .footer-detail {
+    display: none;
+  }
+
+  .footer .brand { margin-bottom: 8px; }
+  .footer-grid a:not(.brand),
+  .footer-grid > div > span { margin: 0; }
 
   .footer-bottom {
     display: block;
@@ -2700,6 +2714,7 @@ button {
 .quick-options a:hover { background: var(--paper); color: var(--moss); }
 .quick-options svg { flex: 0 0 36px; width: 36px; height: 36px; padding: 9px; border-radius: 50%; background: var(--moss); color: var(--white-warm); }
 .menu-open .floating-tools { visibility: hidden; }
+.menu-open .mobile-bar { display: none; }
 @media (max-width: 600px) {
     .floating-tools { right: 14px; bottom: calc(82px + env(safe-area-inset-bottom)); gap: 10px; }
     .floating-tools button { width: 48px; height: 48px; }
@@ -3077,7 +3092,34 @@ button {
     .project-viewer-layout .project-stage-next { right: max(0px, calc((100% - var(--display-width, 100%)) / 2 - 34px)); }
 }
 
-.lightbox img { cursor: pointer; }
+.lightbox img { cursor: grab; touch-action: none; user-select: none; -webkit-user-drag: none; transform-origin: center; }
+.lightbox img.is-zoomed { cursor: move; }
+.lightbox :is(button, .lightbox-caption) { z-index: 2; }
+@media (max-width: 600px) {
+    .project-viewer-section { padding-block: 20px; }
+    .project-viewer-heading { margin-bottom: 16px; gap: 10px; }
+    .project-viewer-layout { grid-template-columns: minmax(0, 1fr); height: auto; }
+    .project-viewer-layout .project-stage {
+        grid-column: 1; grid-row: 1; height: auto;
+        width: calc(100% + 32px); margin-inline: -16px;
+    }
+    .project-viewer-layout .project-stage-image { display: flex; height: auto; padding: 0; }
+    .project-viewer-layout .project-stage-image img {
+        width: auto; height: auto; max-width: 100%;
+        max-height: min(640px, calc(100svh - 170px));
+        object-fit: contain;
+    }
+    .project-viewer-layout .project-stage-prev { left: 10px; }
+    .project-viewer-layout .project-stage-next { right: 10px; }
+    .project-viewer-layout .project-zoom-label { top: 10px; right: 10px; }
+    .project-viewer-layout .project-thumb-rail { grid-column: 1; grid-row: 2; height: auto; min-width: 0; }
+    .project-viewer-layout .project-thumbnails {
+        flex-direction: row; height: auto; overflow-x: auto; overflow-y: hidden;
+        padding: 2px 0 10px; scroll-snap-type: x proximity;
+    }
+    .project-viewer-layout .project-thumbnail { width: 64px; }
+    .project-thumbnails::-webkit-scrollbar { height: 4px; }
+}
 
 /* Editorial project selection: photographs first, quiet controls below. */
 .home-projects .section-head { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); border: 0; }
@@ -3536,6 +3578,80 @@ button {
 .home-page .home-projects:has(.is-ready) .section-head.light-heading { padding-top: 0; }
 @media (max-width: 600px) {
   .home-page .light-heading .kicker { margin-bottom: 22px; }
+}
+
+/* Native review tracks follow touch gestures with momentum and snap to a review. */
+.reviews-scroll-ready { touch-action: auto; min-width: 0; }
+.reviews-scroll-ready :is(.reviews-track, .screenshot-slides) {
+  position: relative;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.reviews-scroll-ready :is(.reviews-track, .screenshot-slides)::-webkit-scrollbar { display: none; }
+.reviews-scroll-ready .review-slide {
+  display: block;
+  flex: 0 0 100%;
+  min-width: 0;
+  scroll-snap-align: start;
+  animation: none;
+}
+
+@media (max-width: 600px) {
+  .home-page .mobile-hide,
+  .home-page .source-strip,
+  .home-page .marquee,
+  .home-page .hero-ambient { display: none; }
+  .home-page .fact-rail { grid-template-columns: 1fr; }
+}
+
+.mobile-hero-gallery,
+.mobile-askona { display: none; }
+@media (max-width: 600px) {
+  .home-page .hero-meta .mobile-askona { display: block; flex-basis: 100%; }
+  .home-page .hero-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+    font-size: .85rem;
+    line-height: 1.5;
+    background: var(--white-warm);
+    color: var(--muted);
+    border-top: 0;
+    margin-inline: -28px;
+    padding: 28px;
+  }
+  .home-page .hero-meta > span:first-child b,
+  .home-page .hero-meta .mobile-askona b {
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 6.5vw, 1.9rem);
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--moss);
+  }
+  .home-page .fact-rail { display: none; }
+  .home-page main > section.home-projects { display: none; }
+  .home-page .mobile-hero-gallery,
+  .home-page .mobile-hero-gallery:has(.project-coverflow.is-ready) {
+    display: block;
+    height: auto;
+    min-height: 0;
+    margin: 24px -28px;
+    padding: 20px 0 0;
+    background: transparent;
+    color: var(--paper);
+  }
+  .mobile-hero-gallery .project-coverflow.is-ready {
+    height: clamp(380px, 115vw, 520px);
+    grid-template-rows: minmax(0, 1fr) auto;
+  }
+  .mobile-hero-gallery .coverflow-footer { display: none; }
 }
 
 /* Masks follow existing heading line breaks without changing typography. */

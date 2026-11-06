@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..600&family=Prata&display=swap">
-    <link rel="stylesheet" href="styles.css?v=20261106-slower-marquee">
+    <link rel="stylesheet" href="styles.css?v=20261106-gallery-height-limit">
 </head>
 <body class="home-page original-hero">
     <svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;pointer-events:none" xmlns="http://www.w3.org/2000/svg">
@@ -29,7 +29,7 @@
 
     <div class="source-strip">
         <div class="container">
-            <span>Тула, Москва, проекты онлайн</span>
+            <span>Тула, Москва — проекты онлайн и офлайн</span>
             <span>Дизайн квартир и домов</span>
         </div>
     </div>
@@ -61,16 +61,17 @@
             <img class="hero-backdrop" src="assets/client/hero-olive-living-room.webp" alt="" aria-hidden="true" width="1122" height="1402">
             <div class="container hero-inner">
                 <div class="hero-copy">
-                    <p class="eyebrow">Нова Дом · Тула / Москва / онлайн</p>
+                    <p class="eyebrow"><span class="mobile-hide">Нова Дом · </span>Тула / Москва / онлайн</p>
                     <h1>Дом, собранный<br><em>в деталях</em></h1>
                     <p class="hero-lede">Дизайн интерьеров квартир и домов. Планировка, визуализация, подбор материалов и авторский надзор на объекте.</p>
                     <div class="hero-actions">
                         <a class="btn light" href="https://t.me/Anna_Tsareva" target="_blank" rel="noopener">Обсудить проект <span class="btn-arrow">→</span></a>
-                        <a class="btn ghost" href="portfolio.html">Смотреть проекты</a>
+                        <a class="btn ghost mobile-hide" href="portfolio.html">Смотреть проекты</a>
                     </div>
                     <div class="hero-meta">
                         <span><b>Более 15 лет</b> опыта</span>
-                        <span>Офис: <b>Тула</b>, Красноармейский проспект, 7</span>
+                        <span class="mobile-askona"><b>Askona</b> победитель конкурса · 2026</span>
+                        <span class="mobile-hide">Офис: <b>Тула</b>, Красноармейский проспект, 7</span>
                     </div>
                 </div>
                 <figure class="hero-figure hero-ambient" data-hero-ambient>
@@ -88,9 +89,9 @@
 
         <div class="fact-rail">
             <div class="fact"><strong>Askona</strong><span>победитель конкурса · 2026</span></div>
-            <div class="fact"><strong>Тула</strong><span>офис студии</span></div>
-            <div class="fact"><strong>Москва</strong><span>встречи и проекты</span></div>
-            <div class="fact"><strong>Онлайн</strong><span>другие регионы</span></div>
+            <div class="fact mobile-hide"><strong>Тула</strong><span>офис студии</span></div>
+            <div class="fact mobile-hide"><strong>Москва</strong><span>встречи и проекты</span></div>
+            <div class="fact mobile-hide"><strong>Онлайн</strong><span>другие регионы</span></div>
         </div>
 
         <div class="marquee" aria-hidden="true">
@@ -498,7 +499,7 @@
                 </div>
             </div>
             <div class="footer-bottom">
-                <span>© <span data-year></span> Нова Дом · студия дизайна интерьеров</span>
+                <span>© <span data-year></span> Нова Дом<span class="footer-detail"> · студия дизайна интерьеров</span></span>
                 <span>Дизайн квартир и домов</span>
             </div>
         </div>
@@ -521,6 +522,6 @@
         </div>
     </div>
 
-    <script src="script.js?v=20261106-cinema-all-pages"></script>
+    <script src="script.js?v=20261106-gallery-pinch"></script>
 </body>
 </html>
