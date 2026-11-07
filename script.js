@@ -563,6 +563,29 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
     });
     let start = null;
     let suppressClick = false;
+    let wheelDelta = 0;
+    let wheelTime = 0;
+    let wheelChangedAt = -Infinity;
+    stage.addEventListener('wheel', event => {
+        // Preserve browser zoom and let touch gestures finish independently.
+        if (event.ctrlKey || start || !event.deltaX && !event.deltaY) return;
+        event.preventDefault();
+        const now = performance.now();
+        const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? stage.clientWidth : 1;
+        const delta = (Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY) * unit;
+        if (now - wheelTime > 180 || Math.sign(delta) !== Math.sign(wheelDelta)) wheelDelta = 0;
+        wheelTime = now;
+        // A trackpad's momentum must not race through several projects.
+        if (now - wheelChangedAt < (reduced ? 200 : 700)) {
+            wheelDelta = 0;
+            return;
+        }
+        wheelDelta += delta;
+        if (Math.abs(wheelDelta) < 40) return;
+        show(current + Math.sign(wheelDelta));
+        wheelDelta = 0;
+        wheelChangedAt = now;
+    }, { passive: false });
     stage.addEventListener('pointerdown', event => {
         if (!event.isPrimary || event.button !== 0 || start) return;
         suppressClick = false;
@@ -581,8 +604,15 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
         }
         const card = cards[current];
         const offset = parseFloat(getComputedStyle(carousel).getPropertyValue('--cover-offset')) / 100;
-        const step = card.offsetWidth * offset;
-        render(Math.max(-1, Math.min(1, dx / Math.max(1, step))));
+        const step = Math.max(1, card.offsetWidth * offset);
+        // Rebase the gesture after every full card, keeping the mouse captured.
+        // The remaining distance continues to move the next card immediately.
+        const passed = Math.trunc(dx / step);
+        if (passed) {
+            start.x += passed * step;
+            show(current - passed % cards.length);
+        }
+        render((event.clientX - start.x) / step);
     });
     const finishDrag = event => {
         if (!start || event.pointerId !== start.id) return;
