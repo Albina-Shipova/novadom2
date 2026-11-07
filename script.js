@@ -942,6 +942,57 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
             step(event.key === 'ArrowRight' ? 1 : -1);
         }
     });
+    // Touch uses native scrolling with momentum; mouse and pen follow the pointer.
+    let drag = null;
+    let suppressClick = false;
+    track.addEventListener('pointerdown', event => {
+        suppressClick = false;
+        if (event.pointerType === 'touch' || event.button !== 0) return;
+        drag = { id: event.pointerId, x: event.clientX, y: event.clientY, left: track.scrollLeft, lastX: event.clientX, time: performance.now(), velocity: 0, active: false };
+    });
+    track.addEventListener('pointermove', event => {
+        if (!drag || event.pointerId !== drag.id) return;
+        const dx = event.clientX - drag.x;
+        if (!drag.active) {
+            if (Math.abs(dx) < 6) return;
+            if (Math.abs(event.clientY - drag.y) > Math.abs(dx)) { drag = null; return; }
+            drag.active = true;
+            track.classList.add('is-dragging');
+            track.setPointerCapture(event.pointerId);
+        }
+        event.preventDefault();
+        const now = performance.now();
+        drag.velocity = (drag.lastX - event.clientX) / Math.max(1, now - drag.time);
+        drag.lastX = event.clientX;
+        drag.time = now;
+        track.scrollLeft = drag.left - dx;
+    });
+    const finish = event => {
+        if (!drag || event.pointerId !== drag.id) return;
+        const gesture = drag;
+        drag = null;
+        track.classList.remove('is-dragging');
+        if (!gesture.active) return;
+        suppressClick = true;
+        if (track.hasPointerCapture(event.pointerId)) track.releasePointerCapture(event.pointerId);
+        const card = track.querySelector('.credential-card');
+        const gap = parseFloat(getComputedStyle(track).gap) || 0;
+        const stride = card.getBoundingClientRect().width + gap;
+        const momentum = event.type === 'pointerup' && performance.now() - gesture.time < 100 ? Math.max(-stride, Math.min(stride, gesture.velocity * 160)) : 0;
+        const destination = Math.round((track.scrollLeft + momentum) / stride) * stride;
+        track.scrollTo({ left: Math.max(0, Math.min(track.scrollWidth - track.clientWidth, destination)), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    };
+    track.addEventListener('pointerup', finish);
+    track.addEventListener('pointercancel', finish);
+    track.addEventListener('lostpointercapture', finish);
+    window.addEventListener('pointerup', finish);
+    track.addEventListener('click', event => {
+        if (!suppressClick || event.detail === 0) return;
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        suppressClick = false;
+    }, true);
+    track.addEventListener('dragstart', event => event.preventDefault());
     new ResizeObserver(update).observe(track);
     update();
 })();
