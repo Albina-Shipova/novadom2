@@ -246,7 +246,7 @@ viewerItems.forEach(item => {
     }
     const open = () => {
         if (!lightbox || !lightboxImage) return;
-        const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid');
+        const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid, .about-credentials');
         const items = group ? Array.from(group.querySelectorAll('[data-viewer]')) : [item];
         openImageViewer(items, items.indexOf(item), item);
     };
@@ -454,7 +454,7 @@ document.querySelectorAll('[data-project-viewer]').forEach(viewer => {
     window.addEventListener('resize', syncPhotoBounds);
     if ('ResizeObserver' in window) new ResizeObserver(syncPhotoBounds).observe(stage);
     syncPhotoBounds();
-    let current = Math.min(1, thumbs.length - 1);
+    let current = Math.min(Number(viewer.dataset.initialPhoto ?? 1), thumbs.length - 1);
     const show = index => {
         current = (index + thumbs.length) % thumbs.length;
         const source = thumbs[current].querySelector('img');
@@ -912,4 +912,36 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     };
     mobile.addEventListener('change', relocate);
     relocate();
+})();
+
+/* Дипломы: стрелки, клавиатура и нативный свайп */
+(() => {
+    const track = document.querySelector('.about-credentials');
+    if (!track) return;
+    const controls = track.parentElement.querySelector('.credentials-controls');
+    const prev = controls?.querySelector('[data-credentials-prev]');
+    const next = controls?.querySelector('[data-credentials-next]');
+    if (!prev || !next) return;
+    controls.hidden = false;
+    const update = () => {
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 2;
+    };
+    const step = direction => {
+        const card = track.querySelector('.credential-card');
+        const gap = parseFloat(getComputedStyle(track).gap) || 0;
+        track.scrollBy({ left: direction * (card.getBoundingClientRect().width + gap), behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    };
+    prev.addEventListener('click', () => step(-1));
+    next.addEventListener('click', () => step(1));
+    track.addEventListener('scroll', update, { passive: true });
+    track.addEventListener('keydown', event => {
+        if (event.target !== track) return;
+        if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+            event.preventDefault();
+            step(event.key === 'ArrowRight' ? 1 : -1);
+        }
+    });
+    new ResizeObserver(update).observe(track);
+    update();
 })();

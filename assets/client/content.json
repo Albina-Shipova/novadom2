@@ -79,7 +79,7 @@
       "period": "2025",
       "category": "room",
       "description": "Панно, мягкие оттенки и пространство для игры и отдыха.",
-      "cover": 0
+      "cover": 7
     },
     {
       "id": "project-02",
@@ -203,7 +203,7 @@
       "category": "apartment",
       "description": "Классические детали, глубокие цвета и выразительные акценты. Проект — победитель конкурса Askona.",
       "articleUrl": "https://www.askona.ru/blog/article/interer-vo-frantsuzskom-stile-kvartira-dlya-tsenitelnitsy-antikvariata/",
-      "cover": 4
+      "cover": 9
     },
     {
       "id": "project-03",
@@ -393,7 +393,7 @@
       "period": "2025",
       "category": "apartment",
       "description": "Светлый интерьер с мягкими фактурами и спокойными цветовыми сочетаниями.",
-      "cover": 0
+      "cover": 2
     },
     {
       "id": "project-05",
@@ -516,7 +516,7 @@
       "period": "Москва · 2026",
       "category": "apartment",
       "description": "Интерьер городской квартиры: жилые комнаты, хранение и ванные в единой концепции.",
-      "cover": 14
+      "cover": 5
     },
     {
       "id": "project-06",
@@ -713,7 +713,7 @@
       "period": "2025–2026",
       "category": "apartment",
       "description": "Пространство для семьи: индивидуальные комнаты и общие зоны.",
-      "cover": 8
+      "cover": 4
     },
     {
       "id": "project-08",
@@ -1314,7 +1314,7 @@
       "period": "2026",
       "category": "apartment",
       "description": "Светлые пространства и продуманная организация повседневной жизни.",
-      "cover": 0
+      "cover": 2
     },
     {
       "id": "project-13",
@@ -1437,7 +1437,7 @@
       "period": "2026–2027",
       "category": "apartment",
       "description": "Индивидуальный интерьер городской квартиры.",
-      "cover": 6
+      "cover": 8
     },
     {
       "id": "project-14",
@@ -1560,7 +1560,7 @@
       "period": "HighWay Studio",
       "category": "apartment",
       "description": "Фотосъёмка интерьера. Визуализация для проекта HighWay Studio; материалы предоставлены клиентом.",
-      "cover": 0
+      "cover": 1
     },
     {
       "id": "project-15",
@@ -1722,7 +1722,7 @@
       "period": "2025",
       "category": "room",
       "description": "Камерная палитра и выразительные фактуры в ванной комнате.",
-      "cover": 0
+      "cover": 2
     },
     {
       "id": "project-17",
@@ -1831,7 +1831,7 @@
       "period": "2026",
       "category": "house",
       "description": "Современная концепция загородного интерьера.",
-      "cover": 0
+      "cover": 4
     },
     {
       "id": "project-18",
@@ -1842,34 +1842,34 @@
           "source": "/проекты/дом ТО 2026-2027 мужской/001_Interactive LightMix копия (2).jpg",
           "width": 1280,
           "height": 1280,
-          "alt": "Дом в Тульской области — кадр 1"
+          "alt": "Ванная комната в Тульской области — кадр 1"
         },
         {
           "src": "assets/client/project-18-02.webp",
           "source": "/проекты/дом ТО 2026-2027 мужской/002_Interactive LightMix копия (6).jpg",
           "width": 1280,
           "height": 1280,
-          "alt": "Дом в Тульской области — кадр 2"
+          "alt": "Ванная комната в Тульской области — кадр 2"
         },
         {
           "src": "assets/client/project-18-03.webp",
           "source": "/проекты/дом ТО 2026-2027 мужской/003_Interactive LightMix копия (5).jpg",
           "width": 1152,
           "height": 1280,
-          "alt": "Дом в Тульской области — кадр 3"
+          "alt": "Ванная комната в Тульской области — кадр 3"
         },
         {
           "src": "assets/client/project-18-04.webp",
           "source": "/проекты/дом ТО 2026-2027 мужской/004_1_Interactive LightMix копия.jpg",
           "width": 1280,
           "height": 1280,
-          "alt": "Дом в Тульской области — кадр 4"
+          "alt": "Ванная комната в Тульской области — кадр 4"
         }
       ],
-      "title": "Дом в Тульской области",
+      "title": "Ванная комната в Тульской области",
       "period": "2026–2027",
-      "category": "house",
-      "description": "Пространство загородного дома в сдержанной палитре.",
+      "category": "room",
+      "description": "Ванная комната с душевой зоной, деревянной тумбой и зеркалом с подсветкой в тёплой нейтральной палитре.",
       "cover": 0
     },
     {

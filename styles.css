@@ -557,7 +557,7 @@ button {
 
 .fact-rail {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1fr 3fr;
   background: var(--card);
   border-bottom: 1px solid var(--line);
 }
@@ -2712,6 +2712,7 @@ button {
 .quick-options { position: absolute; right: 0; bottom: calc(100% + 14px); width: 236px; display: grid; gap: 8px; }
 .quick-options a { display: flex; align-items: center; gap: 12px; min-height: 54px; padding: 8px 16px 8px 9px; border-radius: 30px; background: var(--white-warm); box-shadow: 0 4px 20px rgba(26,25,21,.12); color: var(--ink); font-size: .8rem; }
 .quick-options a:hover { background: var(--paper); color: var(--moss); }
+.quick-options .messenger-icon { flex: 0 0 36px; width: 36px; height: 36px; object-fit: contain; }
 .quick-options svg { flex: 0 0 36px; width: 36px; height: 36px; padding: 9px; border-radius: 50%; background: var(--moss); color: var(--white-warm); }
 .menu-open .floating-tools { visibility: hidden; }
 .menu-open .mobile-bar { display: none; }
@@ -3661,3 +3662,15 @@ button {
 @media (prefers-reduced-motion: reduce) {
   .cinema-line { overflow: visible; }
 }
+
+/* Листание дипломов и сертификатов */
+.credentials-heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 20px; }
+.about-credentials-row .credentials-heading .about-credentials-title { margin: 0; }
+.credentials-controls { display: flex; gap: 10px; }
+.credentials-controls[hidden] { display: none; }
+.credentials-controls button { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: inherit; cursor: pointer; font-size: 1.3rem; }
+.credentials-controls button:disabled { opacity: .3; cursor: default; }
+.about-credentials-row .about-credentials { scroll-snap-type: x mandatory; }
+.about-credentials-row .credential-card { flex: 0 0 calc((100% - 28px) / 3); }
+@media (max-width: 980px) { .about-credentials-row .credential-card { flex-basis: calc((100% - 14px) / 2); } }
+@media (max-width: 600px) { .about-credentials-row .credential-card { flex-basis: 85%; } }
