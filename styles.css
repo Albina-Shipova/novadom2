@@ -2907,8 +2907,8 @@ button {
     .project-back { margin-bottom: 22px; }
     .project-story h1 { font-size: 1.95rem; margin-bottom: 20px; }
     .project-story-copy > p { font-size: .84rem; }
-    .project-gallery-link { margin-top: 18px; padding: 8px 0; }
-    .project-story-image { height: 300px; }
+    .project-gallery-link,
+    .project-story-image { display: none; }
     .project-viewer-section { padding: 30px 0; }
     .project-viewer-heading, .project-related-heading { gap: 12px; margin-bottom: 18px; }
     .gallery-show-all { font-size: .69rem; }
@@ -3106,8 +3106,11 @@ button {
 .lightbox img.is-zoomed { cursor: move; }
 .lightbox :is(button, .lightbox-caption) { z-index: 2; }
 @media (max-width: 600px) {
-    .project-viewer-section { padding-block: 20px; }
-    .project-viewer-heading { margin-bottom: 16px; gap: 10px; }
+    .project-viewer-section { padding: 0 0 20px; background: var(--ink); color: var(--paper); }
+    .project-viewer-heading h2 { display: none; }
+    .project-viewer-actions [data-gallery-counter] { color: var(--paper); }
+    .project-viewer-layout .project-thumbnail.is-active { border-color: var(--brass-light); }
+    .project-viewer-heading { padding-top: 16px; margin-bottom: 16px; gap: 10px; }
     .project-viewer-layout { grid-template-columns: minmax(0, 1fr); height: auto; }
     .project-viewer-layout .project-stage {
         grid-column: 1; grid-row: 1; height: auto;
