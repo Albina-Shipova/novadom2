@@ -42,7 +42,7 @@
                 <div><strong>0</strong><span>ошибок локальной SEO-проверки</span></div>
             </section>
 
-            <nav class="report-nav" aria-label="Разделы отчёта"><a href="#completed">Выполненные работы</a><a href="#validation">Проверка</a><a href="#comparison">Сравнение с «Имидж Авто»</a><a href="#next">Следующие шаги</a></nav>
+            <nav class="report-nav" aria-label="Разделы отчёта"><a href="#completed">Выполненные работы</a><a href="#validation">Проверка</a><a href="#status">Текущий статус</a><a href="#next">Следующие шаги</a></nav>
 
             <section class="report-section" id="completed" aria-labelledby="completed-title">
                 <div class="report-section-heading"><p class="report-caption">Подготовка сайта</p><h2 id="completed-title">Что сделано<br>и для чего</h2></div>
@@ -90,17 +90,17 @@
                 </ul>
             </section>
 
-            <section class="report-section" id="comparison" aria-labelledby="comparison-title">
-                <div class="report-section-heading"><p class="report-caption">Проверка SEO, хостинга и скорости</p><h2 id="comparison-title">Текущий<br>статус</h2></div>
-                <p class="report-comparison-intro">Локальная SEO-подготовка сайта и результаты PageSpeed проверены отдельно от настроек опубликованного сервера. Оценки Lighthouse относятся к одной загрузке страницы и могут меняться при повторном замере.</p>
+            <section class="report-section" id="status" aria-labelledby="status-title">
+                <div class="report-section-heading"><p class="report-caption">Проверка SEO, хостинга и скорости</p><h2 id="status-title">Текущий<br>статус</h2></div>
+                <p class="report-comparison-intro">SEO-подготовка страниц, скорость загрузки и настройки опубликованного сервера проверены отдельно. Оценки Lighthouse отражают лабораторный замер одной загрузки и могут меняться при повторной проверке.</p>
                 <ul class="report-items report-comparison-items">
-                    <li><span class="report-tag report-tag-pending">Нужен код</span><div><h4>Подтверждение Яндекс Вебмастера</h4><p>Для «Имидж Авто» есть проверочный файл. Для «Нова Дом» нужен собственный код из кабинета владельца; чужой файл не переносился.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Нужен код</span><div><h4>Подтверждение Яндекс Вебмастера</h4><p>Для сайта «Нова Дом» требуется собственный код подтверждения из кабинета владельца.</p></div></li>
                     <li><span class="report-tag report-tag-pending">Нужен сервер</span><div><h4>Снять запрет индексирования</h4><p>PageSpeed 12 ноября отметил «Страница недоступна для индексации», SEO — 69/100. В прежней публичной проверке обнаружен X-Robots-Tag: noindex, nofollow. В HTML есть index, follow, но заголовок сервера имеет приоритет. Удалить запрет в активной конфигурации сайта и перепроверить HTTP-заголовки после публикации.</p></div></li>
                     <li><span class="report-tag report-tag-pending">Нужна публикация</span><div><h4>Доступность sitemap и SEO-файлов</h4><p>Локально robots.txt, sitemap.xml и llms.txt подготовлены; предыдущая публичная проверка получала для них 404. После загрузки файлов убедиться, что все три адреса возвращают 200, sitemap содержит 26 актуальных страниц, а /index.html перенаправляет на /.</p></div></li>
                     <li><span class="report-tag">HTTPS работает</span><div><h4>Переадресация и gzip</h4><p>По проверке 11 ноября HTTPS и редирект HTTP → HTTPS работают; главная уже приходит в gzip. Но CSS (136 КБ) и JavaScript (50 КБ) тогда возвращались без сжатия. В локальный nginx-пример добавлены gzip для текстовых ресурсов, проверка кеша HTML и годовое кеширование статических файлов с версионированными URL.</p></div></li>
                     <li><span class="report-tag report-tag-pending">Нужен контроль</span><div><h4>Производительность PageSpeed</h4><p>PageSpeed Insights, 12 ноября 2026: телефон — 72, FCP 2,3 с, LCP 5,9 с, TBT 0 мс, CLS 0; компьютер — 90, FCP 0,4 с, LCP 1,8 с, TBT 20 мс, CLS 0,011. Аудит показывает потенциал ускорения от настроек кеша, изображений и блокирующих запросов. Текущая версия оптимизирована: финальные оценки подтвердим контрольным прогоном после публикации вместе с настройками сервера.</p></div></li>
                     <li><span class="report-tag report-tag-pending">Нужен владелец</span><div><h4>Поисковые кабинеты</h4><p>Права сайта в Яндекс Вебмастере и Google Search Console не подтверждены. После разрешения индексации добавить sitemap, отправить важные страницы на переобход и затем проверить фактический обход. Позиции и реальный трафик в рамках этого отчёта не измерялись.</p></div></li>
-                    <li><span class="report-tag report-tag-pending">Отдельный этап</span><div><h4>Посадочные страницы услуг</h4><p>На сайте студии 26 содержательных страниц, услуги представлены разделом главной. Отдельные страницы под услуги и географические запросы пока не создавались. Их состав и тексты требуют отдельной проработки; количество страниц автосервиса не переносится на студию автоматически.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Отдельный этап</span><div><h4>Посадочные страницы услуг</h4><p>Сейчас услуги представлены разделом главной. Дополнительные страницы под направления услуг и географические запросы можно подготовить отдельным этапом на основе приоритетов студии.</p></div></li>
                 </ul>
                 <aside class="report-live-note"><strong>Ссылки на живые замеры</strong><p>Дата отчёта Lighthouse: 12 ноября 2026, 00:00 (UTC+3). <a href="https://pagespeed.web.dev/analysis/https-novadom-asama-site/v9kom2k76t?form_factor=mobile">PageSpeed, мобильная версия</a> · <a href="https://pagespeed.web.dev/analysis/https-novadom-asama-site/v9kom2k76t?form_factor=desktop">PageSpeed, компьютер</a>. Замеры выполняются в лабораторной среде Google и не являются полевыми Core Web Vitals.</p></aside>
             </section>
