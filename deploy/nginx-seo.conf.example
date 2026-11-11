@@ -1,8 +1,7 @@
 # Merge these directives into the existing nginx server block, then run nginx -t.
 # This file is a reviewed example, not a complete virtual host. Do not publish deploy/.
-# First remove the existing `add_header X-Robots-Tag "noindex, nofollow"` from
-# this site's effective configuration. If inherited from a proxy upstream, use
-# proxy_hide_header X-Robots-Tag (or fastcgi_hide_header for FastCGI) at that layer.
+# Remove the inherited `X-Robots-Tag: noindex, nofollow` at its source. If sent
+# by an upstream, use proxy_hide_header (or fastcgi_hide_header) in the right layer.
 # Do not remove noindex from other staging websites.
 
 location = /index.html {
@@ -12,7 +11,22 @@ location = /index.html {
 # Add to/merge with the existing root location; do not create a duplicate location.
 location / {
     try_files $uri $uri/ =404;
+    add_header Cache-Control "no-cache";
 }
+
+# Fingerprinted CSS/JS and image assets can be safely cached across visits.
+location ~* \.(?:css|js|webp|avif|jpe?g|png|gif|svg|ico|woff2?)$ {
+    try_files $uri =404;
+    add_header Cache-Control "public, max-age=31536000, immutable";
+    access_log off;
+}
+
+# Compress text assets at the origin. Do not gzip already-compressed images.
+gzip on;
+gzip_vary on;
+gzip_min_length 1024;
+gzip_comp_level 5;
+gzip_types text/plain text/css application/javascript application/json application/xml image/svg+xml;
 
 error_page 404 /404.html;
 location = /404.html {

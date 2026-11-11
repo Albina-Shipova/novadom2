@@ -4,15 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>SEO-отчёт — студия дизайна интерьеров «Нова Дом»</title>
-    <meta name="description" content="Отчёт о SEO-настройке сайта студии «Нова Дом»: выполненные работы на 26 страницах, результаты проверки и этапы публикации.">
+    <meta name="description" content="Актуальный SEO-отчёт студии «Нова Дом»: настройка 26 страниц, проверка Lighthouse, статус индексации и публикации.">
     <meta name="robots" content="noindex, follow">
     <meta name="theme-color" content="#47665d">
     <link rel="icon" href="favicon.ico">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..600&family=Prata&display=swap">
-    <link rel="stylesheet" href="styles.css?v=20261111-ai-seo">
-    <link rel="stylesheet" href="seo-otchet.css?v=20261111-ai">
+    <link rel="stylesheet" href="styles.css?v=20261112-pagespeed">
+    <link rel="stylesheet" href="seo-otchet.css?v=20261112-status">
 </head>
 <body class="seo-report">
     <a class="skip-link" href="#report">К отчёту</a>
@@ -33,7 +33,7 @@
                 <div class="report-domain"><span>Текущий адрес</span><a href="https://novadom.asama.site/" target="_blank" rel="noopener">novadom.asama.site <span aria-hidden="true">↗</span></a></div>
             </section>
 
-            <aside class="report-status" aria-label="Статус работ"><span class="report-dot" aria-hidden="true"></span><p><strong>Настройки готовы в файлах сайта.</strong> Публикация, серверные перенаправления и подключение поисковых кабинетов — следующие этапы.</p></aside>
+            <aside class="report-status" aria-label="Статус работ"><span class="report-dot" aria-hidden="true"></span><p><strong>Локальные SEO-настройки готовы.</strong> Последняя проверка опубликованного сайта от 12 ноября 2026: PageSpeed 72 на телефоне и 90 на компьютере; публичный сервер всё ещё запрещает индексацию заголовком X-Robots-Tag. Новые файлы и настройки nginx требуют публикации.</p></aside>
 
             <section class="report-metrics" aria-label="Объём настройки">
                 <div><strong>26</strong><span>страниц с SEO-настройками</span></div>
@@ -71,11 +71,12 @@
                     <li><span class="report-tag">Готово</span><div><h4>Отложенное подключение основного скрипта</h4><p>Скрипт интерактивных элементов подключается с defer. Он не блокирует разбор HTML и выполняется после подготовки документа. Работа проверенных страниц в браузере — без JavaScript-ошибок.</p></div></li>
                     <li><span class="report-tag">Готово</span><div><h4>Фирменное превью главной</h4><p>Подготовлена отдельная карточка 1200 × 630 пикселей с логотипом и интерьером студии, весом около 137 КБ. В Open Graph указаны размеры, формат и альтернативное описание. На внутренних страницах остаются фотографии соответствующих проектов.</p></div></li>
                     <li><span class="report-tag">Готово</span><div><h4>Векторный фавикон</h4><p>На 26 страницах подключён SVG-символ из фирменного логотипа. Существующий ICO сохранён как запасной вариант для браузеров.</p></div></li>
+                    <li><span class="report-tag">Обновлено</span><div><h4>Замечания PageSpeed Insights</h4><p>В исходниках сокращена задержка заставки, загрузка Google Fonts больше не блокирует показ страницы, скрытые кадры слайдера загружаются по мере необходимости, для двух больших дипломов сделаны облегчённые превью. Настройки nginx для сжатия и кеширования добавлены в пример конфигурации; сами по себе они не меняют работающий сервер.</p></div></li>
                 </ul></div>
             </section>
 
             <section class="report-validation" id="validation" aria-labelledby="validation-title">
-                <div><p class="report-caption">Контроль качества</p><h2 id="validation-title">Проверено<br>на сайте</h2><p class="report-validation-note">Результаты относятся к локальным файлам. Позиции в поиске и индексация опубликованного сайта не измерялись.</p></div>
+                <div><p class="report-caption">Контроль качества</p><h2 id="validation-title">Проверка<br>исходников</h2><p class="report-validation-note">Локальные файлы проходят SEO-проверку. Живая версия проверена через PageSpeed Insights 12 ноября 2026; публикация последних локальных оптимизаций не подтверждена.</p></div>
                 <ul class="report-checks">
                     <li><span aria-hidden="true">✓</span>На каждой из 26 страниц — один H1</li>
                     <li><span aria-hidden="true">✓</span>Canonical и sitemap совпадают</li>
@@ -83,29 +84,31 @@
                     <li><span aria-hidden="true">✓</span>Локальные ссылки, якоря и изображения доступны</li>
                     <li><span aria-hidden="true">✓</span>Проверенные страницы не выходят за ширину мобильного экрана</li>
                     <li><span aria-hidden="true">✓</span>Портфолио видно при отключённом JavaScript</li>
-                    <li><span aria-hidden="true">✓</span>Повторная генерация не меняет готовые файлы</li>
+                    <li><span aria-hidden="true">✓</span>Генератор обновляет SEO-метаданные и версии CSS/JS</li>
                     <li><span aria-hidden="true">✓</span>Правила для шести ИИ-агентов разрешают страницы и исключают служебные пути</li>
                     <li><span aria-hidden="true">✓</span>Ссылки llms.txt ведут к существующим страницам</li>
                 </ul>
             </section>
 
             <section class="report-section" id="comparison" aria-labelledby="comparison-title">
-                <div class="report-section-heading"><p class="report-caption">Проверка по 23 пунктам исходного отчёта</p><h2 id="comparison-title">Сравнение<br>с «Имидж Авто»</h2></div>
-                <p class="report-comparison-intro">Сопоставлены все 23 пункта отчёта «Имидж Авто» с файлами «Нова Дом». Ниже — различия, которые остаются после дополнений. Автомобильные разделы и тип AutoRepair заменены соответствующей структурой студии интерьеров.</p>
+                <div class="report-section-heading"><p class="report-caption">Проверка SEO, хостинга и скорости</p><h2 id="comparison-title">Текущий<br>статус</h2></div>
+                <p class="report-comparison-intro">Локальная SEO-подготовка сайта и результаты PageSpeed проверены отдельно от настроек опубликованного сервера. Оценки Lighthouse относятся к одной загрузке страницы и могут меняться при повторном замере.</p>
                 <ul class="report-items report-comparison-items">
                     <li><span class="report-tag report-tag-pending">Нужен код</span><div><h4>Подтверждение Яндекс Вебмастера</h4><p>Для «Имидж Авто» есть проверочный файл. Для «Нова Дом» нужен собственный код из кабинета владельца; чужой файл не переносился.</p></div></li>
-                    <li><span class="report-tag report-tag-pending">Нужен сервер</span><div><h4>Снять запрет индексирования и опубликовать SEO-файлы</h4><p>11 ноября публичный сайт возвращает X-Robots-Tag: noindex, nofollow. robots.txt, sitemap.xml и llms.txt возвращают 404. В локальной версии файлы готовы. Для nginx подготовлен пример правил, включая /index.html → / и защиту служебных каталогов.</p></div></li>
-                    <li><span class="report-tag">Уже работает</span><div><h4>HTTPS, HTTP-перенаправление и сжатие</h4><p>Публичный HTTPS проверен: сертификат действителен до 3 января 2027 года. Переход с HTTP сохраняет путь и параметры, HTML сжимается gzip. Перенаправление /index.html на / ещё не настроено. Вариант с www не подтверждён и не добавлялся.</p></div></li>
-                    <li><span class="report-tag report-tag-pending">Частично</span><div><h4>Адаптивные изображения и сжатие галерей</h4><p>Фотографии проектов уже используются в WebP, для портрета есть srcset, а изображения галерей загружаются отложенно. Отдельная облегчённая версия главного баннера и дополнительное пакетное сжатие галерей в этой работе не выполнялись. Измеренного прироста скорости по этим пунктам нет.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Нужен сервер</span><div><h4>Снять запрет индексирования</h4><p>PageSpeed 12 ноября отметил «Страница недоступна для индексации», SEO — 69/100. В прежней публичной проверке обнаружен X-Robots-Tag: noindex, nofollow. В HTML есть index, follow, но заголовок сервера имеет приоритет. Удалить запрет в активной конфигурации сайта и перепроверить HTTP-заголовки после публикации.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Нужна публикация</span><div><h4>Доступность sitemap и SEO-файлов</h4><p>Локально robots.txt, sitemap.xml и llms.txt подготовлены; предыдущая публичная проверка получала для них 404. После загрузки файлов убедиться, что все три адреса возвращают 200, sitemap содержит 26 актуальных страниц, а /index.html перенаправляет на /.</p></div></li>
+                    <li><span class="report-tag">HTTPS работает</span><div><h4>Переадресация и gzip</h4><p>По проверке 11 ноября HTTPS и редирект HTTP → HTTPS работают; главная уже приходит в gzip. Но CSS (136 КБ) и JavaScript (50 КБ) тогда возвращались без сжатия. В локальный nginx-пример добавлены gzip для текстовых ресурсов, проверка кеша HTML и годовое кеширование статических файлов с версионированными URL.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Ждёт публикации</span><div><h4>Производительность PageSpeed</h4><p>PageSpeed Insights, 12 ноября 2026: телефон — 72, FCP 2,3 с, LCP 5,9 с, TBT 0 мс, CLS 0; компьютер — 90, FCP 0,4 с, LCP 1,8 с, TBT 20 мс, CLS 0,011. Для телефона отчёт оценивает выигрыш около 1,1 с от устранения блокирующих запросов и 345 КБ от изображений. Для компьютера отмечены 3 454 КиБ потенциальной экономии на кеше, 2 250 КиБ на изображениях и 230 мс на блокирующих запросах. Улучшения в исходниках ещё не опубликованы и поэтому не переизмерены.</p></div></li>
+                    <li><span class="report-tag report-tag-pending">Нужен владелец</span><div><h4>Поисковые кабинеты</h4><p>Права сайта в Яндекс Вебмастере и Google Search Console не подтверждены. После разрешения индексации добавить sitemap, отправить важные страницы на переобход и затем проверить фактический обход. Позиции и реальный трафик в рамках этого отчёта не измерялись.</p></div></li>
                     <li><span class="report-tag report-tag-pending">Отдельный этап</span><div><h4>Посадочные страницы услуг</h4><p>На сайте студии 26 содержательных страниц, услуги представлены разделом главной. Отдельные страницы под услуги и географические запросы пока не создавались. Их состав и тексты требуют отдельной проработки; количество страниц автосервиса не переносится на студию автоматически.</p></div></li>
                 </ul>
-                <aside class="report-live-note"><strong>Проверка доступа ИИ на публичном адресе</strong><p>Главная и контакты вернули HTTP 200 при запросах с каждым из шести User-Agent. Во всех ответах присутствует noindex, nofollow. Запросы выполнены из среды проверки, а не с IP-адресов провайдеров; это не подтверждение реального обхода или включения сайта в ИИ-поиск.</p></aside>
+                <aside class="report-live-note"><strong>Ссылки на живые замеры</strong><p>Дата отчёта Lighthouse: 12 ноября 2026, 00:00 (UTC+3). <a href="https://pagespeed.web.dev/analysis/https-novadom-asama-site/v9kom2k76t?form_factor=mobile">PageSpeed, мобильная версия</a> · <a href="https://pagespeed.web.dev/analysis/https-novadom-asama-site/v9kom2k76t?form_factor=desktop">PageSpeed, компьютер</a>. Замеры выполняются в лабораторной среде Google и не являются полевыми Core Web Vitals.</p></aside>
             </section>
 
             <section class="report-section" id="next" aria-labelledby="next-title">
                 <div class="report-section-heading"><p class="report-caption">Следующий этап</p><h2 id="next-title">Что осталось<br>для запуска</h2></div>
                 <ol class="report-steps">
-                    <li><div><span class="report-tag report-tag-pending">Нужен доступ к хостингу</span><h3>Опубликовать файлы и разрешить индексирование</h3><p>Загрузить обновлённые файлы, удалить общий X-Robots-Tag: noindex, nofollow из настроек этого сайта и настроить /index.html → /. Проверить, что robots.txt, sitemap.xml и llms.txt возвращают 200. Неизвестный URL уже возвращает 404; нужно подключить фирменную страницу ошибки. Для nginx подготовлен пример конфигурации.</p></div></li>
+                    <li><div><span class="report-tag report-tag-pending">Нужен доступ к хостингу</span><h3>Опубликовать SEO и ускорение</h3><p>Загрузить актуальные HTML, CSS, JS и новые превью изображений. Включить предложенные gzip и правила кеширования, убрать X-Robots-Tag: noindex, nofollow, перенаправить /index.html на / и обеспечить HTTP 404 для неизвестных адресов. Настройки должны быть объединены с действующей конфигурацией хоста и проверены перед перезагрузкой nginx.</p></div></li>
                     <li><div><span class="report-tag report-tag-pending">Нужен доступ владельца</span><h3>Подключить поисковые кабинеты</h3><p>Подтвердить сайт в Яндекс Вебмастере и Google Search Console, отправить карту сайта и запросить переобход основных страниц. Коды подтверждения в файлы пока не добавлены.</p></div></li>
                     <li><div><span class="report-tag report-tag-pending">Нужен номер счётчика</span><h3>Настроить аналитику обращений</h3><p>Подключить Яндекс Метрику и цели на звонок, личный Telegram и MAX. Это позволит оценивать реальные обращения после запуска.</p></div></li>
                     <li><div><span class="report-tag report-tag-pending">После выбора домена</span><h3>Перенести SEO на постоянный адрес</h3><p>Обновить домен в настройках, сохранить пути страниц, настроить постраничные перенаправления со старого адреса и обновить поисковые кабинеты и ссылку в Яндекс Бизнесе.</p></div></li>
@@ -114,7 +117,7 @@
 
             <aside class="report-conclusion"><p>Основа для поискового продвижения готова.</p><span>Следующий шаг — публикация и подтверждение сайта в поисковых системах. Рост видимости оценивается после запуска по данным поисковых кабинетов и аналитики.</span></aside>
         </main>
-        <footer class="report-footer"><span>Нова Дом · Студия Анны Царевой</span><a href="index.html">Вернуться на сайт <span aria-hidden="true">↗</span></a><p>Служебный отчёт от 11 ноября 2026 года. Страница закрыта от индексирования.</p></footer>
+        <footer class="report-footer"><span>Нова Дом · Студия Анны Царевой</span><a href="index.html">Вернуться на сайт <span aria-hidden="true">↗</span></a><p>Актуализировано 12 ноября 2026 года. Страница закрыта от индексирования.</p></footer>
     </div>
 </body>
 </html>

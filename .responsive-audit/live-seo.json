@@ -1,0 +1,111 @@
+{
+  "checked_at": "2026-11-11T21:18:56.470123+00:00",
+  "domain": "https://novadom.asama.site",
+  "tls": {
+    "verified": false,
+    "error": "[Errno 11001] getaddrinfo failed"
+  },
+  "requests": [
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/index.html",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/robots.txt",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/sitemap.xml",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/llms.txt",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/seo-check-nonexistent-20261111",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "http://novadom.asama.site/contacts.html?seo_probe=1",
+      "agent": "NovaDom-SEO-Check/1.0",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "OAI-SearchBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "OAI-SearchBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "ChatGPT-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "ChatGPT-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "Claude-SearchBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "Claude-SearchBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "Claude-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "Claude-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "PerplexityBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "PerplexityBot",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/",
+      "agent": "Perplexity-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    },
+    {
+      "url": "https://novadom.asama.site/contacts.html",
+      "agent": "Perplexity-User",
+      "error": "<urlopen error [Errno 11001] getaddrinfo failed>"
+    }
+  ],
+  "scope": "Requests with named User-Agent strings; these are not requests from provider IP ranges."
+}

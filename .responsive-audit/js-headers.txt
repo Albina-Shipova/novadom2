@@ -1,0 +1,11 @@
+HTTP/1.1 200 OK
+Server: nginx/1.18.0 (Ubuntu)
+Date: Wed, 11 Nov 2026 20:55:50 GMT
+Content-Type: application/javascript; charset=utf-8
+Content-Length: 50285
+Last-Modified: Wed, 11 Nov 2026 20:48:24 GMT
+Connection: keep-alive
+ETag: "6af4d498-c46d"
+X-Robots-Tag: noindex, nofollow
+Accept-Ranges: bytes
+

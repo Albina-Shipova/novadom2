@@ -200,7 +200,7 @@ const displayImage = index => {
     imageIndex = (index + viewerGroup.length) % viewerGroup.length;
     const item = viewerGroup[imageIndex];
     const source = item.querySelector('img');
-    lightboxImage.src = source.src;
+    lightboxImage.src = item.dataset.fullSrc || source.src;
     lightboxImage.alt = source.alt;
     const caption = item.dataset.caption || item.querySelector('figcaption span')?.textContent || source.alt;
     lightboxCaption.textContent = `${caption} · ${imageIndex + 1} / ${viewerGroup.length}`;
@@ -693,7 +693,7 @@ document.querySelectorAll('[data-hero-slideshow]').forEach(carousel => {
             title.textContent = next.dataset.projectTitle;
             title.href = next.dataset.projectUrl;
         }
-        if (backdrop) backdrop.src = next.src;
+        if (backdrop) backdrop.src = next.currentSrc || next.src;
         schedule();
     };
     carousel.querySelector('[data-hero-prev]').addEventListener('click', () => show(current - 1));
@@ -720,17 +720,21 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     frames[0]?.classList.add('is-zooming');
     let current = 0;
     let timer;
+    const loadFrame = frame => {
+        if (!frame.src && frame.dataset.src) frame.src = frame.dataset.src;
+        frame.loading = 'eager';
+        return frame.decode();
+    };
     const schedule = () => {
         clearTimeout(timer);
-        if (!document.hidden && !motion.matches && frames.length > 1) {
+        if (!document.hidden && !motion.matches && frames.length > 1 && figure.getBoundingClientRect().bottom > 0) {
             timer = setTimeout(advance, 5000);
         }
     };
     const advance = async () => {
         const next = (current + 1) % frames.length;
         const frame = frames[next];
-        frame.loading = 'eager';
-        try { await frame.decode(); } catch { schedule(); return; }
+        try { await loadFrame(frame); } catch { schedule(); return; }
         if (document.hidden || motion.matches) { schedule(); return; }
         const outgoing = frames[current];
         outgoing.classList.remove('is-active');
@@ -742,6 +746,14 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         schedule();
     };
     document.addEventListener('visibilitychange', schedule);
+    motion.addEventListener('change', schedule);
+    if (frames.length > 1 && !motion.matches) {
+        const warmFirst = () => loadFrame(frames[1]).catch(() => {});
+        if ('requestIdleCallback' in window) requestIdleCallback(warmFirst, { timeout: 2500 });
+        else setTimeout(warmFirst, 1500);
+    }
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('pageshow', schedule, { once: true });
     motion.addEventListener('change', schedule);
     schedule();
 });

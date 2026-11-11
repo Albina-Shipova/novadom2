@@ -1,0 +1,569 @@
+[
+  {
+    "mode": "desktop",
+    "errors": [],
+    "audit": {
+      "lcp": [
+        {
+          "time": 284,
+          "url": "http://127.0.0.1:57929/assets/client/hero-olive-living-room.webp",
+          "element": "hero-backdrop"
+        }
+      ],
+      "cls": 0,
+      "long": [
+        144
+      ],
+      "intro": 2048
+    },
+    "paint": [
+      {
+        "name": "first-paint",
+        "time": 284
+      },
+      {
+        "name": "first-contentful-paint",
+        "time": 284
+      }
+    ],
+    "navigation": [
+      {
+        "ttfb": 7.300000011920929,
+        "dom": 188.09999999403954,
+        "load": 195.7000000178814
+      }
+    ],
+    "resources": [
+      {
+        "url": "styles.css?v=20261111-ai-seo",
+        "bytes": 136441,
+        "duration": 6.300000011920929
+      },
+      {
+        "url": "hero-olive-living-room.webp",
+        "bytes": 196548,
+        "duration": 7.699999988079071
+      },
+      {
+        "url": "logo-wordmark.svg",
+        "bytes": 4294,
+        "duration": 8.099999994039536
+      },
+      {
+        "url": "logo-symbol.svg",
+        "bytes": 4292,
+        "duration": 8.300000011920929
+      },
+      {
+        "url": "logo.svg",
+        "bytes": 4266,
+        "duration": 9.700000017881393
+      },
+      {
+        "url": "max.svg",
+        "bytes": 73162,
+        "duration": 10.300000011920929
+      },
+      {
+        "url": "telegram.svg",
+        "bytes": 1994,
+        "duration": 10.700000017881393
+      },
+      {
+        "url": "script.js?v=20261111-principle-viewer",
+        "bytes": 50585,
+        "duration": 11.200000017881393
+      },
+      {
+        "url": "intro-architecture.webp",
+        "bytes": 30552,
+        "duration": 143.7999999821186
+      },
+      {
+        "url": "project-08-02.webp",
+        "bytes": 87266,
+        "duration": 7.5999999940395355
+      },
+      {
+        "url": "project-04-03.webp",
+        "bytes": 83394,
+        "duration": 8
+      },
+      {
+        "url": "project-19-01.webp",
+        "bytes": 87164,
+        "duration": 8.700000017881393
+      },
+      {
+        "url": "project-21-cover.webp",
+        "bytes": 38058,
+        "duration": 9.400000005960464
+      },
+      {
+        "url": "bathroom-01.jpg",
+        "bytes": 93571,
+        "duration": 10.599999994039536
+      },
+      {
+        "url": "project-14-02.webp",
+        "bytes": 81726,
+        "duration": 9.699999988079071
+      },
+      {
+        "url": "project-17-06.webp",
+        "bytes": 101056,
+        "duration": 11.099999994039536
+      },
+      {
+        "url": "project-05-06.webp",
+        "bytes": 100578,
+        "duration": 11.799999982118607
+      },
+      {
+        "url": "project-20-cover.webp",
+        "bytes": 24098,
+        "duration": 12.400000005960464
+      },
+      {
+        "url": "project-07-05.webp",
+        "bytes": 73044,
+        "duration": 12.400000005960464
+      },
+      {
+        "url": "project-03-cover.webp",
+        "bytes": 31270,
+        "duration": 12.799999982118607
+      },
+      {
+        "url": "project-23-cover.webp",
+        "bytes": 45328,
+        "duration": 15
+      },
+      {
+        "url": "project-16-03.webp",
+        "bytes": 130776,
+        "duration": 14.800000011920929
+      },
+      {
+        "url": "anna-portrait-480.webp",
+        "bytes": 52546,
+        "duration": 15.599999994039536
+      },
+      {
+        "url": "credentials-01.webp",
+        "bytes": 59088,
+        "duration": 16.200000017881393
+      },
+      {
+        "url": "ivd-2026-02-cover.jpg",
+        "bytes": 156828,
+        "duration": 16.80000001192093
+      },
+      {
+        "url": "credentials-06-light.webp",
+        "bytes": 174012,
+        "duration": 17.700000017881393
+      },
+      {
+        "url": "credentials-03.webp",
+        "bytes": 75616,
+        "duration": 19.100000023841858
+      },
+      {
+        "url": "credentials-02.webp",
+        "bytes": 189172,
+        "duration": 19.600000023841858
+      },
+      {
+        "url": "credentials-04-cropped.webp",
+        "bytes": 658480,
+        "duration": 22.099999994039536
+      },
+      {
+        "url": "credentials-05-straight.webp",
+        "bytes": 693292,
+        "duration": 24.69999998807907
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/client/logo-symbol.svg",
+        "natural": 150,
+        "width": 48,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/logo-wordmark.svg",
+        "natural": 300,
+        "width": 139,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/hero-olive-living-room.webp",
+        "natural": 1122,
+        "width": 1440,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/hero-olive-living-room.webp",
+        "natural": 1122,
+        "width": 648,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/project-08-02.webp",
+        "natural": 1280,
+        "width": 674,
+        "loading": "eager"
+      },
+      {
+        "src": "assets/client/project-04-03.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-19-01.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-21-cover.webp",
+        "natural": 760,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/images/bathroom-01.jpg",
+        "natural": 720,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-17-06.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-14-02.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-05-06.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-07-05.webp",
+        "natural": 1280,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-20-cover.webp",
+        "natural": 760,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-03-cover.webp",
+        "natural": 760,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-16-03.webp",
+        "natural": 1152,
+        "width": 641,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-23-cover.webp",
+        "natural": 684,
+        "width": 590,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-08-02.webp",
+        "natural": 1280,
+        "width": 466,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-19-01.webp",
+        "natural": 1280,
+        "width": 443,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-03-cover.webp",
+        "natural": 760,
+        "width": 443,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-16-03.webp",
+        "natural": 1152,
+        "width": 466,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/anna-portrait-1024.webp",
+        "natural": 477,
+        "width": 479,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-01.webp",
+        "natural": 905,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/ivd-2026-02-cover.jpg",
+        "natural": 588,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-06-light.webp",
+        "natural": 1086,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-03.webp",
+        "natural": 990,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-02.webp",
+        "natural": 1280,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-04-cropped.webp",
+        "natural": 1536,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/credentials-05-straight.webp",
+        "natural": 1493,
+        "width": 229,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/logo.svg",
+        "natural": 300,
+        "width": 185,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/icons/max.svg",
+        "natural": 100,
+        "width": 0,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/icons/telegram.svg",
+        "natural": 128,
+        "width": 0,
+        "loading": "auto"
+      }
+    ]
+  },
+  {
+    "mode": "mobile-slow",
+    "errors": [],
+    "audit": {
+      "lcp": [
+        {
+          "time": 2672,
+          "url": "",
+          "element": "site-intro-skip"
+        },
+        {
+          "time": 3020,
+          "url": "",
+          "element": ""
+        },
+        {
+          "time": 3172,
+          "url": "http://127.0.0.1:57929/assets/client/hero-olive-living-room.webp",
+          "element": "hero-backdrop"
+        }
+      ],
+      "cls": 0,
+      "long": [
+        132
+      ],
+      "intro": 206.5
+    },
+    "paint": [
+      {
+        "name": "first-paint",
+        "time": 2672
+      },
+      {
+        "name": "first-contentful-paint",
+        "time": 2672
+      }
+    ],
+    "navigation": [
+      {
+        "ttfb": 2.800000011920929,
+        "dom": 3108.100000023842,
+        "load": 3136.100000023842
+      }
+    ],
+    "resources": [
+      {
+        "url": "styles.css?v=20261111-ai-seo",
+        "bytes": 136441,
+        "duration": 2405.9000000059605
+      },
+      {
+        "url": "hero-olive-living-room.webp",
+        "bytes": 196548,
+        "duration": 2793
+      },
+      {
+        "url": "logo-symbol.svg",
+        "bytes": 4292,
+        "duration": 255.59999999403954
+      },
+      {
+        "url": "logo-wordmark.svg",
+        "bytes": 4294,
+        "duration": 255.2999999821186
+      },
+      {
+        "url": "logo.svg",
+        "bytes": 4266,
+        "duration": 247.59999999403954
+      },
+      {
+        "url": "max.svg",
+        "bytes": 73162,
+        "duration": 1539.699999988079
+      },
+      {
+        "url": "telegram.svg",
+        "bytes": 1994,
+        "duration": 230.89999997615814
+      },
+      {
+        "url": "script.js?v=20261111-principle-viewer",
+        "bytes": 50585,
+        "duration": 1197.5
+      },
+      {
+        "url": "intro-architecture.webp",
+        "bytes": 30552,
+        "duration": 453.59999999403954
+      },
+      {
+        "url": "anna-portrait-480.webp",
+        "bytes": 52546,
+        "duration": 733.1000000238419
+      },
+      {
+        "url": "project-23-cover.webp",
+        "bytes": 45328,
+        "duration": 949.8000000119209
+      },
+      {
+        "url": "project-08-02.webp",
+        "bytes": 87266,
+        "duration": 1374.4000000059605
+      },
+      {
+        "url": "project-16-03.webp",
+        "bytes": 130776,
+        "duration": 1592.1000000238419
+      }
+    ],
+    "images": [
+      {
+        "src": "assets/client/logo-symbol.svg",
+        "natural": 150,
+        "width": 42,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/logo-wordmark.svg",
+        "natural": 300,
+        "width": 125,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/hero-olive-living-room.webp",
+        "natural": 1122,
+        "width": 390,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/project-23-cover.webp",
+        "natural": 684,
+        "width": 315,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-08-02.webp",
+        "natural": 1280,
+        "width": 255,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/project-16-03.webp",
+        "natural": 1152,
+        "width": 255,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/hero-olive-living-room.webp",
+        "natural": 1122,
+        "width": 0,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/client/project-08-02.webp",
+        "natural": 1280,
+        "width": 0,
+        "loading": "eager"
+      },
+      {
+        "src": "assets/client/anna-portrait-1024.webp",
+        "natural": 334,
+        "width": 334,
+        "loading": "lazy"
+      },
+      {
+        "src": "assets/client/logo.svg",
+        "natural": 300,
+        "width": 150,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/icons/max.svg",
+        "natural": 100,
+        "width": 0,
+        "loading": "auto"
+      },
+      {
+        "src": "assets/icons/telegram.svg",
+        "natural": 128,
+        "width": 0,
+        "loading": "auto"
+      }
+    ]
+  }
+]
