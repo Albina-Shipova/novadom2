@@ -156,4 +156,7 @@
       <image:loc>https://novadom.asama.site/assets/images/bathroom-01.jpg</image:loc>
     </image:image>
   </url>
+  <url>
+    <loc>https://novadom.asama.site/consent.html</loc>
+  </url>
 </urlset>

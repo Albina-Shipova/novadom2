@@ -34,9 +34,8 @@ const {chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runt
  await Promise.all([page.waitForEvent('load'),page.locator('[data-choice="rejected"]').click()]);
  if(await page.locator('script[src*="mc.yandex"]').count()) throw Error('Tracking after withdrawal');
  await page.goto('file:///D:/Albina/sites/novadom2/assets/projects/project-01.html');
- if(!(await page.locator('.footer-legal a').getAttribute('href')).includes('../../privacy.html')) throw Error('Nested link');
+ if(!(await page.locator('.footer-legal a[href$="privacy.html"]').getAttribute('href')).includes('../../privacy.html')) throw Error('Nested link');
  if(errors.length) throw Error(JSON.stringify(errors));
  console.log('PASS: consent, refusal persistence, withdrawal, nested links, layouts 320/390/1440, no JS errors');
  await browser.close();
 })().catch(e=>{console.error(e);process.exit(1)});
-
