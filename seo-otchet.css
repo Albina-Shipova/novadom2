@@ -102,3 +102,73 @@
   .report-validation { margin-top: 32px; padding: 24px; gap: 30px; }
   .report-footer { margin-top: 24px; }
 }
+
+/* Dark editorial treatment for the client SEO report. */
+:root {
+  --paper: #111310;
+  --paper-deep: #191d18;
+  --card: #1b201b;
+  --white-warm: #f1f0e8;
+  --ink: #eeeDE5;
+  --muted: #a6aca0;
+  --line: #343b32;
+  --line-soft: #2a3029;
+  --moss: #a8bd91;
+  --moss-deep: #28362c;
+  --moss-light: #c2d0ad;
+  --sand: #40382a;
+  --brass: #d0b77d;
+}
+.seo-report { color: var(--ink); background: radial-gradient(ellipse at 50% -15%, #29332a 0, #171a16 42rem, #111310 78rem); }
+.report-wrap { position: relative; }
+.report-top { border-bottom: 1px solid #ffffff10; }
+.report-top .brand-wordmark { filter: brightness(0) invert(.94); }
+.report-top .brand-identity small { color: #aeb4a7; }
+.report-button { border-color: #697363; color: var(--ink); }
+.report-button:hover { background: var(--moss-light); color: #151813; border-color: var(--moss-light); }
+.report-cover { position: relative; overflow: hidden; margin-top: 28px; border: 1px solid #a6bb8d35; background: linear-gradient(118deg, #26352a 0%, #1d2921 54%, #20251c 100%); box-shadow: 0 26px 80px #0005; }
+.report-cover::after { content: ""; position: absolute; width: 420px; height: 420px; right: -110px; top: -170px; border: 1px solid #c2d0ad20; border-radius: 50%; box-shadow: 0 0 0 38px #c2d0ad08, 0 0 0 80px #c2d0ad06; pointer-events: none; }
+.report-cover h1 { position: relative; z-index: 1; }
+.report-cover-meta, .report-domain > span { color: #c0c9b6; }
+.report-lead { color: #d3d8cd; }
+.report-domain { position: relative; z-index: 1; border-color: #ffffff20; }
+.report-status { align-items: flex-start; margin-top: 28px; padding: 18px 20px; border: 1px solid #bfa76838; background: #c5a9610b; }
+.report-status p { color: #c1c5ba; }
+.report-status strong { color: #e1cf9d; }
+.report-dot { margin-top: 5px; background: #d4b86e; box-shadow: 0 0 14px #d4b86e80; }
+.report-metrics { padding-block: 34px; }
+.report-metrics > div { border-color: var(--line); }
+.report-metrics strong { color: var(--moss-light); }
+.report-metrics span, .report-validation-note, .report-items p, .report-steps p, .report-footer p, .report-comparison-intro { color: #adb3a8; }
+.report-nav { border-color: var(--line); color: #d8ddd3; }
+.report-nav a, .report-footer a { text-underline-offset: 5px; }
+.report-nav a:hover, .report-footer a:hover { color: var(--moss-light); }
+.report-caption { color: var(--moss-light); letter-spacing: .08em; text-transform: uppercase; }
+.report-group > h3 { color: #dce0d7; }
+.report-items { border-color: var(--line); }
+.report-items > li { border-color: var(--line); }
+.report-tag { color: #d9e3cf; background: #313d31; }
+.report-tag-pending { color: #e6d4a4; background: #403725; }
+.report-items p a { color: #c2d0ad; }
+.report-validation { border: 1px solid #ffffff0c; background: linear-gradient(135deg, #20261f, #191d18); }
+.report-checks li { border-color: var(--line); color: #d7dcd2; }
+.report-checks span { color: #b8cc9d; }
+.report-live-note { border: 1px solid #ffffff12; background: #1c211b; color: #e6e7de; }
+.report-live-note p { color: #adb3a8; }
+.report-live-note a { color: #c4d5a8; text-decoration: underline; text-underline-offset: 3px; }
+.report-steps > li { border-color: var(--line); }
+.report-steps > li::before { color: var(--brass); }
+.report-conclusion { border: 1px solid #a9bf8c30; border-left: 3px solid #b4c997; background: linear-gradient(110deg, #20291f, #1a1e19); }
+.report-conclusion p { color: #edf0e6; }
+.report-conclusion > span { color: #b3b9ad; }
+.report-footer { border-color: var(--line); color: #bbc1b5; }
+.report-footer a { color: #e2e7db; }
+@media print {
+  :root { --paper: #fff; --paper-deep: #f3f3f0; --card: #fff; --ink: #111; --muted: #555; --line: #ccc; }
+  .seo-report { color: #111; background: white; }
+  .report-top .brand-wordmark { filter: none; }
+  .report-cover { background: white; color: black; border-color: #ccc; box-shadow: none; }
+  .report-cover::after { display: none; }
+  .report-status, .report-validation, .report-live-note, .report-conclusion { background: #f5f5f2; color: #111; box-shadow: none; }
+  .report-status p, .report-status strong, .report-live-note p, .report-conclusion p, .report-conclusion > span { color: #333; }
+}
