@@ -735,7 +735,6 @@ document.querySelectorAll('[data-hero-slideshow]').forEach(carousel => {
 document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     const frames = Array.from(figure.querySelectorAll('.ambient-frame'));
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    frames[0]?.classList.add('is-zooming');
     let current = 0;
     let timer;
     const loadFrame = frame => {
@@ -745,7 +744,7 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     };
     const schedule = () => {
         clearTimeout(timer);
-        if (!document.hidden && !motion.matches && frames.length > 1 && figure.getBoundingClientRect().bottom > 0) {
+        if (!document.documentElement.classList.contains('hero-pending') && !document.documentElement.classList.contains('intro-active') && !document.hidden && !motion.matches && frames.length > 1 && figure.getBoundingClientRect().bottom > 0) {
             timer = setTimeout(advance, 5000);
         }
     };
@@ -773,7 +772,18 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     window.addEventListener('scroll', schedule, { passive: true });
     window.addEventListener('pageshow', schedule, { once: true });
     motion.addEventListener('change', schedule);
-    schedule();
+    const start = () => {
+        frames[0]?.classList.add('is-zooming');
+        schedule();
+    };
+    if (document.documentElement.matches('.hero-pending, .intro-active')) {
+        const openingObserver = new MutationObserver(() => {
+            if (document.documentElement.matches('.hero-pending, .intro-active')) return;
+            openingObserver.disconnect();
+            start();
+        });
+        openingObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    } else start();
 });
 
 /* Keep ambient details running only while they are visible. */
@@ -781,6 +791,16 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     if (!('IntersectionObserver' in window)) return;
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const details = [...document.querySelectorAll('.header .brand-symbol')];
+    details.forEach(symbol => {
+        const frame = document.createElement('span');
+        frame.className = 'brand-symbol-light';
+        symbol.before(frame);
+        frame.append(symbol);
+    });
+    document.querySelectorAll('h1, h2, h3, h4, h5, h6').forEach(heading => {
+        heading.classList.add('ambient-heading');
+        details.push(heading);
+    });
     // A few structural rules, rather than every divider on the page.
     document.querySelectorAll('main .section-head').forEach((heading, index) => {
         if (index % 2 === 0) {
@@ -898,11 +918,12 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
                 target.querySelectorAll('h2').forEach(h => headingEntrance(h, 480));
             }
             else if (type === 'photo') {
-                play(target, [{ opacity: 0 }, { opacity: 1 }], 1100);
+                // Images may already be painted before this observer starts.
+                // Keep them visible; fading from zero here caused a load-time flash.
                 // Slideshow frames already have their continuous cinematic movement.
                 if (!target.matches('[data-hero-ambient]')) {
                     target.querySelectorAll('img').forEach(img => play(img, [
-                        { scale: '1.06', opacity: 0 }, { scale: '1', opacity: 1 }
+                        { scale: '1.06' }, { scale: '1' }
                     ], 1250));
                 }
             } else elementEntrance(target, Number(target.dataset.cinemaDelay || 0));
@@ -919,6 +940,29 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
             if (!h.textContent.trim()) return;
             headings.set(h, h.cloneNode(true)); splitLines(h);
         });
+        // One timeline for the opening screen, prepared before revealing its copy.
+        const opening = main.querySelector('.hero-copy');
+        if (opening && document.documentElement.classList.contains('hero-pending')) {
+            main.querySelectorAll('.hero-figure').forEach(photo => {
+                register(photo, 'photo'); completed.add(photo); observer.unobserve(photo);
+                play(photo, [{ opacity: 0 }, { opacity: 1 }], 1200);
+            });
+            register(opening, 'sequence');
+            completed.add(opening);
+            observer.unobserve(opening);
+            opening.querySelectorAll('h1').forEach(h => headingEntrance(h));
+            opening.querySelectorAll(':scope > p').forEach((p, i) => textEntrance(p, i === 0 ? 0 : 300));
+            opening.querySelectorAll('.hero-actions').forEach(el => elementEntrance(el, 600));
+            opening.querySelectorAll('.hero-meta > span').forEach((el, i) => {
+                register(el, 'element'); completed.add(el); observer.unobserve(el);
+                elementEntrance(el, 900 + i * 80);
+            });
+            main.querySelectorAll('.fact-rail, .marquee').forEach((el, i) => {
+                register(el, 'element'); completed.add(el); observer.unobserve(el);
+                elementEntrance(el, 1300 + i * 250);
+            });
+            document.documentElement.classList.remove('hero-pending');
+        }
         main.querySelectorAll('.portfolio-caption, .principle-photo-label').forEach(el => register(el, 'caption'));
         main.querySelectorAll('.hero-copy, .page-hero-copy, .section-head, .statement-copy, .principle-copy, .journal-heading, .cta-band, .project-story-copy, .portfolio-intro, .contact-panel, .project-viewer-heading').forEach(el => register(el, 'sequence'));
         headings.forEach((_, h) => { if (!h.closest('[data-cinema="sequence"], [data-cinema="caption"]')) register(h, 'heading'); });
@@ -938,7 +982,16 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         });
         document.querySelectorAll('.footer-grid > *, .footer-bottom, .footer-wordmark').forEach(el => register(el, 'element'));
     };
-    Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 800))]).then(init);
+    Promise.race([document.fonts.ready, new Promise(resolve => setTimeout(resolve, 800))]).then(() => {
+        // Start the opening timeline after the intro has faded out, not behind it.
+        if (!document.documentElement.classList.contains('intro-active')) { init(); return; }
+        const introObserver = new MutationObserver(() => {
+            if (document.documentElement.classList.contains('intro-active')) return;
+            introObserver.disconnect();
+            init();
+        });
+        introObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    });
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);

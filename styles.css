@@ -258,19 +258,40 @@ button {
 }
 
 .nav-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  isolation: isolate;
   border: 1px solid var(--ink);
   padding: 13px 18px;
   font-size: .8rem;
   font-weight: 500;
   white-space: nowrap;
-  transition: background .25s, color .25s, border-color .25s;
+  transition: color .3s, border-color .3s;
 }
 
-.nav-cta:hover {
-  background: var(--moss);
-  border-color: var(--moss);
+.nav-cta::before {
+  content: '';
+  position: absolute;
+  /* Overlap the inner border edge to avoid fractional-pixel light seams. */
+  inset: -2px;
+  z-index: -1;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .38s var(--ease-out);
+}
+
+.nav-cta:hover,
+.nav-cta:focus-visible {
+  border-color: var(--ink);
   color: var(--paper);
 }
+
+.nav-cta:hover::before,
+.nav-cta:focus-visible::before { transform: scaleX(1); }
 
 .menu-toggle {
   display: none;
@@ -762,7 +783,7 @@ button {
 .package-details li + li { margin-top: 8px; }
 .package-action { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; margin-top: 8px; color: var(--brass-light); font-size: .83rem; }
 .package-action:hover { color: var(--paper); }
-.service-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; margin-top: 32px; }
+.service-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 40px; margin-top: 32px; }
 .service-extra { border-top: 1px solid var(--line-dark); padding-top: 22px; display: grid; grid-template-columns: 1fr auto; column-gap: 20px; align-items: start; }
 .service-extra h3 { margin: 0 0 8px; font-family: var(--display); font-size: 1.2rem; font-weight: 400; }
 .service-extra p { margin: 0 0 18px; color: #c9c6bc; font-size: .85rem; max-width: 300px; }
@@ -3882,6 +3903,7 @@ button {
 }
 
 /* Privacy and cookie preferences */
+html.intro-active .cookie-notice { visibility: hidden; }
 .footer-legal { display:flex; flex-direction:column; align-items:flex-start; gap:8px; margin-top:20px; font-size:12px; line-height:1.6; }
 .footer .footer-legal a, .footer .footer-legal button { display:inline; margin:0; color:inherit; font-size:12px; line-height:1.6; text-align:left; text-decoration:underline; text-underline-offset:4px; }
 .footer-legal button, .privacy-inline-button { border:0; padding:0; background:none; font:inherit; cursor:pointer; }
@@ -3910,9 +3932,24 @@ button {
 @media print { .cookie-notice, .footer-legal button { display:none!important; } }
 
 /* Quiet, continuous details: the wordmark and surrounding copy stay still. */
+.brand-symbol-light { display: inline-grid; flex: none; isolation: isolate; }
+.brand-symbol-light > .brand-symbol { grid-area: 1 / 1; }
+.brand-symbol-light::after {
+  content: '';
+  grid-area: 1 / 1;
+  z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 40%, rgba(255, 245, 207, .18) 46%, rgba(255, 252, 231, .8) 50%, rgba(255, 245, 207, .18) 54%, transparent 60%);
+  background-size: 300% 100%;
+  background-position: 100% 0;
+  mask: url('assets/client/logo-symbol.svg') center / contain no-repeat;
+  animation: studio-heading-light 6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.brand-symbol-light:has(.ambient-running)::after { animation-play-state: running; }
+html.motion-paused .brand-symbol-light::after { animation-play-state: paused; }
 .header .brand-symbol.ambient-detail {
-  transform-origin: 50% 55%;
-  animation: studio-symbol-sway 12s ease-in-out infinite;
+  animation: studio-symbol-light 9s ease-in-out infinite;
   animation-play-state: paused;
 }
 .section-head.ambient-detail { position: relative; }
@@ -3932,12 +3969,38 @@ button {
   animation-play-state: paused;
 }
 .header .brand-symbol.ambient-running,
+.ambient-heading.ambient-running,
+.ambient-heading.ambient-running .cinema-line-inner,
+.ambient-heading.ambient-running em,
 .section-head.ambient-running::after { animation-play-state: running; }
 html.motion-paused .header .brand-symbol,
+html.motion-paused .ambient-heading,
+html.motion-paused .ambient-heading .cinema-line-inner,
+html.motion-paused .ambient-heading em,
 html.motion-paused .section-head.ambient-detail::after { animation-play-state: paused; }
-@keyframes studio-symbol-sway {
-  0%, 100% { rotate: -3deg; }
-  50% { rotate: 3deg; }
+@keyframes studio-symbol-light {
+  0%, 55%, 100% { filter: brightness(1) saturate(1); }
+  72% { filter: brightness(1.38) saturate(.75); }
+  84% { filter: brightness(1.08) saturate(.95); }
+}
+@supports (background-clip: text) or (-webkit-background-clip: text) {
+  /* Paint only the moving lines, never a stationary copy on their heading. */
+  .ambient-heading:not(:has(.cinema-line)),
+  .ambient-heading .cinema-line-inner,
+  .ambient-heading em {
+    background-image: linear-gradient(110deg, currentColor 35%, var(--brass) 48%, var(--brass-light) 50%, var(--brass) 52%, currentColor 65%);
+    background-size: 300% 100%;
+    background-position: 100% 0;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: studio-heading-light 12s ease-in-out infinite;
+    animation-play-state: paused;
+  }
+}
+@keyframes studio-heading-light {
+  0%, 35% { background-position: 100% 0; }
+  75%, 100% { background-position: 0% 0; }
 }
 @keyframes studio-line-glint {
   0%, 72% { background-position: 100% 0; opacity: 0; }
@@ -3946,6 +4009,10 @@ html.motion-paused .section-head.ambient-detail::after { animation-play-state: p
   96%, 100% { background-position: 0% 0; opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .header .brand-symbol.ambient-detail { animation: none; rotate: none; }
+  .brand-symbol-light::after { display: none; }
+  .header .brand-symbol.ambient-detail { animation: none; filter: none; }
+  .ambient-heading,
+  .ambient-heading .cinema-line-inner,
+  .ambient-heading em { animation: none; background: none; -webkit-text-fill-color: currentColor; }
   .section-head.ambient-detail::after { animation: none; opacity: 0; }
 }
