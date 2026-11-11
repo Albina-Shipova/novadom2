@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /.git/
+Disallow: /.responsive-audit/
+Disallow: /tools/
+Disallow: /debug.log
+Disallow: /SOURCE_NOTES.md
+Disallow: /SEO.md
+Disallow: /seo-config.json
+
+Sitemap: https://novadom.asama.site/sitemap.xml

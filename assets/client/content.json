@@ -1558,6 +1558,14 @@
       ],
       "title": "Интерьер с терракотовыми акцентами",
       "period": "HighWay Studio",
+      "publication": {
+        "magazine": "Идеи вашего дома",
+        "issue": "№ 2 (271), 2026",
+        "format": "print",
+        "cover": "assets/client/ivd-2026-02-cover.jpg",
+        "articleUrl": "https://www.ivd.ru/dizajn-i-dekor/kvartira/v-studii-umestili-funkcii-dvushki-kvartira-29-kv-m-s-zadelom-na-budushchee-147142",
+        "issueUrl": "https://www.ivd.ru/zhurnal/2-271-2026"
+      },
       "category": "apartment",
       "description": "Фотосъёмка интерьера. Визуализация для проекта HighWay Studio; материалы предоставлены клиентом.",
       "cover": 1

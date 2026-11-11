@@ -246,7 +246,7 @@ viewerItems.forEach(item => {
     }
     const open = () => {
         if (!lightbox || !lightboxImage) return;
-        const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid, .about-credentials');
+        const group = item.closest('.gallery, .screenshot-carousel, .credentials-grid, .about-credentials, .principle-photos');
         const items = group ? Array.from(group.querySelectorAll('[data-viewer]')) : [item];
         openImageViewer(items, items.indexOf(item), item);
     };
