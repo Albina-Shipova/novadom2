@@ -776,6 +776,33 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     schedule();
 });
 
+/* Keep ambient details running only while they are visible. */
+(() => {
+    if (!('IntersectionObserver' in window)) return;
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const details = [...document.querySelectorAll('.header .brand-symbol')];
+    // A few structural rules, rather than every divider on the page.
+    document.querySelectorAll('main .section-head').forEach((heading, index) => {
+        if (index % 2 === 0) {
+            heading.style.setProperty('--glint-delay', `${1 + (index % 3) * 1.7}s`);
+            details.push(heading);
+        }
+    });
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(({ target, isIntersecting }) => {
+            target.classList.toggle('ambient-running', isIntersecting);
+        });
+    });
+    details.forEach(element => {
+        element.classList.add('ambient-detail');
+        observer.observe(element);
+    });
+    const sync = () => document.documentElement.classList.toggle('motion-paused', document.hidden || motion.matches);
+    document.addEventListener('visibilitychange', sync);
+    motion.addEventListener('change', sync);
+    sync();
+})();
+
 /* ---------- Cinematic entrances, once per element ---------- */
 (() => {
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -865,6 +892,11 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
                     if (!el.parentElement.closest('.hero-actions, .actions')) elementEntrance(el, 420);
                 });
             } else if (type === 'heading') headingEntrance(target);
+            else if (type === 'caption') {
+                // Let the interior establish itself before its title appears.
+                elementEntrance(target, 480);
+                target.querySelectorAll('h2').forEach(h => headingEntrance(h, 480));
+            }
             else if (type === 'photo') {
                 play(target, [{ opacity: 0 }, { opacity: 1 }], 1100);
                 // Slideshow frames already have their continuous cinematic movement.
@@ -887,8 +919,9 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
             if (!h.textContent.trim()) return;
             headings.set(h, h.cloneNode(true)); splitLines(h);
         });
+        main.querySelectorAll('.portfolio-caption, .principle-photo-label').forEach(el => register(el, 'caption'));
         main.querySelectorAll('.hero-copy, .page-hero-copy, .section-head, .statement-copy, .principle-copy, .journal-heading, .cta-band, .project-story-copy, .portfolio-intro, .contact-panel, .project-viewer-heading').forEach(el => register(el, 'sequence'));
-        headings.forEach((_, h) => { if (!h.closest('[data-cinema="sequence"]')) register(h, 'heading'); });
+        headings.forEach((_, h) => { if (!h.closest('[data-cinema="sequence"], [data-cinema="caption"]')) register(h, 'heading'); });
         main.querySelectorAll('.service-grid, .project-packages, .service-extras, .process-grid, .include-grid').forEach(grid => {
             Array.from(grid.children).forEach((card, i) => register(card, 'element', i * 100));
         });

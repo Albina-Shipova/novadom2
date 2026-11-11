@@ -3908,3 +3908,44 @@ button {
 @media(max-width:760px) { .cookie-notice { flex-direction:column; align-items:stretch; gap:8px; padding:10px 16px; padding-bottom:calc(10px + env(safe-area-inset-bottom,0px)); } .cookie-actions { justify-content:flex-end; } .cookie-actions button { min-height:40px; padding:8px 12px; } }
 @media(max-width:600px) { .privacy-page { padding-top:120px; padding-bottom:60px; } .privacy-page h2 { font-size:19px; } }
 @media print { .cookie-notice, .footer-legal button { display:none!important; } }
+
+/* Quiet, continuous details: the wordmark and surrounding copy stay still. */
+.header .brand-symbol.ambient-detail {
+  transform-origin: 50% 55%;
+  animation: studio-symbol-sway 12s ease-in-out infinite;
+  animation-play-state: paused;
+}
+.section-head.ambient-detail { position: relative; }
+.section-head.ambient-detail::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent 35%, var(--brass-light) 48%, var(--white-warm) 50%, var(--brass-light) 52%, transparent 65%);
+  background-size: 300% 100%;
+  opacity: 0;
+  animation: studio-line-glint 11s ease-in-out infinite;
+  animation-delay: var(--glint-delay, 1s);
+  animation-play-state: paused;
+}
+.header .brand-symbol.ambient-running,
+.section-head.ambient-running::after { animation-play-state: running; }
+html.motion-paused .header .brand-symbol,
+html.motion-paused .section-head.ambient-detail::after { animation-play-state: paused; }
+@keyframes studio-symbol-sway {
+  0%, 100% { rotate: -3deg; }
+  50% { rotate: 3deg; }
+}
+@keyframes studio-line-glint {
+  0%, 72% { background-position: 100% 0; opacity: 0; }
+  76% { opacity: .65; }
+  92% { opacity: .65; }
+  96%, 100% { background-position: 0% 0; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .header .brand-symbol.ambient-detail { animation: none; rotate: none; }
+  .section-head.ambient-detail::after { animation: none; opacity: 0; }
+}
