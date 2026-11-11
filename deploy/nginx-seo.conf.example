@@ -1,0 +1,38 @@
+# Merge these directives into the existing nginx server block, then run nginx -t.
+# This file is a reviewed example, not a complete virtual host. Do not publish deploy/.
+# First remove the existing `add_header X-Robots-Tag "noindex, nofollow"` from
+# this site's effective configuration. If inherited from a proxy upstream, use
+# proxy_hide_header X-Robots-Tag (or fastcgi_hide_header for FastCGI) at that layer.
+# Do not remove noindex from other staging websites.
+
+location = /index.html {
+    return 301 https://novadom.asama.site/$is_args$args;
+}
+
+# Add to/merge with the existing root location; do not create a duplicate location.
+location / {
+    try_files $uri $uri/ =404;
+}
+
+error_page 404 /404.html;
+location = /404.html {
+    add_header X-Robots-Tag "noindex, follow" always;
+}
+location = /seo-otchet.html {
+    add_header X-Robots-Tag "noindex, follow" always;
+}
+
+location ~ ^/(?:\.git|\.agents|\.codex|\.claude|\.aws|\.responsive-audit|tools|deploy)(?:/|$) {
+    deny all;
+}
+location ~ ^/(?:debug\.log|SOURCE_NOTES\.md|SEO\.md|seo-config\.json)$ {
+    deny all;
+}
+
+# These are plain files uploaded into the document root; no app routing required.
+location = /robots.txt { default_type text/plain; }
+location = /llms.txt { default_type text/plain; }
+location = /sitemap.xml { default_type application/xml; }
+
+# HTTP -> HTTPS already works on the current host. Keep the existing redirect.
+# A future domain change requires updating these addresses and the TLS certificate.

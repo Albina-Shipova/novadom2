@@ -1,11 +1,39 @@
 User-agent: *
-Allow: /
 Disallow: /.git/
 Disallow: /.responsive-audit/
+Disallow: /.agents/
+Disallow: /.codex/
+Disallow: /.claude/
+Disallow: /.aws/
 Disallow: /tools/
+Disallow: /deploy/
 Disallow: /debug.log
 Disallow: /SOURCE_NOTES.md
 Disallow: /SEO.md
 Disallow: /seo-config.json
+Allow: /
+
+# AI search and user-requested fetches
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+Disallow: /.git/
+Disallow: /.responsive-audit/
+Disallow: /.agents/
+Disallow: /.codex/
+Disallow: /.claude/
+Disallow: /.aws/
+Disallow: /tools/
+Disallow: /deploy/
+Disallow: /debug.log
+Disallow: /SOURCE_NOTES.md
+Disallow: /SEO.md
+Disallow: /seo-config.json
+Allow: /
+
+# Reports remain crawlable so their noindex directive can be read.
 
 Sitemap: https://novadom.asama.site/sitemap.xml

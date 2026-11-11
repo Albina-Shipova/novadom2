@@ -24,9 +24,6 @@ const closeMenu = () => {
     nav?.classList.remove('open');
     menuButton?.setAttribute('aria-expanded', 'false');
     menuButton?.setAttribute('aria-label', 'Открыть меню');
-    if (menuButton) {
-        menuButton.textContent = 'Меню';
-    }
     document.body.classList.remove('menu-open');
 };
 
@@ -35,7 +32,6 @@ menuButton?.addEventListener('click', () => {
     nav.classList.toggle('open', open);
     menuButton.setAttribute('aria-expanded', String(open));
     menuButton.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
-    menuButton.textContent = open ? 'Закрыть' : 'Меню';
     document.body.classList.toggle('menu-open', open);
     if (open) syncMenuGeometry();
 });
@@ -995,4 +991,17 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     track.addEventListener('dragstart', event => event.preventDefault());
     new ResizeObserver(update).observe(track);
     update();
+})();
+
+/* Fit the home hero and its advantages in the opening viewport. */
+(() => {
+    if (!document.body.classList.contains('original-hero')) return;
+    const parts = ['.source-strip', '.header', '.fact-rail'].map(selector => document.querySelector(selector)).filter(Boolean);
+    const measure = () => {
+        const height = parts.reduce((sum, part) => sum + part.getBoundingClientRect().height, 0);
+        document.documentElement.style.setProperty('--hero-surround-height', `${Math.ceil(height)}px`);
+    };
+    const observer = new ResizeObserver(measure);
+    parts.forEach(part => observer.observe(part));
+    measure();
 })();
