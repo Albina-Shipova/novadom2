@@ -181,6 +181,7 @@ let photoScale = 1, photoX = 0, photoY = 0;
 const photoPointers = new Map();
 let photoGesture = null;
 let photoMoved = false;
+let photoSwipe = null;
 const paintPhotoZoom = () => {
     const maxX = lightboxImage.offsetWidth * (photoScale - 1) / 2;
     const maxY = lightboxImage.offsetHeight * (photoScale - 1) / 2;
@@ -191,7 +192,7 @@ const paintPhotoZoom = () => {
 };
 const resetPhotoZoom = () => {
     photoScale = 1; photoX = 0; photoY = 0;
-    photoPointers.clear(); photoGesture = null;
+    photoPointers.clear(); photoGesture = null; photoSwipe = null;
     if (lightboxImage) paintPhotoZoom();
 };
 
@@ -274,7 +275,12 @@ const beginPhotoGesture = () => {
 };
 lightboxImage?.addEventListener('pointerdown', event => {
     if (event.pointerType === 'mouse' && event.button !== 0) return;
-    if (!photoPointers.size) photoMoved = false;
+    if (!photoPointers.size) {
+        photoMoved = false;
+        photoSwipe = photoScale === 1 ? { id: event.pointerId, x: event.clientX, y: event.clientY } : null;
+    } else {
+        photoSwipe = null;
+    }
     photoPointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     lightboxImage.setPointerCapture(event.pointerId);
     if (photoPointers.size > 1) photoMoved = true;
@@ -298,8 +304,20 @@ lightboxImage?.addEventListener('pointermove', event => {
     paintPhotoZoom();
 });
 ['pointerup', 'pointercancel', 'lostpointercapture'].forEach(type => lightboxImage?.addEventListener(type, event => {
+    if (!photoPointers.has(event.pointerId)) return;
+    const swipe = photoSwipe;
+    photoSwipe = null;
+    const dx = swipe ? event.clientX - swipe.x : 0;
+    const dy = swipe ? event.clientY - swipe.y : 0;
+    const shouldNavigate = type === 'pointerup' && swipe?.id === event.pointerId
+        && photoScale === 1 && viewerGroup.length > 1
+        && Math.abs(dx) >= 40 && Math.abs(dx) > Math.abs(dy) * 1.25;
     photoPointers.delete(event.pointerId);
     beginPhotoGesture();
+    if (shouldNavigate) {
+        photoMoved = true;
+        displayImage(imageIndex + (dx < 0 ? 1 : -1));
+    }
 }));
 window.addEventListener('resize', resetPhotoZoom);
 lightbox?.addEventListener('click', event => { if (event.target === lightbox) closeLightbox(); });
