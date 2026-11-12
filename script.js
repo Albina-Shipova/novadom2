@@ -601,11 +601,11 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
         wheelChangedAt = now;
     }, { passive: false });
     stage.addEventListener('pointerdown', event => {
-        if (!event.isPrimary || event.button !== 0 || start) return;
+        if (event.pointerType === 'touch' || !event.isPrimary || event.button !== 0 || start) return;
         suppressClick = false;
         start = { x: event.clientX, y: event.clientY, id: event.pointerId, dragging: false };
     });
-    stage.addEventListener('pointermove', event => {
+    const moveDrag = event => {
         if (!start || event.pointerId !== start.id) return;
         const dx = event.clientX - start.x, dy = event.clientY - start.y;
         if (!start.dragging) {
@@ -613,7 +613,7 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
             if (Math.abs(dy) > Math.abs(dx)) { start = null; return; }
             start.dragging = true;
             suppressClick = true;
-            stage.setPointerCapture(event.pointerId);
+            if (!start.touch) stage.setPointerCapture(event.pointerId);
             stage.classList.add('is-dragging');
         }
         const card = cards[current];
@@ -627,6 +627,9 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
             show(current - passed % cards.length);
         }
         render((event.clientX - start.x) / step);
+    };
+    stage.addEventListener('pointermove', event => {
+        if (!start?.touch) moveDrag(event);
     });
     const finishDrag = event => {
         if (!start || event.pointerId !== start.id) return;
@@ -634,21 +637,48 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
         const dx = event.clientX - gesture.x;
         start = null;
         stage.classList.remove('is-dragging');
-        if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+        if (!gesture.touch && stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
         if (gesture.dragging && event.type === 'pointerup' && Math.abs(dx) >= Math.min(70, stage.clientWidth * .12)) {
             show(current + (dx < 0 ? 1 : -1));
         } else render();
     };
-    stage.addEventListener('pointerup', finishDrag);
-    stage.addEventListener('pointercancel', finishDrag);
+    ['pointerup', 'pointercancel'].forEach(type => stage.addEventListener(type, event => {
+        if (!start?.touch) finishDrag(event);
+    }));
     stage.addEventListener('lostpointercapture', event => {
         // Touch starts with implicit capture on the image/link. Its loss bubbles
         // when capture moves to the stage; only the stage losing capture ends a drag.
-        if (event.target === stage) finishDrag(event);
+        if (event.target === stage && !start?.touch) finishDrag(event);
     });
     stage.addEventListener('pointerleave', event => {
-        if (start && !start.dragging) finishDrag(event);
+        if (start && !start.touch && !start.dragging) finishDrag(event);
     });
+    // Touch events stay attached to the original surface while 3D cards move.
+    // Cancel only horizontal swipes; vertical scrolling and pinch zoom stay native.
+    stage.addEventListener('touchstart', event => {
+        if (event.touches.length !== 1) {
+            if (start?.touch) finishDrag({ pointerId: start.id, clientX: start.x, type: 'touchcancel' });
+            return;
+        }
+        const touch = event.changedTouches[0];
+        suppressClick = false;
+        start = { x: touch.clientX, y: touch.clientY, id: touch.identifier, dragging: false, touch: true };
+    }, { passive: true });
+    stage.addEventListener('touchmove', event => {
+        if (!start?.touch || event.touches.length !== 1) return;
+        const touch = Array.from(event.touches).find(touch => touch.identifier === start.id);
+        if (!touch) return;
+        moveDrag({ pointerId: touch.identifier, clientX: touch.clientX, clientY: touch.clientY });
+        if (start?.dragging && event.cancelable) event.preventDefault();
+    }, { passive: false });
+    ['touchend', 'touchcancel'].forEach(type => stage.addEventListener(type, event => {
+        if (!start?.touch) return;
+        const touch = Array.from(event.changedTouches).find(touch => touch.identifier === start.id);
+        if (touch) {
+            if (Math.hypot(touch.clientX - start.x, touch.clientY - start.y) > 8) suppressClick = true;
+            finishDrag({ pointerId: touch.identifier, clientX: touch.clientX, type: type === 'touchend' ? 'pointerup' : 'touchcancel' });
+        }
+    }, { passive: true }));
     stage.addEventListener('click', event => {
         if (!suppressClick) return;
         event.preventDefault();
