@@ -539,8 +539,10 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
     if (cards.length < 3) return;
     const counter = carousel.querySelector('[data-coverflow-counter]');
     const status = carousel.querySelector('[data-coverflow-status]');
+    const mobile = window.matchMedia('(max-width: 600px)');
     let current = 0;
     const render = (offset = 0) => {
+        if (mobile.matches) return;
         cards.forEach((card, i) => {
             let slot = ((i - current + cards.length * 1.5) % cards.length) - cards.length / 2;
             // Place the incoming outer card on the side of the gesture.
@@ -555,19 +557,47 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
             card.style.zIndex = String(Math.round((3 - Math.min(distance, 2)) * 100));
         });
     };
-    function show(index) {
+    function show(index, scroll = true) {
         current = (index + cards.length) % cards.length;
         cards.forEach((card, i) => {
             const position = i === current ? 'active' : i === (current + cards.length - 1) % cards.length ? 'prev' : i === (current + 1) % cards.length ? 'next' : 'hidden';
             if (position === 'hidden' && card.contains(document.activeElement)) stage.focus({ preventScroll: true });
             card.dataset.position = position;
-            card.inert = position === 'hidden';
-            card.setAttribute('aria-hidden', String(position === 'hidden'));
+            card.inert = !mobile.matches && position === 'hidden';
+            card.setAttribute('aria-hidden', String(!mobile.matches && position === 'hidden'));
+            if (mobile.matches) {
+                ['top', 'transform', 'opacity', 'visibility', 'z-index'].forEach(property => card.style.removeProperty(property));
+            }
         });
         counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(cards.length).padStart(2, '0')}`;
         status.textContent = `${current + 1} из ${cards.length}: ${cards[current].querySelector('h3').textContent}`;
         render();
+        if (mobile.matches && scroll) {
+            stage.scrollTo({
+                left: cards[current].offsetLeft - (stage.clientWidth - cards[current].offsetWidth) / 2,
+                behavior: reduced ? 'instant' : 'smooth'
+            });
+        }
     }
+    // Phones use the browser's touch scrolling, independent of 3D transforms
+    // and pointer capture. Keep keyboard controls and announcements in sync.
+    let scrollFrame = 0;
+    stage.addEventListener('scroll', () => {
+        if (!mobile.matches || scrollFrame) return;
+        scrollFrame = requestAnimationFrame(() => {
+            scrollFrame = 0;
+            const center = stage.getBoundingClientRect().left + stage.clientWidth / 2;
+            let nearest = current;
+            let distance = Infinity;
+            cards.forEach((card, i) => {
+                const rect = card.getBoundingClientRect();
+                const delta = Math.abs(rect.left + rect.width / 2 - center);
+                if (delta < distance) { distance = delta; nearest = i; }
+            });
+            if (nearest !== current) show(nearest, false);
+        });
+    }, { passive: true });
+    mobile.addEventListener('change', () => requestAnimationFrame(() => show(current)));
     carousel.querySelector('[data-coverflow-prev]').addEventListener('click', () => show(current - 1));
     carousel.querySelector('[data-coverflow-next]').addEventListener('click', () => show(current + 1));
     carousel.addEventListener('keydown', event => {
@@ -582,7 +612,7 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
     let wheelChangedAt = -Infinity;
     stage.addEventListener('wheel', event => {
         // Preserve browser zoom and let touch gestures finish independently.
-        if (event.ctrlKey || start || !event.deltaX && !event.deltaY) return;
+        if (mobile.matches || event.ctrlKey || start || !event.deltaX && !event.deltaY) return;
         event.preventDefault();
         const now = performance.now();
         const unit = event.deltaMode === 1 ? 16 : event.deltaMode === 2 ? stage.clientWidth : 1;
@@ -601,7 +631,7 @@ document.querySelectorAll('[data-coverflow]').forEach(carousel => {
         wheelChangedAt = now;
     }, { passive: false });
     stage.addEventListener('pointerdown', event => {
-        if (!event.isPrimary || event.button !== 0 || start) return;
+        if (mobile.matches || !event.isPrimary || event.button !== 0 || start) return;
         suppressClick = false;
         start = { x: event.clientX, y: event.clientY, id: event.pointerId, dragging: false };
     });

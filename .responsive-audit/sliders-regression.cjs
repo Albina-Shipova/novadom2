@@ -1,0 +1,12 @@
+const{chromium}=require('C:/Users/User/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/playwright');const assert=require('assert');
+(async()=>{const b=await chromium.launch();for(const width of [390,768]){const p=await b.newPage({viewport:{width,height:844},isMobile:true,hasTouch:true});await p.goto('file:///D:/Albina/sites/novadom2/index.html');await p.waitForFunction(()=>!document.documentElement.matches('.intro-active,.hero-pending'));const c=await p.context().newCDPSession(p);async function swipe(el,dx){await el.scrollIntoViewIfNeeded();await p.waitForTimeout(500);const r=await el.boundingBox();const x=r.x+r.width*(dx<0?.8:.2),y=Math.max(150,r.y+Math.min(r.height*.4,180));await c.send('Input.dispatchTouchEvent',{type:'touchStart',touchPoints:[{x,y}]});for(let i=1;i<=10;i++){await c.send('Input.dispatchTouchEvent',{type:'touchMove',touchPoints:[{x:x+dx*i/10,y}]});await p.waitForTimeout(16)}await c.send('Input.dispatchTouchEvent',{type:'touchEnd',touchPoints:[]});await p.waitForTimeout(1800)}
+await swipe(p.locator('.coverflow-stage'),-230);assert.equal(await p.locator('[data-coverflow-counter]').innerText(),'02 / 12');await swipe(p.locator('.coverflow-stage'),230);assert.equal(await p.locator('[data-coverflow-counter]').innerText(),'01 / 12');await p.locator('.coverflow-stage').focus();await p.keyboard.press('ArrowRight');assert.equal(await p.locator('[data-coverflow-counter]').innerText(),'02 / 12');
+for(const track of await p.locator('.reviews-scroll-ready .screenshot-slides, .reviews-scroll-ready .reviews-track').all()){await swipe(track,-width*.65);const r=await track.evaluate(e=>({left:e.scrollLeft,width:e.clientWidth,counter:e.parentElement.querySelector('.review-counter').textContent}));console.log(await track.evaluate(e=>({snap:getComputedStyle(e).scrollSnapType,slides:[...e.children].slice(0,3).map(s=>({width:s.offsetWidth,left:s.offsetLeft,rect:s.getBoundingClientRect().toJSON(),snap:getComputedStyle(s).scrollSnapAlign,transform:getComputedStyle(s).transform}))}))); console.log(r); assert(r.left>=r.width*.95,JSON.stringify(r));assert(r.counter.startsWith('2 /'),JSON.stringify(r));assert.equal(await p.locator('.lightbox').getAttribute('aria-hidden'),'true');await track.locator('..').locator('[data-review-next]').click();await p.waitForTimeout(700);assert((await track.locator('..').locator('.review-counter').innerText()).startsWith('3 /'));}
+console.log(width,'projects and both review tracks passed');await p.close()}await b.close()})();
+
+
+
+
+
+
+
