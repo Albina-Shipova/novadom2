@@ -3686,37 +3686,7 @@ button {
     grid-template-rows: minmax(0, 1fr) auto;
   }
   .mobile-hero-gallery .coverflow-footer { display: none; }
-  /* Native phone carousel: touch momentum and snapping need no pointer capture. */
-  .home-projects .is-ready .coverflow-stage {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding-inline: 12%;
-    scroll-snap-type: x mandatory;
-    scroll-padding-inline: 12%;
-    touch-action: pan-x pan-y pinch-zoom;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    perspective: none;
-  }
-  .home-projects .is-ready .coverflow-stage::-webkit-scrollbar { display: none; }
-  .home-projects .is-ready .coverflow-card {
-    position: relative;
-    top: auto;
-    left: auto;
-    flex: 0 0 100%;
-    width: 100%;
-    transform: none;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-    transition: none;
-    scroll-snap-align: center;
-  }
-  .home-projects .is-ready .coverflow-card[data-position="prev"],
-  .home-projects .is-ready .coverflow-card[data-position="next"] { top: auto; transform: none; }
-  .home-projects .is-ready .coverflow-card:not([data-position="active"]) .portfolio-caption { opacity: 1; }
+
 }
 
 /* Masks follow existing heading line breaks without changing typography. */
