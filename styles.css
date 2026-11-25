@@ -4036,6 +4036,10 @@ body.enquiry-open { overflow: hidden; }
 .enquiry-form label > span { display: contents; }
 .enquiry-form input, .enquiry-form select, .enquiry-form textarea { box-sizing: border-box; width: 100%; min-width: 0; border: 1px solid var(--line); border-radius: 0; padding: 12px; background: var(--white-warm); color: var(--ink); font: 16px var(--sans); }
 .enquiry-form textarea { resize: vertical; }
+.enquiry-form .enquiry-consent { grid-template-columns: auto 1fr; align-items: start; margin-bottom: 16px; }
+.enquiry-form .enquiry-consent input { width: 1em; margin: .2em 0 0; }
+.enquiry-form .enquiry-consent > span { display: block; }
+.enquiry-consent-link { text-decoration: underline; }
 .enquiry-form :is(input, select, textarea, button, a):focus-visible, .enquiry-close:focus-visible { outline: 2px solid var(--moss); outline-offset: 3px; }
 .enquiry-required { margin: 16px 0; font-size: 12px; color: var(--muted); line-height: 1.6; }
 .enquiry-result { padding: 16px; margin-top: 18px; border-left: 3px solid var(--moss); background: var(--moss-light); line-height: 1.6; font-size: 14px; }

@@ -1183,26 +1183,30 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     const dialog = document.createElement('dialog');
     dialog.className = 'project-enquiry ym-hide-content';
     dialog.setAttribute('aria-labelledby', 'enquiry-title');
-    dialog.setAttribute('aria-describedby', 'enquiry-demo');
+    dialog.setAttribute('aria-describedby', 'enquiry-intro');
     dialog.innerHTML = `
         <button class="enquiry-close" type="button" aria-label="Закрыть форму">×</button>
         <h2 id="enquiry-title">Расскажите о вашем интерьере</h2>
-        <p class="enquiry-intro">Несколько деталей, с которых начинается знакомство с вашим проектом.</p>
-        <p class="enquiry-demo" id="enquiry-demo">Тестовая форма. Данные не отправляются и не сохраняются. Для связи с Анной напишите на <a href="mailto:Russua.anna@ya.ru">Russua.anna@ya.ru</a>, <a href="https://t.me/+79207539997" target="_blank" rel="noopener">напишите в Telegram</a> или <a href="tel:+79207539997">позвоните</a>.</p>
-        <form class="enquiry-form">
+        <p class="enquiry-intro" id="enquiry-intro">Оставьте контакты, чтобы Анна могла обсудить с вами проект. Также можно написать на <a href="mailto:Russua.anna@ya.ru">Russua.anna@ya.ru</a>.</p>
+        <form class="enquiry-form" method="post">
             <div class="enquiry-fields">
                 <label>Ваше имя <span aria-hidden="true">*</span><input name="name" autocomplete="given-name" required maxlength="80" placeholder="Как к вам обращаться"></label>
                 <label>Телефон <span aria-hidden="true">*</span><input name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="+7 (___) ___-__-__"></label>
                 <label>Город<input name="city" autocomplete="address-level2" maxlength="100" placeholder="Где находится объект"></label>
-                <label>Тип объекта<select name="property"><option value="">Выберите из списка</option><option>Квартира</option><option>Дом</option><option>Другое</option></select></label>
+                <label>Тип объекта<select name="property"><option value="">Выберите из списка</option><option>Квартира</option><option>Дом</option><option>Коммерческое помещение</option><option>Другое</option></select></label>
+                <label>Площадь, м²<input name="area" type="number" min="1" max="100000" step="any" placeholder="Например, 80"></label>
             </div>
-            <label>Сообщение<textarea name="comment" rows="3" maxlength="2000" placeholder="Расскажите, что планируете"></textarea></label>
-            <p class="enquiry-required">* Обязательные поля. Для проверки используйте вымышленные данные.</p>
-            <button class="btn dark-btn" type="submit">Проверить форму <span aria-hidden="true">→</span></button>
+            <label>Что планируете?<textarea name="comment" rows="3" maxlength="2000" placeholder="Какие задачи хотите решить и когда планируете начать?"></textarea></label>
+            <p class="enquiry-required">* Обязательные поля</p>
+            <label class="enquiry-consent"><input name="consent" type="checkbox" required><span>Я даю <a class="enquiry-consent-link" target="_blank" rel="noopener">согласие на обработку персональных данных</a> для ответа на заявку.</span></label>
+            <button class="btn dark-btn" type="submit">Отправить заявку <span aria-hidden="true">→</span></button>
             <p class="enquiry-result" role="status" tabindex="-1" hidden></p>
         </form>`;
     document.body.append(dialog);
     const form = dialog.querySelector('form');
+    const siteRoot = new URL('.', document.currentScript.src);
+    form.querySelector('.enquiry-consent-link').href = new URL('enquiry-consent.html', siteRoot);
+    const submit = form.querySelector('button[type="submit"]');
     form.querySelectorAll('input, textarea, select').forEach(field => field.classList.add('ym-disable-keys'));
     const phone = form.elements.phone;
     const result = dialog.querySelector('.enquiry-result');
@@ -1231,13 +1235,34 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         previousFocus?.focus({ preventScroll: true });
     });
     phone.addEventListener('input', () => phone.setCustomValidity(''));
-    form.addEventListener('submit', event => {
+    form.addEventListener('submit', async event => {
         event.preventDefault();
+        if (submit.disabled) return;
         const digits = phone.value.replace(/\D/g, '');
         phone.setCustomValidity(digits.length >= 10 && digits.length <= 15 ? '' : 'Укажите телефон: от 10 до 15 цифр.');
         if (!form.reportValidity()) return;
-        result.textContent = 'Форма заполнена. Это демонстрация: заявка не отправлена. Чтобы обсудить проект сейчас, свяжитесь с Анной по почте Russua.anna@ya.ru, телефону или в Telegram.';
+        const fields = Object.fromEntries(new FormData(form));
+        submit.disabled = true;
+        try {
+            const response = await fetch(new URL('enquiry.php', siteRoot), {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ...fields, consent: form.elements.consent.checked, version: '2026-11-25' })
+            });
+            if (response.status === 429) {
+                result.textContent = 'Слишком много заявок. Попробуйте позже или напишите на Russua.anna@ya.ru.';
+            } else if (response.ok && (await response.json()).ok === true) {
+                form.reset();
+                result.textContent = 'Заявка принята. Анна свяжется с вами по указанному телефону.';
+            } else {
+                throw new Error('Enquiry request failed');
+            }
+        } catch {
+            result.textContent = 'Не удалось подтвердить отправку. Напишите Анне на Russua.anna@ya.ru.';
+        } finally {
+            submit.disabled = false;
+        }
         result.hidden = false;
-        result.focus();
+        if (dialog.open) result.focus();
     });
 })();
