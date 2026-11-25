@@ -36,4 +36,4 @@ Allow: /
 
 # Reports remain crawlable so their noindex directive can be read.
 
-Sitemap: https://novadom.asama.site/sitemap.xml
+Sitemap: https://tsarevadesign.ru/sitemap.xml

@@ -47,11 +47,11 @@ def generate(domain):
     organization = {
         '@type': 'Organization', '@id': domain + '/#studio', 'name': 'Нова Дом',
         'url': domain + '/', 'description': 'Студия дизайна интерьеров Анны Царевой в Туле и Москве.',
-        'logo': domain + '/assets/client/logo.png', 'telephone': '+79207539997',
+        'logo': domain + '/assets/client/logo.png', 'telephone': '+79207539997', 'email': 'Russua.anna@ya.ru',
         'founder': {'@type': 'Person', 'name': 'Анна Царева'},
         'areaServed': [{'@type': 'City', 'name': 'Тула'}, {'@type': 'City', 'name': 'Москва'}],
         'sameAs': ['https://t.me/Anna_Tsareva', 'https://yandex.ru/maps/org/nova_dom/93283220697/'],
-        'contactPoint': {'@type': 'ContactPoint', 'telephone': '+79207539997',
+        'contactPoint': {'@type': 'ContactPoint', 'telephone': '+79207539997', 'email': 'Russua.anna@ya.ru',
                          'contactType': 'customer service', 'availableLanguage': 'Russian'}
     }
     for page in pages:
@@ -146,7 +146,8 @@ def generate(domain):
     llms = '# Нова Дом — студия дизайна интерьеров Анны Царевой\n\n'
     llms += '> Дизайн жилых, коммерческих и общественных интерьеров. Студия работает в Туле, Москве и выезжает на объекты в другие регионы.\n\n'
     llms += 'Телефон: +7 (920) 753-99-97. Встречи по записи. Ежедневно 09:00–18:00.\n'
-    llms += 'Личный Telegram для консультации: https://t.me/Anna_asten. Канал с проектами: https://t.me/Anna_Tsareva.\n'
+    llms += 'Электронная почта студии: Russua.anna@ya.ru.\n'
+    llms += 'Личный Telegram для консультации: https://t.me/+79207539997. Канал с проектами: https://t.me/Anna_Tsareva.\n'
     llms += 'Услуги: планировочное решение, дизайн-проект, 3D-визуализация, подбор материалов, авторский надзор и комплектация.\n'
     llms += 'Состав, стоимость и условия согласуются перед началом работы; актуальные пакеты опубликованы в разделе услуг.\n\n'
     llms += '## Основные страницы\n'

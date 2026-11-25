@@ -1,6 +1,25 @@
 /* NOVA DOM — интерактив */
 'use strict';
 
+
+/* Ссылка на группу ВК: вставьте адрес между кавычками — кнопки появятся на сайте. */
+const VK_GROUP_URL = 'https://vk.ru/nova_dom_design';
+
+(() => {
+    if (!VK_GROUP_URL.trim()) return;
+    let url;
+    try {
+        url = new URL(VK_GROUP_URL.trim());
+    } catch {
+        return;
+    }
+    if (url.protocol !== 'https:' || !['vk.com', 'www.vk.com', 'vk.ru', 'www.vk.ru'].includes(url.hostname)) return;
+    document.querySelectorAll('[data-vk-subscribe]').forEach(link => {
+        link.href = url.href;
+        link.hidden = false;
+    });
+})();
+
 /* ---------- Шапка: тень при скролле ---------- */
 
 const header = document.querySelector('[data-header]');
@@ -1150,4 +1169,75 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
     const observer = new ResizeObserver(measure);
     parts.forEach(part => observer.observe(part));
     measure();
+})();
+
+
+/* Тестовая форма знакомства с проектом: данные не отправляются и не сохраняются. */
+(() => {
+    const enquiryFormEnabled = false;
+    if (!enquiryFormEnabled) return;
+
+    const triggers = [...document.querySelectorAll('a')].filter(link =>
+        /Обсудить (проект|ваш интерьер)/.test(link.textContent));
+    if (!triggers.length) return;
+    const dialog = document.createElement('dialog');
+    dialog.className = 'project-enquiry ym-hide-content';
+    dialog.setAttribute('aria-labelledby', 'enquiry-title');
+    dialog.setAttribute('aria-describedby', 'enquiry-demo');
+    dialog.innerHTML = `
+        <button class="enquiry-close" type="button" aria-label="Закрыть форму">×</button>
+        <h2 id="enquiry-title">Расскажите о вашем интерьере</h2>
+        <p class="enquiry-intro">Несколько деталей, с которых начинается знакомство с вашим проектом.</p>
+        <p class="enquiry-demo" id="enquiry-demo">Тестовая форма. Данные не отправляются и не сохраняются. Для связи с Анной напишите на <a href="mailto:Russua.anna@ya.ru">Russua.anna@ya.ru</a>, <a href="https://t.me/+79207539997" target="_blank" rel="noopener">напишите в Telegram</a> или <a href="tel:+79207539997">позвоните</a>.</p>
+        <form class="enquiry-form">
+            <div class="enquiry-fields">
+                <label>Ваше имя <span aria-hidden="true">*</span><input name="name" autocomplete="given-name" required maxlength="80" placeholder="Как к вам обращаться"></label>
+                <label>Телефон <span aria-hidden="true">*</span><input name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="+7 (___) ___-__-__"></label>
+                <label>Город<input name="city" autocomplete="address-level2" maxlength="100" placeholder="Где находится объект"></label>
+                <label>Тип объекта<select name="property"><option value="">Выберите из списка</option><option>Квартира</option><option>Дом</option><option>Другое</option></select></label>
+            </div>
+            <label>Сообщение<textarea name="comment" rows="3" maxlength="2000" placeholder="Расскажите, что планируете"></textarea></label>
+            <p class="enquiry-required">* Обязательные поля. Для проверки используйте вымышленные данные.</p>
+            <button class="btn dark-btn" type="submit">Проверить форму <span aria-hidden="true">→</span></button>
+            <p class="enquiry-result" role="status" tabindex="-1" hidden></p>
+        </form>`;
+    document.body.append(dialog);
+    const form = dialog.querySelector('form');
+    form.querySelectorAll('input, textarea, select').forEach(field => field.classList.add('ym-disable-keys'));
+    const phone = form.elements.phone;
+    const result = dialog.querySelector('.enquiry-result');
+    let previousFocus;
+    const close = () => dialog.close();
+    triggers.forEach(link => {
+        link.setAttribute('aria-haspopup', 'dialog');
+        link.addEventListener('click', event => {
+            event.preventDefault();
+            previousFocus = link;
+            if (nav?.classList.contains('open')) closeMenu();
+            dialog.showModal();
+            document.body.classList.add('enquiry-open');
+        });
+    });
+    dialog.querySelector('.enquiry-close').addEventListener('click', close);
+    dialog.addEventListener('click', event => {
+        const rect = dialog.getBoundingClientRect();
+        if (event.target === dialog && (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom)) close();
+    });
+    dialog.addEventListener('close', () => {
+        document.body.classList.remove('enquiry-open');
+        form.reset();
+        phone.setCustomValidity('');
+        result.hidden = true;
+        previousFocus?.focus({ preventScroll: true });
+    });
+    phone.addEventListener('input', () => phone.setCustomValidity(''));
+    form.addEventListener('submit', event => {
+        event.preventDefault();
+        const digits = phone.value.replace(/\D/g, '');
+        phone.setCustomValidity(digits.length >= 10 && digits.length <= 15 ? '' : 'Укажите телефон: от 10 до 15 цифр.');
+        if (!form.reportValidity()) return;
+        result.textContent = 'Форма заполнена. Это демонстрация: заявка не отправлена. Чтобы обсудить проект сейчас, свяжитесь с Анной по почте Russua.anna@ya.ru, телефону или в Telegram.';
+        result.hidden = false;
+        result.focus();
+    });
 })();

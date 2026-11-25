@@ -1,0 +1,15 @@
+@font-face {
+    font-family: "Golos Text";
+    src: url("GolosText-Variable.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Prata";
+    src: url("Prata-Regular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+}

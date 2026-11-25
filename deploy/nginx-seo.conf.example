@@ -5,7 +5,7 @@
 # Do not remove noindex from other staging websites.
 
 location = /index.html {
-    return 301 https://novadom.asama.site/$is_args$args;
+    return 301 https://tsarevadesign.ru/$is_args$args;
 }
 
 # Add to/merge with the existing root location; do not create a duplicate location.
@@ -44,9 +44,17 @@ location ~ ^/(?:debug\.log|SOURCE_NOTES\.md|SEO\.md|seo-config\.json)$ {
 }
 
 # These are plain files uploaded into the document root; no app routing required.
-location = /robots.txt { default_type text/plain; }
+location = /robots.txt {
+    types { }
+    default_type text/plain;
+    try_files $uri =404;
+}
 location = /llms.txt { default_type text/plain; }
-location = /sitemap.xml { default_type application/xml; }
+location = /sitemap.xml {
+    types { }
+    default_type application/xml;
+    try_files $uri =404;
+}
 
 # HTTP -> HTTPS already works on the current host. Keep the existing redirect.
 # A future domain change requires updating these addresses and the TLS certificate.
