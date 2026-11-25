@@ -1188,15 +1188,16 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         <button class="enquiry-close" type="button" aria-label="Закрыть форму">×</button>
         <h2 id="enquiry-title">Расскажите о вашем интерьере</h2>
         <p class="enquiry-intro">Несколько деталей, с которых начинается знакомство с вашим проектом.</p>
-        <p class="enquiry-demo" id="enquiry-demo">Тестовая форма. Данные не отправляются и не сохраняются. Для связи с Анной напишите на <a href="mailto:Russua.anna@ya.ru">Russua.anna@ya.ru</a>, <a href="https://t.me/+79207539997" target="_blank" rel="noopener">напишите в Telegram</a> или <a href="tel:+79207539997">позвоните</a>.</p>
+        <p class="enquiry-demo" id="enquiry-demo">Тестовая форма. Данные не отправляются и не сохраняются. Для связи с Анной <a href="https://t.me/+79207539997" target="_blank" rel="noopener">напишите в Telegram</a> или <a href="tel:+79207539997">позвоните</a>.</p>
         <form class="enquiry-form">
             <div class="enquiry-fields">
                 <label>Ваше имя <span aria-hidden="true">*</span><input name="name" autocomplete="given-name" required maxlength="80" placeholder="Как к вам обращаться"></label>
                 <label>Телефон <span aria-hidden="true">*</span><input name="phone" type="tel" autocomplete="tel" required maxlength="30" placeholder="+7 (___) ___-__-__"></label>
                 <label>Город<input name="city" autocomplete="address-level2" maxlength="100" placeholder="Где находится объект"></label>
-                <label>Тип объекта<select name="property"><option value="">Выберите из списка</option><option>Квартира</option><option>Дом</option><option>Другое</option></select></label>
+                <label>Тип объекта<select name="property"><option value="">Выберите из списка</option><option>Квартира</option><option>Дом</option><option>Коммерческое помещение</option><option>Другое</option></select></label>
+                <label>Площадь, м²<input name="area" type="number" min="1" max="100000" step="any" placeholder="Например, 80"></label>
             </div>
-            <label>Сообщение<textarea name="comment" rows="3" maxlength="2000" placeholder="Расскажите, что планируете"></textarea></label>
+            <label>Что планируете?<textarea name="comment" rows="3" maxlength="2000" placeholder="Какие задачи хотите решить и когда планируете начать?"></textarea></label>
             <p class="enquiry-required">* Обязательные поля. Для проверки используйте вымышленные данные.</p>
             <button class="btn dark-btn" type="submit">Проверить форму <span aria-hidden="true">→</span></button>
             <p class="enquiry-result" role="status" tabindex="-1" hidden></p>
@@ -1236,7 +1237,7 @@ document.querySelectorAll('[data-hero-ambient]').forEach(figure => {
         const digits = phone.value.replace(/\D/g, '');
         phone.setCustomValidity(digits.length >= 10 && digits.length <= 15 ? '' : 'Укажите телефон: от 10 до 15 цифр.');
         if (!form.reportValidity()) return;
-        result.textContent = 'Форма заполнена. Это демонстрация: заявка не отправлена. Чтобы обсудить проект сейчас, свяжитесь с Анной по почте Russua.anna@ya.ru, телефону или в Telegram.';
+        result.textContent = 'Форма заполнена. Это демонстрация: заявка не отправлена. Чтобы обсудить проект сейчас, свяжитесь с Анной по телефону или в Telegram.';
         result.hidden = false;
         result.focus();
     });
