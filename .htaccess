@@ -1,0 +1,5 @@
+# Сайт развёрнут клоном git: служебные файлы и папки наружу не отдаём.
+RedirectMatch 404 (^|/)\.(?!well-known/)
+RedirectMatch 404 ^/(tools|deploy|private)(/|$)
+RedirectMatch 404 \.(md|log|py|cjs|example)$
+RedirectMatch 404 ^/seo-config\.json$
