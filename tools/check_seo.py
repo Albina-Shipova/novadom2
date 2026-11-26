@@ -80,6 +80,14 @@ for file, page in pages.items():
                 ids = {a.get('id') for t, a in pages[target].tags}
                 check(unquote(absolute.fragment) in ids, f'broken anchor: {value}')
 
+consent_url = DOMAIN + '/consent.html'
+consent_page = Page((ROOT / 'consent.html').read_text(encoding='utf-8'))
+consent_canonicals = [a.get('href') for t, a in consent_page.tags if t == 'link' and a.get('rel') == 'canonical']
+if consent_canonicals != [consent_url]:
+    errors.append('consent.html: canonical mismatch')
+if any(t == 'meta' and a.get('name') == 'robots' and 'noindex' in a.get('content', '') for t, a in consent_page.tags):
+    errors.append('consent.html: sitemap page must be indexable')
+urls.add(consent_url)
 sitemap = ET.parse(ROOT / 'sitemap.xml')
 locations = [n.text for n in sitemap.findall('{*}url/{*}loc')]
 if set(locations) != urls or len(locations) != len(urls):
@@ -89,7 +97,7 @@ if 'Sitemap: ' + DOMAIN + '/sitemap.xml' not in (ROOT / 'robots.txt').read_text(
 robots = urllib.robotparser.RobotFileParser()
 robots.parse((ROOT / 'robots.txt').read_text(encoding='utf-8').splitlines())
 for agent in ['Googlebot', 'YandexBot', 'OAI-SearchBot', 'ChatGPT-User', 'Claude-SearchBot', 'Claude-User', 'PerplexityBot', 'Perplexity-User']:
-    for path in ['/', '/contacts.html', '/portfolio.html', '/llms.txt', '/sitemap.xml']:
+    for path in ['/', '/contacts.html', '/portfolio.html', '/consent.html', '/llms.txt', '/sitemap.xml']:
         if not robots.can_fetch(agent, DOMAIN + path):
             errors.append(f'{agent}: public URL blocked: {path}')
     for path in ['/.git/config', '/.aws/credentials', '/tools/seo.py', '/.responsive-audit/live-seo.json', '/deploy/nginx-seo.conf.example']:

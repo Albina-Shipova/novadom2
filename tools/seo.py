@@ -133,6 +133,18 @@ def generate(domain):
         source = source.replace('</head>', block + '\n</head>')
         page['file'].write_text(source, encoding='utf-8', newline='\n')
 
+    consent_url = domain + '/consent.html'
+    consent_file = ROOT / 'consent.html'
+    consent_source = consent_file.read_text(encoding='utf-8')
+    consent_source, canonical_count = re.subn(
+        r'(<link rel="canonical" href=")[^"]+("\s*/?>)',
+        lambda match: match[1] + html.escape(consent_url, quote=True) + match[2],
+        consent_source,
+    )
+    if canonical_count != 1:
+        raise ValueError('consent.html must have one canonical link')
+    consent_file.write_text(consent_source, encoding='utf-8', newline='\n')
+
     exclusions = ['/.git/', '/.responsive-audit/', '/.agents/', '/.codex/', '/.claude/', '/.aws/',
                   '/tools/', '/deploy/', '/debug.log', '/SOURCE_NOTES.md', '/SEO.md', '/seo-config.json']
     rules = ''.join('Disallow: ' + path + '\n' for path in exclusions) + 'Allow: /\n'
@@ -171,6 +183,8 @@ def generate(domain):
         ET.SubElement(entry, '{' + ns + '}loc').text = page['url']
         image = ET.SubElement(entry, '{' + image_ns + '}image')
         ET.SubElement(image, '{' + image_ns + '}loc').text = page['image']
+    consent_entry = ET.SubElement(sitemap, '{' + ns + '}url')
+    ET.SubElement(consent_entry, '{' + ns + '}loc').text = consent_url
     ET.indent(sitemap)
     ET.ElementTree(sitemap).write(ROOT / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
     print(f'Updated SEO on {len(pages)} pages: {domain}')
